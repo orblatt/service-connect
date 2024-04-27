@@ -162,3 +162,9 @@ cython_debug/
 ## Ignore Visual Studio Code workspace files, folders, and settings
 .vscode/
 *.code-workspace
+
+## macOS-specific files
+# General macOS metadata
+.DS_Store
+.AppleDouble
+.LSOverride
