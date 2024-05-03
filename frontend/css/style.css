@@ -14,8 +14,8 @@ header, footer {
 }
 
 nav {
-    background: #dddddd;
-    padding: 10px 20px;
+    background: #FFFFFF;
+    padding: 20px 20px;
     text-align: center;
 }
 
@@ -26,7 +26,7 @@ nav a {
 }
 
 section {
-    margin: 20px;
+    margin: 30px;
     padding: 20px;
     background: white;
     border-radius: 8px;
