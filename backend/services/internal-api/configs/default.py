@@ -1,5 +1,7 @@
-database_endpoint = 'database-2.c58g8seqq6pj.eu-west-1.rds.amazonaws.com'
-database_port = 5432
-database_name = 'postgres'
-database_table = 'users'
-database_password = ''
+db_config = {
+    'endpoint': 'database-2.c58g8seqq6pj.eu-west-1.rds.amazonaws.com',
+    'port': 5432,
+    'dbname': 'postgres',
+    'username': 'postgres',
+    'password': ''  # Should be managed securely
+}
