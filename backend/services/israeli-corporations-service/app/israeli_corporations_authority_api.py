@@ -1,18 +1,7 @@
 import httpx
 from fastapi import HTTPException
-
-ISRAELI_CORPORATIONS_AUTHORITY_RESOURCE_ID = "f004176c-b85f-4542-8901-7b3176f9a054"
-
-
-# Function to handle API requests to the external service
-
-class DataGovIL:
-    base_url = "https://data.gov.il/api/3/action/datastore_search"
-
-    def __init__(self, resource_id: str):
-        self.resource_id = resource_id
-
-
+from ..configs.default import ISRAELI_CORPORATIONS_AUTHORITY_RESOURCE_ID
+from .data_gov_il import DataGovIL
 class IsraeliCorporationsAuthorityAPI(DataGovIL):
     def __init__(self):
         super().__init__(resource_id=ISRAELI_CORPORATIONS_AUTHORITY_RESOURCE_ID)
