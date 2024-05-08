@@ -2,10 +2,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from threading import Lock
-from typing import Type
 
 from ..configs.default import db_config
-from ..tables.users import Users
 
 
 Base = declarative_base()
@@ -33,22 +31,3 @@ class DatabaseConnection:
         engine = create_engine(f"postgresql://{db_config['user']}:{db_config['password']}@{db_config['endpoint']}:{db_config['port']}/{db_config['dbname']}")
         Base.metadata.create_all(engine)
         cls.session = sessionmaker(bind=engine)()
-
-    def add_user(self, name, email, password) -> None:
-        """
-        Add a user to the database
-        :param name:
-        :param email:
-        :param password:
-        :return:
-        """
-        self.session.add(Users(name=name, email=email, password=password))
-        self.session.commit()
-
-    def get_user(self, user_id) -> Type[Users]:
-        """
-        Get a user from the database
-        :param user_id:
-        :return:
-        """
-        return self.session.query(Users).filter(Users.id == user_id).first()
