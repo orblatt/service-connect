@@ -6,10 +6,10 @@ from ..database_connection.database_connection import DatabaseConnection
 
 class UserOperations(DatabaseConnection):
 
-    def get_user(self, user_id: str) -> User or None:
+    def get_user(self, user_id: int) -> User or None:
         return self.session.query(User).filter(User.id == user_id).first()
 
-    def update_user(self, user_id: str, **kwargs) -> User or None:
+    def update_user(self, user_id: int, **kwargs) -> User or None:
         """
         Update a user's information in the database
         """
@@ -32,7 +32,7 @@ class UserOperations(DatabaseConnection):
                 raise ValueError(f"An error occurred while updating the user: {str(e)}")
         return user
 
-    def delete_user(self, user_id: str) -> bool:
+    def delete_user(self, user_id: int) -> bool:
         """
         Remove a user from the database.
         """
