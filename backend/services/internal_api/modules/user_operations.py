@@ -6,14 +6,17 @@ from ..database_connection.database_connection import DatabaseConnection
 
 class UserOperations(DatabaseConnection):
 
-    def get_user(self, user_id: int) -> User or None:
+    def get_user_by_id(self, user_id: int) -> User or None:
         return self.session.query(User).filter(User.id == user_id).first()
+
+    def get_user_by_email(self, email: str) -> User or None:
+        return self.session.query(User).filter(User.email == email).first()
 
     def update_user(self, user_id: int, **kwargs) -> User or None:
         """
         Update a user's information in the database
         """
-        user = self.get_user(user_id)
+        user = self.get_user_by_id(user_id)
         if not user:
             return None
 
@@ -36,30 +39,34 @@ class UserOperations(DatabaseConnection):
         """
         Remove a user from the database.
         """
-        user = self.get_user(user_id)
+        user = self.get_user_by_id(user_id)
         if user is not None:
-            user.delete()
-            self.session.commit()
-            return True
+            try:
+                self.session.delete(user)
+                self.session.commit()
+                return True
+            except Exception:
+                self.session.rollback()
+                return False
         return False
 
-    def add_user(self, **kwargs) -> User or ValueError or Exception:
+    def add_user(self, user: User) -> User or ValueError or Exception:
         """
         Add a new user to the database.
         """
-        self._check_missing_or_null_fields(kwargs)
-        valid_attrs = self._validate_attributes(kwargs)
+        self._check_missing_or_null_fields(user)
+        valid_attrs = self._validate_attributes(user)
         return self._create_and_save_user(valid_attrs)
 
-    def _check_missing_or_null_fields(self, kwargs: dict) -> None or ValueError:
-        missing_or_null_fields = [field for field in User().non_nullable_fields if kwargs.get(field) is None]
+    def _check_missing_or_null_fields(self, user: User) -> None or ValueError:
+        missing_or_null_fields = [field for field in User().non_nullable_fields if user.get(field) is None]
         if missing_or_null_fields:
             raise ValueError(f"Missing or null fields for non-nullable columns: {', '.join(missing_or_null_fields)}")
 
-    def _validate_attributes(self, kwargs: dict) -> dict or ValueError:
-        valid_attrs = {key: value for key, value in kwargs.items() if hasattr(User, key) and value is not None}
-        if len(valid_attrs) != len(kwargs):
-            unknown_fields = set(kwargs) - set(valid_attrs)
+    def _validate_attributes(self, user: User) -> dict or ValueError:
+        valid_attrs = {key: value for key, value in user.items() if hasattr(User, key) and value is not None}
+        if len(valid_attrs) != len(user):
+            unknown_fields = set(user) - set(valid_attrs)
             raise ValueError(
                 f"Some fields either do not exist on the User model or were null: {', '.join(unknown_fields)}")
         return valid_attrs
