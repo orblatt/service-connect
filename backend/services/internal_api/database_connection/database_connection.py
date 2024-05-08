@@ -28,6 +28,6 @@ class DatabaseConnection:
         Setup the database connection
         :return:
         """
-        engine = create_engine(f"postgresql://{db_config['user']}:{db_config['password']}@{db_config['endpoint']}:{db_config['port']}/{db_config['dbname']}")
+        engine = create_engine(f"postgresql://{db_config['username']}:{db_config['password']}@{db_config['endpoint']}:{db_config['port']}/{db_config['dbname']}")
         Base.metadata.create_all(engine)
         cls.session = sessionmaker(bind=engine)()
