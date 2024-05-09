@@ -6,6 +6,7 @@ Base = declarative_base()
 
 
 class User(Base):
+    """ """
     __tablename__ = "users"
     id = Column(Integer, unique=True, primary_key=True)
     username = Column(String, nullable=False)
@@ -22,7 +23,11 @@ class User(Base):
         ]
 
     def to_dict(self, exclude=[]) -> dict:
-        """Return a dictionary representation of the model, optionally excluding specified fields."""
+        """
+
+        :param exclude:  (Default value = [])
+
+        """
         data = {
             column.key: getattr(self, column.key)
             for column in object_mapper(self).columns

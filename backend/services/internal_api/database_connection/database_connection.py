@@ -9,6 +9,7 @@ Base = declarative_base()
 
 
 class DatabaseConnection:
+    """ """
     _instance = None
     _lock = Lock()
 
@@ -25,9 +26,10 @@ class DatabaseConnection:
 
     @classmethod
     def _setup_database(cls) -> None:
-        """
-        Setup the database connection
+        """Setup the database connection
         :return:
+
+
         """
         engine = create_engine(
             "postgresql://{username}:{password}@{endpoint}:{port}/{dbname}".format(
@@ -39,6 +41,7 @@ class DatabaseConnection:
 
     @classmethod
     def get_instance(cls):
+        """ """
         if cls._instance is None:
             cls._instance = cls()
         return cls._instance
