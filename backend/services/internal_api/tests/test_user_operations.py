@@ -45,7 +45,8 @@ def test_update_user():
     user = db_connection.update_user(user.id, username=mock_username)
     assert user.username == mock_username
     # return to original state
-    user = db_connection.update_user(user.id, username=mock_new_user["username"])
+    user = db_connection.update_user(user.id,
+                                     username=mock_new_user["username"])
     assert user.username == mock_new_user["username"]
 
 

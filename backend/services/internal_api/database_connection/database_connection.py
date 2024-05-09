@@ -32,10 +32,8 @@ class DatabaseConnection:
 
         """
         engine = create_engine(
-            "postgresql://{username}:{password}@{endpoint}:{port}/{dbname}".format(
-                **db_config
-            )
-        )
+            "postgresql://{username}:{password}@{endpoint}:{port}/{dbname}".
+            format(**db_config))
         Base.metadata.create_all(engine)
         cls.session = sessionmaker(bind=engine)()
 

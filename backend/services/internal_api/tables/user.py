@@ -20,8 +20,7 @@ class User(Base):
     def non_nullable_fields(self):
         """Returns a list of non-nullable field names, excluding the primary key."""
         return [
-            column.name
-            for column in inspect(self.__class__).columns
+            column.name for column in inspect(self.__class__).columns
             if not column.nullable and column.name != "id"
         ]
 

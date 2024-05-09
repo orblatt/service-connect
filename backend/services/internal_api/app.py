@@ -15,7 +15,8 @@ app.include_router(user_router, prefix="/v1")
 
 
 @app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
+async def validation_exception_handler(request: Request,
+                                       exc: RequestValidationError):
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content=jsonable_encoder({"detail": exc.errors()}),

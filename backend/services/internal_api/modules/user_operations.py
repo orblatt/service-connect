@@ -46,7 +46,8 @@ class UserOperations(DatabaseConnection):
                 self.session.commit()
             except SQLAlchemyError as e:
                 self.session.rollback()
-                raise ValueError(f"An error occurred while updating the user: {str(e)}")
+                raise ValueError(
+                    f"An error occurred while updating the user: {str(e)}")
         return user
 
     def delete_user(self, user_id: int) -> bool:
@@ -83,8 +84,7 @@ class UserOperations(DatabaseConnection):
 
         """
         missing_or_null_fields = [
-            field
-            for field in User().non_nullable_fields
+            field for field in User().non_nullable_fields
             if user.__dict__.get(field) is None
         ]
         if missing_or_null_fields:
@@ -112,8 +112,7 @@ class UserOperations(DatabaseConnection):
         return valid_attrs
 
     def _create_and_save_user(
-        self, valid_attrs: User
-    ) -> User or ValueError or Exception:
+            self, valid_attrs: User) -> User or ValueError or Exception:
         """
 
         :param valid_attrs: User:
