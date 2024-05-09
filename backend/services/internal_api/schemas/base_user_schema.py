@@ -15,7 +15,7 @@ class BaseUserSchema(BaseModel):
     def not_empty(cls, v):
         """
 
-        :param v: 
+        :param v:
 
         """
         if not v:
@@ -27,7 +27,7 @@ class BaseUserSchema(BaseModel):
     def valid_email(cls, email: EmailStr) -> EmailStr or ValueError:
         """
 
-        :param email: EmailStr: 
+        :param email: EmailStr:
 
         """
         try:

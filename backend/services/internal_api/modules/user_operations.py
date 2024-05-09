@@ -10,7 +10,7 @@ class UserOperations(DatabaseConnection):
     def get_user_by_id(self, user_id: int) -> User or None:
         """
 
-        :param user_id: int: 
+        :param user_id: int:
 
         """
         return self.session.query(User).filter(User.id == user_id).first()
@@ -18,7 +18,7 @@ class UserOperations(DatabaseConnection):
     def get_user_by_email(self, email: str) -> User or None:
         """
 
-        :param email: str: 
+        :param email: str:
 
         """
         return self.session.query(User).filter(User.email == email).first()
@@ -26,8 +26,8 @@ class UserOperations(DatabaseConnection):
     def update_user(self, user_id: int, **kwargs) -> User or None:
         """Update a user's information in the database
 
-        :param user_id: int: 
-        :param **kwargs: 
+        :param user_id: int:
+        :param **kwargs:
 
         """
         user = self.get_user_by_id(user_id)
@@ -52,7 +52,7 @@ class UserOperations(DatabaseConnection):
     def delete_user(self, user_id: int) -> bool:
         """Remove a user from the database.
 
-        :param user_id: int: 
+        :param user_id: int:
 
         """
         user = self.get_user_by_id(user_id)
@@ -69,7 +69,7 @@ class UserOperations(DatabaseConnection):
     def add_user(self, user: User) -> User or ValueError or Exception:
         """Add a new user to the database.
 
-        :param user: User: 
+        :param user: User:
 
         """
         self._check_missing_or_null_fields(user)
@@ -79,7 +79,7 @@ class UserOperations(DatabaseConnection):
     def _check_missing_or_null_fields(self, user: User) -> None or ValueError:
         """
 
-        :param user: User: 
+        :param user: User:
 
         """
         missing_or_null_fields = [
@@ -95,7 +95,7 @@ class UserOperations(DatabaseConnection):
     def _validate_attributes(self, user: User) -> dict or ValueError:
         """
 
-        :param user: User: 
+        :param user: User:
 
         """
         user_obj = user.to_dict(exclude=["id"])
@@ -116,7 +116,7 @@ class UserOperations(DatabaseConnection):
     ) -> User or ValueError or Exception:
         """
 
-        :param valid_attrs: User: 
+        :param valid_attrs: User:
 
         """
         new_user = User(**valid_attrs)

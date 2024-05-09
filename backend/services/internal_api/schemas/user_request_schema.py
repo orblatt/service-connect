@@ -12,7 +12,7 @@ class UserRequestSchema(BaseUserSchema):
     def not_empty(cls, v):
         """
 
-        :param v: 
+        :param v:
 
         """
         if not v:
