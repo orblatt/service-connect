@@ -4,6 +4,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from endpoints.v1.users_endpoint import user_router
+
 # from .endpoints.v1.jobs_endpoint import jobs_router  # TODO: implement jobs_router
 
 app = FastAPI()

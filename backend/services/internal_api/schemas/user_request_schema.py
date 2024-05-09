@@ -7,8 +7,8 @@ class UserRequestSchema(BaseUserSchema):
     password: str
 
     @classmethod
-    @field_validator('password')
+    @field_validator("password")
     def not_empty(cls, v):
         if not v:
-            raise ValueError('must not be empty')
+            raise ValueError("must not be empty")
         return v
