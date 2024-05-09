@@ -13,7 +13,13 @@ class UserOperations(DatabaseConnection):
         :param user_id: int:
 
         """
-        return self.session.query(User).filter(User.id == user_id).first()
+        try:
+            return self._session.query(User).filter(User.id == user_id).first()
+        except Exception as e:
+            self._session.rollback()
+            raise e
+        finally:
+            self.close_session()
 
     def get_user_by_email(self, email: str) -> User or None:
         """
@@ -21,7 +27,13 @@ class UserOperations(DatabaseConnection):
         :param email: str:
 
         """
-        return self.session.query(User).filter(User.email == email).first()
+        try:
+            return self._session.query(User).filter(User.email == email).first()
+        except Exception as e:
+            self._session.rollback()
+            raise e
+        finally:
+            self.close_session()
 
     def update_user(self, user_id: int, **kwargs) -> User or None:
         """Update a user's information in the database
@@ -43,11 +55,16 @@ class UserOperations(DatabaseConnection):
             try:
                 for key, value in update_data.items():
                     setattr(user, key, value)
-                self.session.commit()
+                self._session.commit()
             except SQLAlchemyError as e:
-                self.session.rollback()
+                self._session.rollback()
                 raise ValueError(
                     f"An error occurred while updating the user: {str(e)}")
+            except Exception as e:
+                self._session.rollback()
+                raise e
+            finally:
+                self.close_session()
         return user
 
     def delete_user(self, user_id: int) -> bool:
@@ -59,12 +76,14 @@ class UserOperations(DatabaseConnection):
         user = self.get_user_by_id(user_id)
         if user is not None:
             try:
-                self.session.delete(user)
-                self.session.commit()
+                self._session.delete(user)
+                self._session.commit()
                 return True
-            except Exception:
-                self.session.rollback()
+            except Exception as e:
+                self._session.rollback()
                 return False
+            finally:
+                self.close_session()
         return False
 
     def add_user(self, user: User) -> User or ValueError or Exception:
@@ -119,15 +138,15 @@ class UserOperations(DatabaseConnection):
 
         """
         new_user = User(**valid_attrs)
-        self.session.add(new_user)
+        self._session.add(new_user)
         try:
-            self.session.commit()
+            self._session.commit()
             return new_user
         except IntegrityError:
-            self.session.rollback()
+            self._session.rollback()
             raise ValueError("A user with this email already exists.")
         except Exception as e:
-            self.session.rollback()
+            self._session.rollback()
             raise Exception(
                 f"An unexpected error occurred while adding a user. Error: {str(e)}"
             )
