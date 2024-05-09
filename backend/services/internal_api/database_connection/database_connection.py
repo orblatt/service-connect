@@ -7,6 +7,8 @@ from configs.default import db_config
 
 
 Base = declarative_base()
+
+
 class DatabaseConnection:
     _instance = None
     _lock = Lock()
@@ -28,7 +30,8 @@ class DatabaseConnection:
         Setup the database connection
         :return:
         """
-        engine = create_engine("postgresql://{username}:{password}@{endpoint}:{port}/{dbname}".format(**db_config))
+        engine = create_engine(
+            "postgresql://{username}:{password}@{endpoint}:{port}/{dbname}".format(**db_config))
         Base.metadata.create_all(engine)
         cls.session = sessionmaker(bind=engine)()
 

@@ -11,6 +11,7 @@ app = FastAPI()
 app.include_router(user_router, prefix="/v1")
 # app.include_router(job_router, prefix="/v1")  # TODO: implement jobs_router
 
+
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     return JSONResponse(

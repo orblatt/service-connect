@@ -17,7 +17,8 @@ class BaseUserSchema(BaseModel):
     @field_validator('email')
     def valid_email(cls, email: EmailStr) -> EmailStr or ValueError:
         try:
-            _ = validate_email(email, check_deliverability=False)  # raises EmailNotValidError if invalid
+            # raises EmailNotValidError if invalid
+            _ = validate_email(email, check_deliverability=False)
             return email
         except EmailNotValidError as e:
             raise ValueError(f'Invalid email: {email}') from e
