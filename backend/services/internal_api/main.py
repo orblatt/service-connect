@@ -1,7 +1,7 @@
-import uvicorn
-from app import app
 from os import getenv
 
+import uvicorn
+from app import app
 
 if __name__ == "__main__":
     host = getenv("HOST", "0.0.0.0")

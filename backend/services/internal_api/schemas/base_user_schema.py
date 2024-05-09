@@ -1,5 +1,5 @@
+from email_validator import EmailNotValidError, validate_email
 from pydantic import BaseModel, EmailStr, field_validator
-from email_validator import validate_email, EmailNotValidError
 
 
 class BaseUserSchema(BaseModel):

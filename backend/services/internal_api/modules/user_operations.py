@@ -1,7 +1,6 @@
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-
-from tables.user import User
 from database_connection.database_connection import DatabaseConnection
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from tables.user import User
 
 
 class UserOperations(DatabaseConnection):

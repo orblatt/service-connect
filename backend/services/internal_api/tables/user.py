@@ -1,7 +1,6 @@
-from sqlalchemy import Column, String, Integer, inspect
+from sqlalchemy import Column, Integer, String, inspect
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import object_mapper
-
 
 Base = declarative_base()
 

@@ -1,12 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException, Body, status
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 import logging
 
+from fastapi import APIRouter, Body, Depends, HTTPException, status
+from modules.user_operations import UserOperations
 from schemas.user_request_schema import UserRequestSchema
 from schemas.user_response_schema import UserResponseSchema
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from tables.user import User
-from modules.user_operations import UserOperations
-
 
 user_router = APIRouter()
 
