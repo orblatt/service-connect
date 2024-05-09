@@ -1,10 +1,15 @@
 import logging
 
-from fastapi import APIRouter, Body, Depends, HTTPException, status
+from fastapi import APIRouter
+from fastapi import Body
+from fastapi import Depends
+from fastapi import HTTPException
+from fastapi import status
 from modules.user_operations import UserOperations
 from schemas.user_request_schema import UserRequestSchema
 from schemas.user_response_schema import UserResponseSchema
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import SQLAlchemyError
 from tables.user import User
 
 user_router = APIRouter()

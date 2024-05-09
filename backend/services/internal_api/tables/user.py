@@ -1,4 +1,7 @@
-from sqlalchemy import Column, Integer, String, inspect
+from sqlalchemy import Column
+from sqlalchemy import inspect
+from sqlalchemy import Integer
+from sqlalchemy import String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import object_mapper
 

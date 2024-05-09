@@ -1,5 +1,6 @@
 from database_connection.database_connection import DatabaseConnection
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import SQLAlchemyError
 from tables.user import User
 
 
