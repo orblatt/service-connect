@@ -1,7 +1,7 @@
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
-from ..tables.user import User
-from ..database_connection.database_connection import DatabaseConnection
+from tables.user import User
+from database_connection.database_connection import DatabaseConnection
 
 
 class UserOperations(DatabaseConnection):
@@ -59,19 +59,20 @@ class UserOperations(DatabaseConnection):
         return self._create_and_save_user(valid_attrs)
 
     def _check_missing_or_null_fields(self, user: User) -> None or ValueError:
-        missing_or_null_fields = [field for field in User().non_nullable_fields if user.get(field) is None]
+        missing_or_null_fields = [field for field in User().non_nullable_fields if user.__dict__.get(field) is None]
         if missing_or_null_fields:
             raise ValueError(f"Missing or null fields for non-nullable columns: {', '.join(missing_or_null_fields)}")
 
     def _validate_attributes(self, user: User) -> dict or ValueError:
-        valid_attrs = {key: value for key, value in user.items() if hasattr(User, key) and value is not None}
-        if len(valid_attrs) != len(user):
-            unknown_fields = set(user) - set(valid_attrs)
+        user_obj = user.to_dict(exclude=['id'])
+        valid_attrs: User = {key: value for key, value in user_obj.items() if hasattr(User, key) and value is not None}
+        if len(valid_attrs) != len(user_obj):
+            unknown_fields = set(user_obj) - set(valid_attrs)
             raise ValueError(
                 f"Some fields either do not exist on the User model or were null: {', '.join(unknown_fields)}")
         return valid_attrs
 
-    def _create_and_save_user(self, valid_attrs: dict) -> User or ValueError or Exception:
+    def _create_and_save_user(self, valid_attrs: User) -> User or ValueError or Exception:
         new_user = User(**valid_attrs)
         self.session.add(new_user)
         try:

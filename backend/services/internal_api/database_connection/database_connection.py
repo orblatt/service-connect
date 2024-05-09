@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from threading import Lock
 
-from ..configs.default import db_config
+from configs.default import db_config
 
 
 Base = declarative_base()
@@ -31,3 +31,9 @@ class DatabaseConnection:
         engine = create_engine("postgresql://{username}:{password}@{endpoint}:{port}/{dbname}".format(**db_config))
         Base.metadata.create_all(engine)
         cls.session = sessionmaker(bind=engine)()
+
+    @classmethod
+    def get_instance(cls):
+        if cls._instance is None:
+            cls._instance = cls()
+        return cls._instance
