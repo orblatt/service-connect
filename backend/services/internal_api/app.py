@@ -1,15 +1,13 @@
 import logging
 import sys
-from fastapi import FastAPI
-from fastapi import Request
-from fastapi import status
+
+from database_connection.database_connection import DatabaseConnection
+from endpoints.v1.users_endpoint import user_router
+from fastapi import FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
-
-from endpoints.v1.users_endpoint import user_router
-from database_connection.database_connection import DatabaseConnection
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 # from .endpoints.v1.jobs_endpoint import jobs_router  # TODO: implement jobs_router
 
