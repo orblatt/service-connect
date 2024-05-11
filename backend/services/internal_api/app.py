@@ -3,7 +3,9 @@ import sys
 
 from database_connection.database_connection import DatabaseConnection
 from endpoints.v1.users_endpoint import user_router
-from fastapi import FastAPI, Request, status
+from fastapi import FastAPI
+from fastapi import Request
+from fastapi import status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
