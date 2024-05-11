@@ -9,6 +9,7 @@ from fastapi.responses import JSONResponse
 
 from endpoints.v1.users_endpoint import user_router
 from database_connection.database_connection import DatabaseConnection
+from fastapi.middleware.cors import CORSMiddleware
 
 # from .endpoints.v1.jobs_endpoint import jobs_router  # TODO: implement jobs_router
 
@@ -17,6 +18,13 @@ app = FastAPI()
 app.include_router(user_router, prefix="/v1")
 # app.include_router(job_router, prefix="/v1")  # TODO: implement jobs_router
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Specify the correct origins in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event("startup")
 async def startup_event():
