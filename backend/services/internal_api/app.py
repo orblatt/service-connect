@@ -1,15 +1,15 @@
 import logging
 import sys
+
+from database_connection.database_connection import DatabaseConnection
+from endpoints.v1.users_endpoint import user_router
 from fastapi import FastAPI
 from fastapi import Request
 from fastapi import status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
-
-from endpoints.v1.users_endpoint import user_router
-from database_connection.database_connection import DatabaseConnection
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 # from .endpoints.v1.jobs_endpoint import jobs_router  # TODO: implement jobs_router
 
@@ -26,6 +26,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.on_event("startup")
 async def startup_event():
     logging.info("Starting up the application")
@@ -33,6 +34,7 @@ async def startup_event():
         _ = DatabaseConnection.get_instance()
     except Exception as e:
         sys.exit(f"Failed to initialize database connection. Error: {str(e)}")
+
 
 @app.on_event("shutdown")
 async def shutdown_event():
