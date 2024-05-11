@@ -26,6 +26,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.on_event("startup")
 async def startup_event():
     logging.info("Starting up the application")
@@ -33,6 +34,7 @@ async def startup_event():
         _ = DatabaseConnection.get_instance()
     except Exception as e:
         sys.exit(f"Failed to initialize database connection. Error: {str(e)}")
+
 
 @app.on_event("shutdown")
 async def shutdown_event():
