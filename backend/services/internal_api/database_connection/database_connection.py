@@ -11,7 +11,7 @@ Base = declarative_base()
 
 class DatabaseConnection:
     """ """
-    _instance = None
+    _instances = {}
     _lock = Lock()
     _session = None
     _engine = None
@@ -20,12 +20,12 @@ class DatabaseConnection:
         """
         Singleton pattern to ensure only one instance of the database connection is created
         """
-        if cls._instance is None:
-            with cls._lock:
-                if cls._instance is None:  # Double-checked locking
-                    cls._instance = super(DatabaseConnection, cls).__new__(cls)
-                    cls._setup_database()
-        return cls._instance
+        with cls._lock:
+            if cls not in cls._instances:
+                instance = super(DatabaseConnection, cls).__new__(cls)
+                cls._setup_database()  # Ensure database is setup during instantiation
+                cls._instances[cls] = instance
+        return cls._instances[cls]
 
     @classmethod
     def _setup_database(cls) -> None:
@@ -44,9 +44,7 @@ class DatabaseConnection:
     @classmethod
     def get_instance(cls):
         """ """
-        if cls._instance is None:
-            cls._instance = cls()
-        return cls._instance
+        return cls.__new__(cls)
 
     @classmethod
     def close_session(cls):
