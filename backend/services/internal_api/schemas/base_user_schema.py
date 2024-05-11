@@ -2,7 +2,7 @@ from email_validator import EmailNotValidError
 from email_validator import validate_email
 from pydantic import BaseModel
 from pydantic import EmailStr
-from pydantic import field_validator
+from pydantic import validator
 
 
 class BaseUserSchema(BaseModel):
@@ -11,7 +11,7 @@ class BaseUserSchema(BaseModel):
     email: EmailStr
 
     @classmethod
-    @field_validator("username", "email")
+    @validator("username", "email")
     def not_empty(cls, v):
         """
 
@@ -23,7 +23,7 @@ class BaseUserSchema(BaseModel):
         return v
 
     @classmethod
-    @field_validator("email")
+    @validator("email")
     def valid_email(cls, email: EmailStr) -> EmailStr or ValueError:
         """
 
