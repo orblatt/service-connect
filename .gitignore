@@ -169,3 +169,6 @@ cython_debug/
 .AppleDouble
 .LSOverride
 backend/services/internal_api/configs/default.py
+service-connect-gke.json
+service-connect-secret-manager.json
+terraform
