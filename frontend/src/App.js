@@ -4,9 +4,7 @@ import logo from "./logo.svg";
 
 function App() {
   return (
-    <div>
-      <loginSignup />
-    </div>
+    <div>Service-Connect, your friend that knows a friend that knows a frien</div>
   );
 }
 
