@@ -3,8 +3,7 @@ import './App.css';
 
 function App() {
   return (
-    <div>
-      <loginSignup/>
+    <div>Service-Connect, your friend that knows a friend
     </div>
   );
 }
