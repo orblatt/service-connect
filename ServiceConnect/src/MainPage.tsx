@@ -1,7 +1,8 @@
-import waspLogo from './waspLogo.png'
-import './Main.css'
+import React from 'react';
+import waspLogo from './waspLogo.png';
+import './Main.css';
 
-export const MainPage = () => {
+export const MainPage: React.FC = () => {
   return (
     <div className="container">
       <main>
@@ -14,7 +15,7 @@ export const MainPage = () => {
         </h2>
         <h3 className="welcome-subtitle">
           This is page <code>MainPage</code> located at route <code>/</code>.
-          Open <code>src/MainPage.jsx</code> to edit it.
+          Open <code>src/MainPage.tsx</code> to edit it.
         </h3>
 
         <div className="buttons">
@@ -37,5 +38,5 @@ export const MainPage = () => {
         </div>
       </main>
     </div>
-  )
-}
+  );
+};
