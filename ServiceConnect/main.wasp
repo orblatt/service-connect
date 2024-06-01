@@ -6,6 +6,38 @@ app ServiceConnect {
 }
 
 route RootRoute { path: "/", to: MainPage }
+route SearchJobAdsRoute { path: "/job-ads", to: SearchJobAdsPage }
+route CreateJobAdRoute { path: "/create-job-ad", to: CreateJobAdPage }
+route TestRoute { path: "/test", to: TestPage }
+
 page MainPage {
-  component: import { MainPage } from "@src/MainPage"
+  component: import { MainPage } from "@src/client/app/MainPage"
+}
+
+page TestPage {
+  component: import { TestPage } from "@src/TestPage"
+}
+
+page SearchJobAdsPage {
+  component: import { SearchJobAdsPage } from "@src/client/app/SearchJobAdsPage"
+}
+
+page CreateJobAdPage {
+  component: import { CreateJobAdPage } from "@src/client/app/CreateJobAdPage"
+}
+
+entity JobAd {=psl
+    id          Int     @id @default(autoincrement())
+    description String
+    isDone      Boolean @default(false)
+psl=}
+
+query getJobAds {
+  fn: import { getJobAds } from "@src/queries",
+  entities: [JobAd]
+}
+
+action createJobAd {
+  fn: import { createJobAd } from "@src/actions",
+  entities: [JobAd]
 }
