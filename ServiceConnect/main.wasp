@@ -1,0 +1,11 @@
+app ServiceConnect {
+  wasp: {
+    version: "^0.13.2"
+  },
+  title: "ServiceConnect"
+}
+
+route RootRoute { path: "/", to: MainPage }
+page MainPage {
+  component: import { MainPage } from "@src/MainPage"
+}
