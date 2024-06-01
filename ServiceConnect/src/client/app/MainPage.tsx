@@ -1,6 +1,8 @@
 import React from 'react';
+import { AuthUser } from 'wasp/auth'
 
-export const MainPage: React.FC = () => {
+
+export const MainPage = ({ user }: { user: AuthUser }) => {
   return (
     <div className="container">
       <main>

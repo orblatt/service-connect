@@ -4,11 +4,12 @@ import {
   getJobAds,
   useQuery
 } from 'wasp/client/operations'
+import { AuthUser } from 'wasp/auth'
 import { JobAdsList } from '../components/JobAdsList';
 import { NewJobAdForm } from '../components/NewJobAdForm';
 
 
-export const CreateJobAdPage: React.FC = () => {
+export const CreateJobAdPage = ({ user }: { user: AuthUser }) => {
     const { data: jobAds, isLoading, error } = useQuery(getJobAds)
   
     return (
