@@ -40,6 +40,8 @@ entity JobAd {=psl
     id          Int     @id @default(autoincrement())
     description String
     isDone      Boolean @default(false)
+    user        User?    @relation(fields: [userId], references: [id])
+    userId      Int?
 psl=}
 
 query getJobAds {
@@ -52,9 +54,15 @@ action createJobAd {
   entities: [JobAd]
 }
 
+action updateJobAd {
+  fn: import { updateJobAd } from "@src/actions",
+  entities: [JobAd]
+}
+
 entity User {=psl
     id       Int    @id @default(autoincrement())
     isProvider Boolean @default(false)
+    jobAds     JobAd[]
 psl=}
 
 route SignupRoute { path: "/signup", to: SignupPage }
