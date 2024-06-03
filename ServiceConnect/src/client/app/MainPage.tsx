@@ -1,5 +1,6 @@
 import React from 'react';
 import { AuthUser } from 'wasp/auth'
+import { Logout } from '../components/Logout';
 
 
 export const MainPage = ({ user }: { user: AuthUser }) => {
@@ -9,6 +10,7 @@ export const MainPage = ({ user }: { user: AuthUser }) => {
         <div>
           Hello world!
         </div>
+        <Logout />
       </main>
     </div>
   );
