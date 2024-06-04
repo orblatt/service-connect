@@ -18,7 +18,13 @@ page MainPage {
   component: import { MainPage } from "@src/client/app/MainPage"
 }
 
-route SearchJobAdsRoute { path: "/job-ads", to: SearchJobAdsPage }
+route MyJobAdsRoute { path: "/my-job-ads", to: SearchJobAdsPage }
+page MyJobAdsPage {
+  authRequired: true,
+  component: import { MyJobAdsPage } from "@src/client/app/MyJobAdsPage"
+}
+
+route SearchJobAdsRoute { path: "/search-job-ads", to: SearchJobAdsPage }
 page SearchJobAdsPage {
   authRequired: true,
   component: import { SearchJobAdsPage } from "@src/client/app/SearchJobAdsPage"
@@ -50,6 +56,11 @@ psl=}
 
 query getJobAds {
   fn: import { getJobAds } from "@src/queries",
+  entities: [JobAd]
+}
+
+query getFilteredJobAds {
+  fn: import { getFilteredJobAds } from "@src/queries",
   entities: [JobAd]
 }
 
