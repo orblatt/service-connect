@@ -31,7 +31,6 @@ export const getFilteredJobAds: GetFilteredJobAds<
                            : parseFloat(args.maxPrice || defaultMaxPrice);
   const jobAds: Promise<JobAd[]> = context.entities.JobAd.findMany({
       where: { 
-        owner: { id: context.user.id },
         AND: [
           { price: { gte: minPrice } },  // gte means 'greater than or equal to
           { price: { lte: maxPrice } },  // lte means 'less than or equal to
