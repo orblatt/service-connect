@@ -1,0 +1,76 @@
+app ServiceConnect {
+  wasp: {
+    version: "^0.13.2"
+  },
+  title: "ServiceConnect",
+  auth: {
+    userEntity: User,
+    methods: {
+      usernameAndPassword: {}
+    },
+    onAuthFailedRedirectTo: "/login"
+  }
+}
+
+route RootRoute { path: "/", to: MainPage }
+page MainPage {
+  authRequired: true,
+  component: import { MainPage } from "@src/client/app/MainPage"
+}
+
+route SearchJobAdsRoute { path: "/job-ads", to: SearchJobAdsPage }
+page SearchJobAdsPage {
+  authRequired: true,
+  component: import { SearchJobAdsPage } from "@src/client/app/SearchJobAdsPage"
+}
+
+route CreateJobAdRoute { path: "/create-job-ad", to: CreateJobAdPage }
+page CreateJobAdPage {
+  authRequired: true,
+  component: import { CreateJobAdPage } from "@src/client/app/CreateJobAdPage"
+}
+
+
+route TestRoute { path: "/test", to: TestPage }
+page TestPage {
+  component: import { TestPage } from "@src/TestPage"
+}
+
+entity JobAd {=psl
+    id          Int     @id @default(autoincrement())
+    description String
+    isDone      Boolean @default(false)
+    user        User?    @relation(fields: [userId], references: [id])
+    userId      Int?
+psl=}
+
+query getJobAds {
+  fn: import { getJobAds } from "@src/queries",
+  entities: [JobAd]
+}
+
+action createJobAd {
+  fn: import { createJobAd } from "@src/actions",
+  entities: [JobAd]
+}
+
+action updateJobAd {
+  fn: import { updateJobAd } from "@src/actions",
+  entities: [JobAd]
+}
+
+entity User {=psl
+    id       Int    @id @default(autoincrement())
+    isProvider Boolean @default(false)
+    jobAds     JobAd[]
+psl=}
+
+route SignupRoute { path: "/signup", to: SignupPage }
+page SignupPage {
+  component: import { SignupPage } from "@src/SignupPage"
+}
+
+route LoginRoute { path: "/login", to: LoginPage }
+page LoginPage {
+  component: import { LoginPage } from "@src/LoginPage"
+}
