@@ -24,6 +24,7 @@ export const JobAdView = ({ jobAd }: { jobAd: JobAd }) => {
           onChange={handleIsDoneChange}
         />
         {jobAd.description}
+        {jobAd.price}
       </div>
     )
   }

@@ -18,7 +18,13 @@ page MainPage {
   component: import { MainPage } from "@src/client/app/MainPage"
 }
 
-route SearchJobAdsRoute { path: "/job-ads", to: SearchJobAdsPage }
+route MyJobAdsRoute { path: "/my-job-ads", to: SearchJobAdsPage }
+page MyJobAdsPage {
+  authRequired: true,
+  component: import { MyJobAdsPage } from "@src/client/app/MyJobAdsPage"
+}
+
+route SearchJobAdsRoute { path: "/search-job-ads", to: SearchJobAdsPage }
 page SearchJobAdsPage {
   authRequired: true,
   component: import { SearchJobAdsPage } from "@src/client/app/SearchJobAdsPage"
@@ -39,13 +45,22 @@ page TestPage {
 entity JobAd {=psl
     id          Int     @id @default(autoincrement())
     description String
+    price       Float
     isDone      Boolean @default(false)
-    user        User?    @relation(fields: [userId], references: [id])
-    userId      Int?
+    createdAt   DateTime @default(now())
+    owner        User    @relation(name: "createdBy", fields: [ownerId], references: [id])
+    ownerId      Int
+    provider     User?    @relation(name: "servedBy", fields: [providerId], references: [id])
+    providerId   Int?    
 psl=}
 
 query getJobAds {
   fn: import { getJobAds } from "@src/queries",
+  entities: [JobAd]
+}
+
+query getFilteredJobAds {
+  fn: import { getFilteredJobAds } from "@src/queries",
   entities: [JobAd]
 }
 
@@ -62,7 +77,8 @@ action updateJobAd {
 entity User {=psl
     id       Int    @id @default(autoincrement())
     isProvider Boolean @default(false)
-    jobAds     JobAd[]
+    jobAdsOwned     JobAd[] @relation(name: "createdBy")
+    jobAdsProvided  JobAd[] @relation(name: "servedBy")
 psl=}
 
 route SignupRoute { path: "/signup", to: SignupPage }
