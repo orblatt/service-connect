@@ -2,7 +2,7 @@ import { JobAd } from 'wasp/entities'
 import { HttpError } from 'wasp/server'
 import { CreateJobAd, UpdateJobAd } from 'wasp/server/operations'
 
-type CreateJobAdPayload = Pick<JobAd, 'description'>
+type CreateJobAdPayload = Pick<JobAd, 'description' | 'price'>
 
 export const createJobAd: CreateJobAd<CreateJobAdPayload, JobAd> = async (
   args,
@@ -14,7 +14,8 @@ export const createJobAd: CreateJobAd<CreateJobAdPayload, JobAd> = async (
   return context.entities.JobAd.create({
     data: { 
       description: args.description,
-      user: { connect: { id: context.user.id } },
+      price: args.price,
+      owner: { connect: { id: context.user.id } },
     },
   })
 }
@@ -29,7 +30,7 @@ export const updateJobAd: UpdateJobAd<UpdateJobAdPayload,  { count: number } > =
     throw new HttpError(401)
   }
   return context.entities.JobAd.updateMany({
-    where: { id, user: { id: context.user.id } },
+    where: { id, owner: { id: context.user.id } },
     data: { isDone },
   })
 }

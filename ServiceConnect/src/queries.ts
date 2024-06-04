@@ -7,7 +7,7 @@ export const getJobAds: GetJobAds<void, JobAd[]> = async (args, context) => {
     throw new HttpError(401)
   }
   return context.entities.JobAd.findMany({
-    where: { user: { id: context.user.id } },
+    where: { owner: { id: context.user.id } },
     orderBy: { id: 'asc' },
   })
 }
