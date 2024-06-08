@@ -1,6 +1,7 @@
 import { JobAd } from 'wasp/entities'
 import { HttpError } from 'wasp/server'
 import { CreateJobAd, UpdateJobAd } from 'wasp/server/operations'
+import { emailSender } from "wasp/server/email";
 
 type CreateJobAdPayload = Pick<JobAd, 'description' | 'price'>
 
@@ -35,3 +36,22 @@ export const updateJobAd: UpdateJobAd<UpdateJobAdPayload,  { count: number } > =
   })
 }
 
+export const sendEmail = async (
+  args, 
+  context
+) => {
+  if (!context.user) {
+    throw new HttpError(401)
+  }
+  const info = await emailSender.send({
+    from: {
+      name: "John Doe",
+      email: "john@example.com",
+    },
+    to: "bob@example.com",
+    subject: "Saying hello",
+    text: "Hello world",
+    html: "Hello <strong>world</strong>",
+  });
+  return info;
+}

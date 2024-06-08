@@ -9,6 +9,9 @@ app ServiceConnect {
       usernameAndPassword: {}
     },
     onAuthFailedRedirectTo: "/login"
+  },
+  emailSender: {
+    provider: Dummy,
   }
 }
 
@@ -42,6 +45,11 @@ page TestPage {
   component: import { TestPage } from "@src/TestPage"
 }
 
+route SendEmailRoute { path: "/send-email", to: SendEmailPage }
+page SendEmailPage {
+  component: import { SendEmailPage } from "@src/client/app/SendEmailPage"
+}
+
 entity JobAd {=psl
     id          Int     @id @default(autoincrement())
     description String
@@ -72,6 +80,11 @@ action createJobAd {
 action updateJobAd {
   fn: import { updateJobAd } from "@src/actions",
   entities: [JobAd]
+}
+
+action sendEmail {
+  fn: import { sendEmail } from "@src/actions",
+  // entities: [JobAd]
 }
 
 entity User {=psl
