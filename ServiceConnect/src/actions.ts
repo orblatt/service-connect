@@ -2,6 +2,7 @@ import { JobAd } from 'wasp/entities'
 import { HttpError } from 'wasp/server'
 import { CreateJobAd, UpdateJobAd } from 'wasp/server/operations'
 import { emailSender } from "wasp/server/email";
+import { htmlToText } from 'html-to-text';
 
 type CreateJobAdPayload = Pick<JobAd, 'description' | 'price'>
 
@@ -43,15 +44,24 @@ export const sendEmail = async (
   if (!context.user) {
     throw new HttpError(401)
   }
+  const currentUserEmail = context.user.auth.identities[0].providerUserId; // TODO: change this to support second identity provider like Google OAuth
+  const html = `<p>Hi <strong>${currentUserEmail}</strong></p>
+                <p>Here are the job ads:</p>
+                <ul>
+                  ${args.jobAds.map((jobAd: JobAd) =>
+                    `<li>Description: ${jobAd.description}, Price: ${jobAd.price}</li>`).join('')
+                  }
+                </ul>`;
+  const htmlToTextOptions = { wordwrap: 130 }; // https://www.npmjs.com/package/html-to-text#options
   const info = await emailSender.send({
     from: {
       name: "John Doe",
       email: "john@example.com",
     },
-    to: "bob@example.com",
-    subject: "Saying hello",
-    text: `Hello world ${Object.entries(args)} ${Object.keys(args)}`,
-    html: `Hello <strong>world</strong> ${args.minPrice} ${args.maxPrice}`,
+    to: currentUserEmail,
+    subject: `There Are ${args.jobAds.length} New Job Ads Matching Your Preferences`,
+    text: htmlToText(html, htmlToTextOptions),
+    html
   });
   return info;
 }
