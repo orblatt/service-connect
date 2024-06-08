@@ -12,6 +12,11 @@ app ServiceConnect {
   },
   emailSender: {
     provider: Dummy,
+  },
+  db: {
+    seeds: [
+      import { devSeedSimple } from "@src/dbSeeds"
+    ]
   }
 }
 
