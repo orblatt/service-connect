@@ -11,7 +11,7 @@ export const SendEmailForm = () => {
         const maxPrice = target.maxPrice.value
         const args = { minPrice, maxPrice }
         target.reset()
-        await sendEmail({ args })
+        await sendEmail(args)
       } catch (err: any) {
         window.alert('Error: ' + err.message)
       }

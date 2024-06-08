@@ -50,8 +50,8 @@ export const sendEmail = async (
     },
     to: "bob@example.com",
     subject: "Saying hello",
-    text: "Hello world",
-    html: "Hello <strong>world</strong>",
+    text: `Hello world ${Object.entries(args)} ${Object.keys(args)}`,
+    html: `Hello <strong>world</strong> ${args.minPrice} ${args.maxPrice}`,
   });
   return info;
 }
