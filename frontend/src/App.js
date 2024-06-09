@@ -1,10 +1,11 @@
-import "./App.css";
-
-import logo from "./logo.svg";
+import './App.css';
+import LoginSignup from './Components/LoginSignup/LoginSignup';
 
 function App() {
   return (
-    <div>Service-Connect, your friend that knows a friend that knows a frien</div>
+    <div>
+      <LoginSignup/>
+    </div>
   );
 }
 
