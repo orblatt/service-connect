@@ -14,6 +14,7 @@ app ServiceConnect {
     provider: Dummy,
   },
   db: {
+    system: PostgreSQL,
     seeds: [
       import { devSeedSimple } from "@src/dbSeeds"
     ]
@@ -26,7 +27,7 @@ page MainPage {
   component: import { MainPage } from "@src/client/app/MainPage"
 }
 
-route MyJobAdsRoute { path: "/my-job-ads", to: SearchJobAdsPage }
+route MyJobAdsRoute { path: "/my-job-ads", to: MyJobAdsPage }
 page MyJobAdsPage {
   authRequired: true,
   component: import { MyJobAdsPage } from "@src/client/app/MyJobAdsPage"
