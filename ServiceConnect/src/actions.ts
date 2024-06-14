@@ -61,10 +61,6 @@ export const sendEmail = async (
                        </ul>`;
   const htmlToTextOptions: object = { wordwrap: 130 }; // https://www.npmjs.com/package/html-to-text#options
   const info = await emailSender.send({
-    from: {
-      name: "John Doe",
-      email: "john@example.com",
-    },
     to: currentUserEmail,
     subject: `There Are ${args.jobAds.length} New Job Ads Matching Your Preferences`,
     text: htmlToText(html, htmlToTextOptions),

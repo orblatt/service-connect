@@ -11,7 +11,11 @@ app ServiceConnect {
     onAuthFailedRedirectTo: "/login"
   },
   emailSender: {
-    provider: Dummy,
+    provider: Mailgun,
+    defaultFrom: {
+      name: "Tomer Yahpes",
+      email: "tomer.yahpes@service-connect.me"
+    }
   },
   db: {
     system: PostgreSQL,
