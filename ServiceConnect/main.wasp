@@ -55,10 +55,10 @@ page TestPage {
   component: import { TestPage } from "@src/TestPage"
 }
 
-route SendEmailRoute { path: "/send-email", to: SendEmailPage }
-page SendEmailPage {
-  component: import { SendEmailPage } from "@src/client/app/SendEmailPage"
-}
+// route SendEmailRoute { path: "/send-email", to: SendEmailPage }
+// page SendEmailPage {
+//   component: import { SendEmailPage } from "@src/client/app/SendEmailPage"
+// }
 
 entity JobAd {=psl
     id          Int     @id @default(autoincrement())
@@ -97,11 +97,35 @@ action sendEmail {
   // entities: [JobAd]
 }
 
+
+entity SearchProfile {=psl
+    id          Int     @id @default(autoincrement())
+    emails      String[]
+    interval    String
+    minPrice    Float
+    maxPrice    Float
+    isDone      Boolean @default(false)
+    createdAt   DateTime @default(now()) @db.Timestamptz
+    searcher    User    @relation(name: "searchedBy", fields: [searcherId], references: [id])
+    searcherId  Int
+psl=}
+
+action createSearchProfile {
+  fn: import { createSearchProfile } from "@src/actions",
+  entities: [SearchProfile]
+}
+
+query getFilteredSearchProfiles {
+  fn: import { getFilteredSearchProfiles } from "@src/queries",
+  entities: [SearchProfile]
+}
+
 entity User {=psl
     id       Int    @id @default(autoincrement())
     isProvider Boolean @default(false)
     jobAdsOwned     JobAd[] @relation(name: "createdBy")
     jobAdsProvided  JobAd[] @relation(name: "servedBy")
+    searchProfiles  SearchProfile[] @relation(name: "searchedBy")
 psl=}
 
 route SignupRoute { path: "/signup", to: SignupPage }
@@ -112,4 +136,52 @@ page SignupPage {
 route LoginRoute { path: "/login", to: LoginPage }
 page LoginPage {
   component: import { LoginPage } from "@src/LoginPage"
+}
+
+job smartAgentJob {
+  executor: PgBoss,
+  perform: {
+    fn: import { emailDigest } from "@src/workers/smartAgent"
+  },
+  schedule: {
+    cron: "* * * * *", // Every minute
+    args: {=json { "interval": "minutely" } json=}
+  },
+  entities: [SearchProfile, JobAd]
+}
+
+job hourlySmartAgentJob {
+  executor: PgBoss,
+  perform: {
+    fn: import { emailDigest } from "@src/workers/smartAgent"
+  },
+  schedule: {
+    cron: "0 * * * *", // Every hour
+    args: {=json { "interval": "hourly" } json=}
+  },
+  entities: [SearchProfile, JobAd]
+}
+
+job dailySmartAgentJob {
+  executor: PgBoss,
+  perform: {
+    fn: import { emailDigest } from "@src/workers/smartAgent"
+  },
+  schedule: {
+    cron: "0 10 * * *", // Every day at 10:00am
+    args: {=json { "interval": "daily" } json=}
+  },
+  entities: [SearchProfile, JobAd]
+}
+
+job weeklySmartAgentJob {
+  executor: PgBoss,
+  perform: {
+    fn: import { emailDigest } from "@src/workers/smartAgent"
+  },
+  schedule: {
+    cron: "0 10 * * SUN", // Every Sunday at 10:00am
+    args: {=json { "interval": "weekly" } json=}
+  },
+  entities: [SearchProfile, JobAd]
 }

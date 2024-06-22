@@ -1,4 +1,4 @@
-import { CreateJobAdPayload, createJobAd } from './actions.js'
+import { CreateJobAdPayload, CreateSearchProfilePayload, createJobAd, createSearchProfile } from './actions.js'
 import { sanitizeAndSerializeProviderData } from 'wasp/server/auth'
 import { type AuthUser } from 'wasp/auth'
 import { PrismaClient } from '@prisma/client'
@@ -11,6 +11,11 @@ export const devSeedSimple = async (prisma: PrismaClient) => {
 
   const user2: AuthUser = await createUser(prisma, {
     username: 'user2@example.com',
+    password: '12345678',
+  })
+
+  const user3: AuthUser = await createUser(prisma, {
+    username: 'orblatt@gmail.com',
     password: '12345678',
   })
 
@@ -38,6 +43,8 @@ export const devSeedSimple = async (prisma: PrismaClient) => {
     }
   });  
 };
+
+
 
 async function createUser(
   prisma: PrismaClient,

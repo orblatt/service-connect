@@ -1,8 +1,9 @@
-import { JobAd } from 'wasp/entities'
+import { JobAd, SearchProfile } from 'wasp/entities'
 import { HttpError } from 'wasp/server'
-import { CreateJobAd, UpdateJobAd } from 'wasp/server/operations'
+import { CreateJobAd, UpdateJobAd, SendEmail, CreateSearchProfile } from 'wasp/server/operations'
 import { emailSender } from "wasp/server/email";
 import { htmlToText } from 'html-to-text';
+import { JobAdFilters } from './queries';
 
 export type CreateJobAdPayload = Pick<JobAd, 'description' | 'price' >
 
@@ -37,20 +38,27 @@ export const updateJobAd: UpdateJobAd<UpdateJobAdPayload,  { count: number } > =
   })
 }
 
-export const sendEmail = async (
+export type SendEmailOptions = { 
+  jobAds: JobAd[], 
+  email?: string 
+}
+
+export const sendEmail: SendEmail<SendEmailOptions , any>  = async (
   args, 
   context
 ) => {
-  if (!context.user) {
-    throw new HttpError(401)
+  const { jobAds, email: inputEmail } = args;
+  const currentUserEmail: string | undefined = context?.user?.auth?.identities[0]?.providerUserId ?? undefined; // TODO: change this to support second identity provider like Google OAuth
+  const email = inputEmail ? inputEmail : currentUserEmail;
+  if (!email) {
+    throw new HttpError(500, 'Could not parse user\'s email correctly');
   }
-  const currentUserEmail: string = context.user.auth.identities[0].providerUserId; // TODO: change this to support second identity provider like Google OAuth
-  const subject: string = `There Are ${args.jobAds.length} New Job Ads Matching Your Preferences`
+  const subject: string = `There Are ${jobAds.length} New Job Ads Matching Your Preferences`
   const html: string = `
-                       <p>Hi <strong>${currentUserEmail}</strong></p>
+                       <p>Hi <strong>${email}</strong></p>
                        <h2>${subject}</h2>
                        <ul>
-                         ${args.jobAds.map((jobAd: JobAd) =>
+                         ${jobAds.map((jobAd: JobAd) =>
                            `<li>
                              Description: ${jobAd.description},
                              Price: ${jobAd.price}, 
@@ -61,10 +69,36 @@ export const sendEmail = async (
                        </ul>`;
   const htmlToTextOptions: object = { wordwrap: 130 }; // https://www.npmjs.com/package/html-to-text#options
   const info = await emailSender.send({
-    to: currentUserEmail,
-    subject: `There Are ${args.jobAds.length} New Job Ads Matching Your Preferences`,
+    to: email,
+    subject: `There Are ${jobAds.length} New Job Ads Matching Your Preferences`,
     text: htmlToText(html, htmlToTextOptions),
     html
   });
   return info;
-}
+};
+
+export type Interval = 'minutely' | 'hourly' | 'daily' | 'weekly';
+export type CreateSearchProfilePayload = Pick<SearchProfile, 'minPrice' | 'maxPrice' | 'isDone'> & { interval: Interval, emails: string[]}
+
+export const createSearchProfile: CreateSearchProfile<CreateSearchProfilePayload, SearchProfile> = async (
+  args,
+  context
+) => {
+  if (!context.user) {
+    throw new HttpError(401)
+  }
+  const { emails: inputEmails, minPrice, maxPrice, isDone, interval } = args;
+  const currentUserEmail: string = context.user.auth.identities[0].providerUserId; // TODO: change this to support second identity provider like Google OAuth
+  const emails: string[] = inputEmails === undefined || inputEmails.length == 0 ? [ currentUserEmail ] : inputEmails;
+
+  return context.entities.SearchProfile.create({
+    data: { 
+      emails,
+      minPrice,
+      maxPrice,
+      isDone,
+      interval,
+      searcher: { connect: { id: context.user.id } },
+    },
+  })
+};

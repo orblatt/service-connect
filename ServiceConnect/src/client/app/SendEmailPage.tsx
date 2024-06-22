@@ -1,11 +1,11 @@
-import React from 'react';
-import { SendEmailForm } from '../components/SendEmailForm';
+// import React from 'react';
+// import { SendEmailForm } from '../components/SendEmailForm';
 
 
-export const SendEmailPage = () => {
-  return (
-    <div>
-      < SendEmailForm />
-    </div>
-  )
-}
+// export const SendEmailPage = () => {
+//   return (
+//     <div>
+//       < SendEmailForm />
+//     </div>
+//   )
+// }
