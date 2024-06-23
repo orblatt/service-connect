@@ -23,8 +23,7 @@ export const JobAdView = ({ jobAd }: { jobAd: JobAd }) => {
           checked={jobAd.isDone} 
           onChange={handleIsDoneChange}
         />
-        {jobAd.description}
-        {jobAd.price}
+        Description: {jobAd.description}, Price: {jobAd.price}, Status: {jobAd.isDone ? 'Done' : 'Open'}, Provider: {jobAd.providerId ? jobAd.providerId : 'No Provider'}
       </div>
     )
   }
