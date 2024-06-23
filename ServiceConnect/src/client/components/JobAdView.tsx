@@ -1,7 +1,7 @@
 
 import { ChangeEvent } from 'react'
 import { JobAd } from 'wasp/entities'
-import { updateJobAd } from 'wasp/client/operations'
+import { updateJobAd, updateJobAdProvider } from 'wasp/client/operations'
 
 export const JobAdView = ({ jobAd }: { jobAd: JobAd }) => {
     const handleIsDoneChange = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -11,7 +11,16 @@ export const JobAdView = ({ jobAd }: { jobAd: JobAd }) => {
           isDone: event.target.checked,
         })
       } catch (error: any) {
-        window.alert('Error while updating task: ' + error.message)
+        window.alert('Error while updating job Ad status: ' + error.message)
+      }
+    }
+
+    const handleProviderChange = async (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault()
+      try {
+        await updateJobAdProvider({ id: jobAd.id })
+      } catch (error: any) {
+        window.alert('Error while updating job ad provider: ' + error.message)
       }
     }
 
@@ -23,7 +32,8 @@ export const JobAdView = ({ jobAd }: { jobAd: JobAd }) => {
           checked={jobAd.isDone} 
           onChange={handleIsDoneChange}
         />
-        Description: {jobAd.description}, Price: {jobAd.price}, Status: {jobAd.isDone ? 'Done' : 'Open'}, Provider: {jobAd.providerId ? jobAd.providerId : 'No Provider'}
+        Description: {jobAd.description}, Price: {jobAd.price}, Status: {jobAd.isDone ? 'Done' : 'Open'}, Provider: {jobAd.providerId ? jobAd.providerId : 'No Provider'} 
+        <button type="button" onClick={handleProviderChange}>Assign Me</button>
       </div>
     )
   }

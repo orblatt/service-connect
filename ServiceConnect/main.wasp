@@ -92,6 +92,11 @@ action updateJobAd {
   entities: [JobAd]
 }
 
+action updateJobAdProvider {
+  fn: import { updateJobAdProvider } from "@src/actions",
+  entities: [JobAd]
+}
+
 action sendEmail {
   fn: import { sendEmail } from "@src/actions",
   // entities: [JobAd]

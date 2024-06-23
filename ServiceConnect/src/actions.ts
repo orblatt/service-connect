@@ -1,6 +1,6 @@
 import { JobAd, SearchProfile } from 'wasp/entities'
 import { HttpError } from 'wasp/server'
-import { CreateJobAd, UpdateJobAd, SendEmail, CreateSearchProfile } from 'wasp/server/operations'
+import { CreateJobAd, UpdateJobAd, UpdateJobAdProvider, SendEmail, CreateSearchProfile } from 'wasp/server/operations'
 import { emailSender } from "wasp/server/email";
 import { htmlToText } from 'html-to-text';
 import { JobAdFilters } from './queries';
@@ -37,6 +37,40 @@ export const updateJobAd: UpdateJobAd<UpdateJobAdPayload,  { count: number } > =
     data: { isDone },
   })
 }
+
+export const updateJobAdProvider: UpdateJobAdProvider<Pick<JobAd, 'id'>,  JobAd> = async (
+  { id }, 
+  context
+) => {
+  if (!context.user) {
+    throw new HttpError(401)
+  }
+  const jobAd = await context.entities.JobAd.findUnique({ where: { id } });
+  const currentUserId = context.user.id;
+  if (!jobAd) {
+    throw new HttpError(404, 'JobAd not found');
+  } else if (jobAd.ownerId === currentUserId) {
+    throw new HttpError(403, 'You are the owner of this JobAd, you cannot be the provider as well.');
+  } else if (jobAd.providerId === currentUserId) {  // Disconnect 
+    return context.entities.JobAd.update({
+      where: { id },
+      data: { 
+        provider: {
+          disconnect: true,
+        } ,
+      },
+    });
+  } else { // Connect
+    return context.entities.JobAd.update({
+      where: { id },
+      data: { 
+        provider: { 
+          connect: { id: currentUserId } 
+        } 
+      },
+    });
+  };
+};
 
 export type SendEmailOptions = { 
   jobAds: JobAd[], 
