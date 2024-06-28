@@ -1,15 +1,13 @@
 import React from "react";
-import { AuthUser } from 'wasp/auth'
 import { getUsername } from "wasp/auth";
 import { logout } from "wasp/client/auth";
 import "./TopNavBar.css";
 
-const TopNavbar = ({ user }: { user: AuthUser }) => {
-  const username = getUsername(user);
+const TopNavbar = () => {
 
   return (
     <div className="top-navbar">
-      {username}
+      static@gmail.com
       &nbsp;|&nbsp;
       <button className="plain" onClick={logout}>
         {" "}

@@ -52,7 +52,7 @@ page CreateJobAdPage {
 
 route TestRoute { path: "/test", to: TestPage }
 page TestPage {
-  component: import { TestPage } from "@src/TestPage"
+  component: import SidebarWithHeader from "@src/client/app/SidebarWithHeader"
 }
 
 // route SendEmailRoute { path: "/send-email", to: SendEmailPage }

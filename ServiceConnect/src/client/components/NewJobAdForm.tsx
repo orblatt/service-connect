@@ -1,5 +1,6 @@
 import { FormEvent } from 'react'
 import { createJobAd } from 'wasp/client/operations'
+import { Input } from '@chakra-ui/react'
 
   
 export const NewJobAdForm = () => {
@@ -18,9 +19,15 @@ export const NewJobAdForm = () => {
   
     return (
       <form onSubmit={handleSubmit}>
-        <input name="description" type="text" defaultValue="" />Description <br />
-        <input name="price" type="number" step="0.01" min="0" defaultValue="0.00" />Price <br />
-        <input type="submit" value="Create Job Ad" />
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <span>Description: </span>
+          <Input name="description" type="text" defaultValue="" placeholder='Nanny twice a week'/>
+        </div>
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <span>Price: </span>
+          <Input name="price" type="number" step="0.01" min="0.01" defaultValue="0.01" />
+        </div>
+        <Input type="submit" value="Create Job Ad" />
       </form>
     )
   }

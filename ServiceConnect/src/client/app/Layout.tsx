@@ -13,10 +13,10 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   )
 }
 
-const BaseLayout: any = ({ user, children }: { user: AuthUser, children: React.ReactNode }) => {
+const BaseLayout: any = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className='layout-root'>
-      <TopNavbar user={user}/>
+      <TopNavbar />
       <div className='layout-content'>
       {children}
       </div>
