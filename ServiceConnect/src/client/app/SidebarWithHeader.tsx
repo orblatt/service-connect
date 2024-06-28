@@ -2,6 +2,7 @@
 
 import React from 'react';
 import {
+  Button,
   IconButton,
   Avatar,
   Box,
@@ -33,6 +34,7 @@ import {
   FiMenu,
   FiBell,
   FiChevronDown,
+  FiPlusCircle,
 } from 'react-icons/fi'
 import { IconType } from 'react-icons'
 
@@ -56,9 +58,10 @@ interface SidebarProps extends BoxProps {
 
 const LinkItems: Array<LinkItemProps> = [
   { name: 'Home', icon: FiHome },
-  { name: 'Trending', icon: FiTrendingUp },
+  { name: 'Create Ad', icon: FiPlusCircle },
   { name: 'Explore', icon: FiCompass },
-  { name: 'Favourites', icon: FiStar },
+  { name: 'Reports', icon: FiTrendingUp },
+  { name: 'Reviews', icon: FiStar },
   { name: 'Settings', icon: FiSettings },
 ]
 
@@ -75,7 +78,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       {...rest}>
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
+          Service Connect
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
@@ -152,6 +155,14 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       </Text>
 
       <HStack spacing={{ base: '0', md: '6' }}>
+        <Button
+              variant={'solid'}
+              colorScheme={'teal'}
+              size={'sm'}
+              mr={4}
+        >
+              Create Ad
+        </Button>
         <IconButton size="lg" variant="ghost" aria-label="open menu" icon={<FiBell />} />
         <Flex alignItems={'center'}>
           <Menu>
@@ -168,9 +179,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   alignItems="flex-start"
                   spacing="1px"
                   ml="2">
-                  <Text fontSize="sm">Justina Clark</Text>
+                  <Text fontSize="sm">Or Golan</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    User
                   </Text>
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>
@@ -183,7 +194,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               borderColor={useColorModeValue('gray.200', 'gray.700')}>
               <MenuItem>Profile</MenuItem>
               <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
               <MenuDivider />
               <MenuItem>Sign out</MenuItem>
             </MenuList>
