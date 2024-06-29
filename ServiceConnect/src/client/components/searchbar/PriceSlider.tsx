@@ -11,7 +11,8 @@ import {
     NumberInputField,
     NumberInputStepper,
     NumberIncrementStepper,
-    NumberDecrementStepper
+    NumberDecrementStepper,
+    FormLabel
   } from '@chakra-ui/react'
 import { MdGraphicEq } from 'react-icons/md'
 import { prices } from '../../../config';
@@ -40,7 +41,8 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ minPrice, maxPrice, ha
     return (
         <Box>
             <Flex>
-                <Text>Price Range</Text>
+               <FormLabel>Price Range</FormLabel>
+                {/* <Text></Text> */}
                 <RangeSlider 
                     aria-label={['min', 'max']} 
                     defaultValue={[minPrice.valueAsNumber, maxPrice.valueAsNumber]}
@@ -61,6 +63,7 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ minPrice, maxPrice, ha
                 </RangeSliderThumb>
                 </RangeSlider>
             </Flex>
+            <br/>
             <Flex>
                 <NumberInput 
                     maxW="140px" 

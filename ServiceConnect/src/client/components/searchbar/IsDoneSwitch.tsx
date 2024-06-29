@@ -1,4 +1,4 @@
-import { Switch } from '@chakra-ui/react'
+import { Switch, FormControl, FormLabel, Flex } from '@chakra-ui/react'
 
 const IsDoneSwitch = (
     { 
@@ -10,11 +10,17 @@ const IsDoneSwitch = (
     }
     ) => {
     return (
-        <Switch 
-            colorScheme='purple' 
-            isChecked={!isDone} 
-            onChange={handleIsDoneChange}
-        />
+        <FormControl>
+            <Flex>
+                <FormLabel htmlFor='isChecked'>Show Open Jobs?</FormLabel>
+                <Switch 
+                    colorScheme='purple' 
+                    isChecked={!isDone} 
+                    onChange={handleIsDoneChange}
+                    size='md'
+                />
+            </Flex>
+        </FormControl>
     );
 }
 
