@@ -2,7 +2,7 @@ app ServiceConnect {
   wasp: {
     version: "^0.13.2"
   },
-  title: "serviceConnect",
+  title: "Service Connect",
   auth: {
     userEntity: User,
     methods: {
