@@ -16,7 +16,7 @@ import {
     FiPlusCircle,
   } from 'react-icons/fi'
 import NavItem from './NavItem'
-import routes from '../../../config'
+import { routes } from '../../../config'
 
 interface LinkItemProps {
     name: string

@@ -21,6 +21,9 @@ import {
   FiChevronDown,
   FiPlus,
 } from 'react-icons/fi'
+import { Link as ReactRouterLink } from 'react-router-dom';
+import { Link as ChakraLink } from '@chakra-ui/react';
+import { routes } from '../../../config';
 
 interface MobileProps extends FlexProps {
   onOpen: () => void
@@ -55,14 +58,16 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         </Text>
   
         <HStack spacing={{ base: '0', md: '6' }}>
-          <Button
-                variant={'solid'}
-                colorScheme={'teal'}
-                size={'sm'}
-                mr={4}
-          >
-          <FiPlus/> &nbsp; Create Ad
-          </Button>
+          <ChakraLink as={ReactRouterLink} to={routes.createJobAd} style={{ textDecoration: 'none' }}>
+            <Button
+                  variant={'solid'}
+                  colorScheme={'teal'}
+                  size={'sm'}
+                  mr={4}
+            >
+            <FiPlus/> &nbsp; Create Ad
+            </Button>
+          </ChakraLink>
           <IconButton size="lg" variant="ghost" aria-label="open menu" icon={<FiBell />} />
           <Flex alignItems={'center'}>
             <Menu>
