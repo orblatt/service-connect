@@ -53,7 +53,7 @@ page CreateJobAdPage {
 route TestRoute { path: "/test", to: TestPage }
 page TestPage {
   authRequired: true,
-  component: import MainLayout from "@src/client/app/MainLayout"
+  component: import { TestPage } from "@src/client/app/TestPage"
 }
 
 // route SendEmailRoute { path: "/send-email", to: SendEmailPage }

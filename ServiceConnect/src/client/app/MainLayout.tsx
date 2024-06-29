@@ -12,15 +12,15 @@ import { ChakraProvider } from '@chakra-ui/react'
 import MobileNav from '../components/sidebar/MobileNav'
 import SidebarContent from '../components/sidebar/SidebarContent'
 
-const MainLayout = () => {
+const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <ChakraProvider>
-      <SidebarWithHeader />
+      <SidebarWithHeader>{children}</SidebarWithHeader>
     </ChakraProvider>
   )
 }
 
-const SidebarWithHeader = () => {
+const SidebarWithHeader = ({ children }: { children: React.ReactNode } ) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
@@ -40,8 +40,9 @@ const SidebarWithHeader = () => {
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
-        {/* Content */}
+      { children }  
       </Box>
+      
     </Box>
     )
 }
