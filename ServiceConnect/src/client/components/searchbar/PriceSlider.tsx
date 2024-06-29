@@ -16,28 +16,25 @@ import {
 import { MdGraphicEq } from 'react-icons/md'
 import { prices } from '../../../config';
 
-const PriceSlider = () => {
-  const [minPrice, setMinPrice] = useState<number>(prices.defaultMinPrice);
-  const [maxPrice, setMaxPrice] = useState<number>(prices.defaultMaxPrice);
+export interface PriceProps {
+    valueAsString: string;
+    valueAsNumber: number; 
+}
+
+interface PriceSliderProps {
+    minPrice: PriceProps;
+    maxPrice: PriceProps;
+    handleMinChange: (valueAsString: string, valueAsNumber: number) => void;
+    handleMaxChange: (valueAsString: string, valueAsNumber: number) => void;
+}
+
+export const PriceSlider: React.FC<PriceSliderProps> = ({ minPrice, maxPrice, handleMinChange, handleMaxChange }) => {
   
-  const handleChange = (values: number[]) => {
-    handleMinChange(values[0]);
-    handleMaxChange(values[1]);
-  };
+    const handleChange = (values: number[]) => {
+        handleMinChange(values[0].toString(), values[0]);
+        handleMaxChange(values[1].toString(), values[1]);
+    };
 
-  const handleMinChange = (minPrice: string | number) => {
-    const newMin = typeof minPrice === 'string' ? parseFloat(minPrice) : minPrice;
-    if (newMin <= maxPrice) { // Ensuring new min is not greater than current max
-        setMinPrice(newMin);
-    }
-  };
-
-  const handleMaxChange = (maxPrice: string | number) => {
-    const newMax = typeof maxPrice === 'string' ? parseFloat(maxPrice) : maxPrice;
-    if (newMax >= minPrice) { // Ensuring new max is not less than current min
-        setMaxPrice(newMax);
-      }
-  };
 
 
     return (
@@ -46,8 +43,8 @@ const PriceSlider = () => {
                 <Text>Price Range</Text>
                 <RangeSlider 
                     aria-label={['min', 'max']} 
-                    defaultValue={[minPrice, maxPrice]}
-                    value={[minPrice, maxPrice]}
+                    defaultValue={[minPrice.valueAsNumber, maxPrice.valueAsNumber]}
+                    value={[minPrice.valueAsNumber, maxPrice.valueAsNumber]}
                     min={prices.min}
                     max={prices.max}
                     step={prices.step}
@@ -68,9 +65,9 @@ const PriceSlider = () => {
                 <NumberInput 
                     maxW="140px" 
                     mr="2rem" 
-                    value={minPrice} 
+                    value={minPrice.valueAsNumber} 
                     min={prices.min} 
-                    max={maxPrice} 
+                    max={maxPrice.valueAsNumber} 
                     step={prices.step} 
                     onChange={handleMinChange} 
                 > 
@@ -84,8 +81,8 @@ const PriceSlider = () => {
                 <NumberInput 
                     maxW="140px" 
                     mr="2rem" 
-                    value={maxPrice} 
-                    min={prices.min} 
+                    value={maxPrice.valueAsNumber} 
+                    min={minPrice.valueAsNumber} 
                     max={prices.max} 
                     step={prices.step} 
                     onChange={handleMaxChange} 
@@ -100,5 +97,3 @@ const PriceSlider = () => {
         </Box>
     );
 };
-
-export default PriceSlider;
