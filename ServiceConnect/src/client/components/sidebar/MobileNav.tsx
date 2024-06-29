@@ -23,6 +23,7 @@ import {
 } from 'react-icons/fi'
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { Link as ChakraLink } from '@chakra-ui/react';
+import { logout } from 'wasp/client/auth'
 import { routes } from '../../../config';
 
 interface MobileProps extends FlexProps {
@@ -100,7 +101,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 <MenuItem>Profile</MenuItem>
                 <MenuItem>Settings</MenuItem>
                 <MenuDivider />
-                <MenuItem>Sign out</MenuItem>
+                <MenuItem onClick={logout}>Sign out</MenuItem>
               </MenuList>
             </Menu>
           </Flex>
