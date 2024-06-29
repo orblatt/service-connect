@@ -33,7 +33,7 @@ interface LinkItemProps {
     { name: 'Home', icon: FiHome, to: routes.home },
     { name: 'Create Ad', icon: FiPlusCircle, to: routes.createJobAd},
     { name: 'Explore', icon: FiCompass, to: routes.searchJobAds},
-    { name: 'Reports', icon: FiTrendingUp, to: routes.test },
+    { name: 'Reports', icon: FiTrendingUp, to: routes.myJobAds },
     { name: 'Reviews', icon: FiStar, to: routes.test },
     { name: 'Settings', icon: FiSettings, to: routes.test},
   ]

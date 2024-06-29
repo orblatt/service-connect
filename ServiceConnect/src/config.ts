@@ -8,4 +8,5 @@ export const routes = {
     createJobAd: '/create-job-ad',
     searchJobAds: '/search-job-ads',
     test: '/test',
+    myJobAds: "/my-job-ads"
 };
