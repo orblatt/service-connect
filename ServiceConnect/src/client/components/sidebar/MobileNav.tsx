@@ -62,7 +62,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
           <ChakraLink as={ReactRouterLink} to={routes.createJobAd} style={{ textDecoration: 'none' }}>
             <Button
                   variant={'solid'}
-                  colorScheme={'teal'}
+                  colorScheme={'purple'}
                   size={'sm'}
                   mr={4}
             >

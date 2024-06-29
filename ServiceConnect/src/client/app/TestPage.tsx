@@ -1,8 +1,8 @@
 import React from 'react';
 import { AuthUser } from 'wasp/auth'
-import { Logout } from '../components/Logout';
 import MainLayout from './MainLayout'
 import Searchbar from '../components/searchbar/Searchbar';
+import { Box } from '@chakra-ui/react';
 
 
 export const TestPage = ({ user }: { user: AuthUser }) => {

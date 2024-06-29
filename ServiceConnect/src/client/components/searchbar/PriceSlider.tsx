@@ -40,7 +40,7 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ minPrice, maxPrice, ha
 
     return (
         <Box>
-            <Flex>
+            <Flex maxW='400px'>
                <FormLabel>Price Range</FormLabel>
                 {/* <Text></Text> */}
                 <RangeSlider 
