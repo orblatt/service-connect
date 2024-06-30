@@ -1,4 +1,3 @@
-
 import { ChangeEvent } from 'react'
 import { JobAd } from 'wasp/entities'
 import { updateJobAd, updateJobAdProvider } from 'wasp/client/operations'

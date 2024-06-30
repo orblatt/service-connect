@@ -2,7 +2,7 @@ app ServiceConnect {
   wasp: {
     version: "^0.13.2"
   },
-  title: "ServiceConnect",
+  title: "Service Connect",
   auth: {
     userEntity: User,
     methods: {
@@ -52,7 +52,8 @@ page CreateJobAdPage {
 
 route TestRoute { path: "/test", to: TestPage }
 page TestPage {
-  component: import { TestPage } from "@src/TestPage"
+  authRequired: true,
+  component: import { TestPage } from "@src/client/app/TestPage"
 }
 
 // route SendEmailRoute { path: "/send-email", to: SendEmailPage }

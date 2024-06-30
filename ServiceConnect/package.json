@@ -1,14 +1,19 @@
 {
-  "name": "ServiceConnect",
+  "name": "service-connect",
   "dependencies": {
-    "wasp": "file:.wasp/out/sdk/wasp",
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "framer-motion": "^11.2.12",
+    "html-to-text": "^9.0.5",
     "react": "^18.2.0",
-    "html-to-text": "^9.0.5"
+    "react-icons": "^5.2.1",
+    "wasp": "file:.wasp/out/sdk/wasp"
   },
   "devDependencies": {
-    "typescript": "^5.1.0",
-    "vite": "^4.3.9",
     "@types/react": "^18.0.37",
-    "prisma": "4.16.2"
+    "prisma": "4.16.2",
+    "typescript": "^5.1.0",
+    "vite": "^4.3.9"
   }
 }
