@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
-import { Card, Stack, useSteps, Box, Tabs, TabList, Tab, TabPanels, TabPanel, Stepper, Step, StepIndicator, StepStatus, StepIcon, StepNumber, StepTitle, StepDescription, StepSeparator, MenuItem } from '@chakra-ui/react';
+import { useForm } from 'react-hook-form'
+import { Card, Stack, useSteps, Box, Tabs, TabList, Tab, TabPanels, TabPanel, Stepper, Step, StepIndicator, StepStatus, StepIcon, StepNumber, StepTitle, StepDescription, StepSeparator, MenuItem, useToast, Button, Text } from '@chakra-ui/react';
+import { Link as ReactRouterLink } from 'react-router-dom';
+import { Link as ChakraLink } from '@chakra-ui/react';
 import { JobAd } from 'wasp/entities';
 import JobCategoriesDropdown from '../searchbar/JobCategoriesDropdown';
-import { jobCategories, defaultJobAd, defaultCityPlaceholder, defaultCategory } from '../../../config';
+import { jobCategories, defaultJobAd, defaultCityPlaceholder, defaultCategory, routes } from '../../../config';
 import JobAdDetailsForm from './JobAdDetailsForm';
 import NavigateFormButtons from './NavigateFormButtons';
 import SearchResult from '../searchbar/SearchResult';
 import { CreateJobAdPayload } from '../../../actions';
+import { createJobAd } from 'wasp/client/operations'
+import { LuBellPlus } from "react-icons/lu";
 
 const steps = [
   { title: 'First', description: 'Select Category' },
@@ -24,6 +29,7 @@ const CreateJobAdForm = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isDone, setIsDone] = useState(false);
+  const [isSubmittedOnce, setIsSubmittedOnce] = useState(false);
   const [price, setPrice] = useState<number>(defaultJobAd.price);
   const [address, setAddress] = useState(defaultCityPlaceholder);
   const [duration, setDuration] = useState(defaultDuration);
@@ -93,7 +99,56 @@ const CreateJobAdForm = () => {
     setTabIndex(index);
     setActiveStep(index);
   };
+
+  const toast = useToast()
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm()
+
+  const normalizeJobAdPayload = (jobAdPayload: CreateJobAdPayload & { isDone: boolean }) => {
+    const { isDone, youngestChildAge, toolsProvided, numberOfRooms, ...newObject } = jobAdPayload;
+  
+    switch (newObject.category) {
+      case 'Babysitting':
+        return { ...newObject, youngestChildAge };
+      case 'House Keeping':
+        return { ...newObject, numberOfRooms };
+      case 'Gardening':
+        return { ...newObject, toolsProvided };
+    }
+  };
+  
+
+  async function onSubmit() {
+    try {
+      const normalizedJobAdPayload: CreateJobAdPayload = normalizeJobAdPayload(jobAdPayload);
+      // await createJobAd(normalizedJobAdPayload);
+      console.log(JSON.stringify(normalizedJobAdPayload));
+      setIsSubmittedOnce(true);
+      // Return a new Promise that resolves after a second delay
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve("Job ad created successfully");
+          toast({
+            title: 'Ad created.',
+            description: "We've created your ad for you.",
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          })
+          handleTabsChange(tabIndex + 1)
+        }, 1000); // Delay in milliseconds
+      });
+    } catch (err: any) {
+      console.log('Error: ' + err.message);
+    }
+  }
+
+  
   return (
+    <form onSubmit={handleSubmit(onSubmit)}>
     <Box>
       <Card key='md' size='md' variant='elevated' p={8}>
         <Stack spacing='4'>
@@ -134,7 +189,10 @@ const CreateJobAdForm = () => {
                   category={menuButtonLabel} 
                   title={title} 
                   description={description}
-                  address={address}/>
+                  address={address}
+                  isSubmitting={isSubmitting}
+                  isSubmittedOnce={isSubmittedOnce}
+                />
               </TabPanel>
               <TabPanel>
                 <JobAdDetailsForm 
@@ -164,7 +222,10 @@ const CreateJobAdForm = () => {
                   category={menuButtonLabel} 
                   title={title} 
                   description={description}
-                  address={address}/>
+                  address={address}
+                  isSubmitting={isSubmitting}
+                  isSubmittedOnce={isSubmittedOnce}
+                  />
               </TabPanel>
               <TabPanel>
                 <SearchResult jobAd={jobAdPayload as JobAd} />
@@ -174,13 +235,28 @@ const CreateJobAdForm = () => {
                   category={menuButtonLabel} 
                   title={title} 
                   description={description}
-                  address={address}/>
+                  address={address}
+                  isSubmitting={isSubmitting}
+                  isSubmittedOnce={isSubmittedOnce}
+                />
+              </TabPanel>
+              <TabPanel>
+                <Text paddingY='5'>Congratulations! Your ad was created successfuly</Text>
+                <ChakraLink as={ReactRouterLink} to={routes.home} style={{ textDecoration: 'none' }}>
+                <Button
+                  colorScheme="purple"
+                  variant='solid'
+                >
+                  Return to homepage
+                </Button>
+                </ChakraLink>
               </TabPanel>
             </TabPanels>
           </Tabs>
         </Stack>
       </Card>
     </Box>
+    </form>
   );
 };
 

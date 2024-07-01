@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Flex, useToast } from "@chakra-ui/react";
+import { Button, ButtonGroup, Flex } from "@chakra-ui/react";
 import { defaultCategory, defaultCityPlaceholder } from "../../../config";
 
 interface NavigateFormButtonsProps {
@@ -8,10 +8,11 @@ interface NavigateFormButtonsProps {
     title: string;
     description: string;
     address: string;
+    isSubmitting: boolean;
+    isSubmittedOnce: boolean;
 }
 
-const NavigateFormButtons: React.FC<NavigateFormButtonsProps> = ({ tabIndex, handleTabsChange, category, title, description, address }) => {
-    const toast = useToast()
+const NavigateFormButtons: React.FC<NavigateFormButtonsProps> = ({ tabIndex, handleTabsChange, category, title, description, address, isSubmitting, isSubmittedOnce }) => {
     const allFieldsFilled = category !== defaultCategory && title !== '' && description !== '' && address !== defaultCityPlaceholder
     return (
         <ButtonGroup mt="2%" w="100%">
@@ -48,16 +49,10 @@ const NavigateFormButtons: React.FC<NavigateFormButtonsProps> = ({ tabIndex, han
                 mr="5%"
                 colorScheme="red"
                 variant="solid"
-                isDisabled={!allFieldsFilled}
-                onClick={() => {
-                  toast({
-                    title: 'Ad created.',
-                    description: "We've created your ad for you.",
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true,
-                  })
-                }}>
+                isDisabled={!allFieldsFilled || isSubmittedOnce}
+                isLoading={isSubmitting}
+                type='submit'
+              >
                 Submit
               </Button>
             ) : null}
