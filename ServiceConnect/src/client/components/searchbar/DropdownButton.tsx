@@ -19,7 +19,7 @@ export const DropdownButton = ( {
 ) => {
     return (
         <Menu>
-            <MenuButton as={Button} rightIcon={<FiChevronDown />}>
+            <MenuButton as={Button} rightIcon={<FiChevronDown/>}>
                 { menuButtonLabel }
             </MenuButton>
             <MenuList>

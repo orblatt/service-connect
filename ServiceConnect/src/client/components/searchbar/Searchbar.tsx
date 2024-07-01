@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Box, Stack, Card, CardHeader, CardBody, Heading, Flex } from '@chakra-ui/react';
+import { Box, Stack, Card, CardHeader, CardBody, Heading, Flex, MenuItem } from '@chakra-ui/react';
 import { FiSearch } from 'react-icons/fi'
 import JobCategoriesDropdown from './JobCategoriesDropdown';
 import IsDoneSwitch from './IsDoneSwitch';
-import { PriceSlider, PriceProps } from './PriceSlider';
-import { prices } from '../../../config';
+import { PriceRangeSlider, PriceProps } from './PriceRangeSlider';
+import { jobCategories, prices } from '../../../config';
 import SearchResults from './SearchResults';
 import { JobAdFilters } from '../../../queries';
 import { JobAd } from 'wasp/entities';
@@ -16,6 +16,16 @@ const Searchbar = () => {
     const [minPrice, setMinPrice] = useState<PriceProps>({valueAsString: defaultMinPrice.toString(), valueAsNumber: defaultMinPrice});
     const [maxPrice, setMaxPrice] = useState<PriceProps>({valueAsString: defaultMaxPrice.toString(), valueAsNumber: defaultMaxPrice});
     const [isDone, setIsDone] = useState(false);
+    const [menuButtonLabel, setMenuButtonLabel] = useState('Category');
+    const menuItems: React.ReactElement<typeof MenuItem>[] = jobCategories.map(
+        (category: string, index) => {
+            return <MenuItem 
+                    key={index} 
+                    onClick={() => setMenuButtonLabel(category)}>
+                    {category}
+                </MenuItem>
+        }
+    );
     const { data: jobAds, isLoading, error } = useQuery(
         getFilteredJobAds, 
         { minPrice: minPrice.valueAsNumber, maxPrice: maxPrice.valueAsNumber, isDone } as JobAdFilters
@@ -49,13 +59,13 @@ const Searchbar = () => {
                 </CardHeader>
                 <CardBody>
                     <Flex>
-                        <JobCategoriesDropdown />
+                        <JobCategoriesDropdown menuButtonLabel={menuButtonLabel} menuItems={menuItems}/>
                         <Stack align='center' direction='row'>
                         </Stack>
                     </Flex>
                     <br/>
                     <IsDoneSwitch isDone={isDone} handleIsDoneChange={handleIsDoneChange}/>
-                    <PriceSlider 
+                    <PriceRangeSlider 
                         minPrice={minPrice} 
                         maxPrice={maxPrice} 
                         handleMinChange={handleMinChange} 
