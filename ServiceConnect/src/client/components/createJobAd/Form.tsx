@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Card, Stack, useSteps, Box, Tabs, TabList, Tab, TabPanels, TabPanel, Stepper, Step, StepIndicator, StepStatus, StepIcon, StepNumber, StepTitle, StepDescription, StepSeparator, MenuItem } from '@chakra-ui/react';
+import { JobAd } from 'wasp/entities';
 import JobCategoriesDropdown from '../searchbar/JobCategoriesDropdown';
-import { jobCategories, defaultJobAd, defaultCityPlaceholder } from '../../../config';
+import { jobCategories, defaultJobAd, defaultCityPlaceholder, defaultCategory } from '../../../config';
 import JobAdDetailsForm from './JobAdDetailsForm';
 import NavigateFormButtons from './NavigateFormButtons';
+import SearchResult from '../searchbar/SearchResult';
+import { CreateJobAdPayload } from '../../../actions';
 
 const steps = [
   { title: 'First', description: 'Select Category' },
@@ -20,12 +23,18 @@ const CreateJobAdForm = () => {
   } = defaultJobAd;
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [isDone, setIsDone] = useState(false);
   const [price, setPrice] = useState<number>(defaultJobAd.price);
   const [address, setAddress] = useState(defaultCityPlaceholder);
   const [duration, setDuration] = useState(defaultDuration);
   const [youngestChildAge, setYoungestChildAge] = useState(defaultYoungestChildAge);
   const [toolsProvided, setToolsProvided] = useState(defaultToolsProvided);
   const [numberOfRooms, setNumberOfRooms] = useState(defaultNumberOfRooms);
+  const [jobAdPayload, setJobAdPayload] = useState<CreateJobAdPayload & { isDone: boolean }>( { 
+    description, 
+    price, 
+    isDone,
+  });
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -33,10 +42,14 @@ const CreateJobAdForm = () => {
 
   const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(event.target.value);
+    const jobAdPayload: CreateJobAdPayload & { isDone: boolean } = { description: event.target.value, price, isDone }
+    setJobAdPayload(jobAdPayload)
   };
 
   const handlePriceChange = (newPrice: number) => {
     setPrice(newPrice);
+    const jobAdPayload: CreateJobAdPayload & { isDone: boolean } = { description, price: newPrice, isDone }
+    setJobAdPayload(jobAdPayload)
   }
 
   const handleAddressChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -59,7 +72,7 @@ const CreateJobAdForm = () => {
     setNumberOfRooms(newNumberOfRooms);
   };
 
-  const [menuButtonLabel, setMenuButtonLabel] = useState('Category');
+  const [menuButtonLabel, setMenuButtonLabel] = useState(defaultCategory);
   const menuItems: React.ReactElement<typeof MenuItem>[] = jobCategories.map(
     (category: string, index) => {
         return <MenuItem 
@@ -80,7 +93,6 @@ const CreateJobAdForm = () => {
     setTabIndex(index);
     setActiveStep(index);
   };
-
   return (
     <Box>
       <Card key='md' size='md' variant='elevated' p={8}>
@@ -155,7 +167,7 @@ const CreateJobAdForm = () => {
                   address={address}/>
               </TabPanel>
               <TabPanel>
-                <p>Oh, hello there.</p>
+                <SearchResult jobAd={jobAdPayload as JobAd} />
                 <NavigateFormButtons 
                   tabIndex={tabIndex} 
                   handleTabsChange={handleTabsChange} 

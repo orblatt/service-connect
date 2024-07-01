@@ -14,13 +14,17 @@ export const createJobAd: CreateJobAd<CreateJobAdPayload, JobAd> = async (
   if (!context.user) {
     throw new HttpError(401)
   }
-  return context.entities.JobAd.create({
-    data: { 
-      description: args.description,
-      price: args.price,
-      owner: { connect: { id: context.user.id } },
-    },
-  })
+  try {
+    return context.entities.JobAd.create({
+      data: { 
+        description: args.description,
+        price: args.price,
+        owner: { connect: { id: context.user.id } },
+      },
+    })
+  } catch (error) {
+    console.error('Error while creating JobAd:', error)
+  }
 }
 
 type UpdateJobAdPayload = Pick<JobAd, 'id' | 'isDone'>
@@ -32,10 +36,18 @@ export const updateJobAd: UpdateJobAd<UpdateJobAdPayload,  { count: number } > =
   if (!context.user) {
     throw new HttpError(401)
   }
-  return context.entities.JobAd.updateMany({
-    where: { id, owner: { id: context.user.id } },
-    data: { isDone },
-  })
+  if (!id) {
+    console.error('Error while updating JobAd provider: id is missing')
+    return;
+  }
+  try {
+    return context.entities.JobAd.updateMany({
+      where: { id, owner: { id: context.user.id } },
+      data: { isDone },
+    })
+  } catch (error) {
+    console.error('Error while updating JobAd:', error)
+  }
 }
 
 export const updateJobAdProvider: UpdateJobAdProvider<Pick<JobAd, 'id'>,  JobAd> = async (
@@ -45,7 +57,18 @@ export const updateJobAdProvider: UpdateJobAdProvider<Pick<JobAd, 'id'>,  JobAd>
   if (!context.user) {
     throw new HttpError(401)
   }
-  const jobAd = await context.entities.JobAd.findUnique({ where: { id } });
+  if (!id) {
+    console.error('Error while updating JobAd provider: id is missing')
+    return;
+  }
+  let jobAd: JobAd | null;
+  try {
+    console.log('id:', id)
+    jobAd = await context.entities.JobAd.findUnique({ where: { id } });
+  } catch (error) {
+    console.error('Error while updating JobAd provider:', error)
+    return;
+  }
   const currentUserId = context.user.id;
   if (!jobAd) {
     throw new HttpError(404, 'JobAd not found');
