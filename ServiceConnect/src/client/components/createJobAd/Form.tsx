@@ -152,7 +152,6 @@ const CreateJobAdForm = () => {
     try {
       const normalizedJobAdPayload: CreateJobAdPayload = normalizeJobAdPayload(jobAdPayload);
       await createJobAd(normalizedJobAdPayload);
-      console.log("This is client side", JSON.stringify(normalizedJobAdPayload));
       setIsSubmittedOnce(true);
       // Return a new Promise that resolves after a second delay
       return new Promise((resolve) => {

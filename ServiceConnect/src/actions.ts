@@ -53,7 +53,6 @@ export const createJobAd: CreateJobAd<CreateJobAdPayload, JobAd> = async (
     throw new HttpError(401)
   }
   validateJobAd(args)
-  console.log('This is server side:', JSON.stringify(args))
   try {
     return context.entities.JobAd.create({
       data: { 
@@ -102,7 +101,6 @@ export const updateJobAdProvider: UpdateJobAdProvider<Pick<JobAd, 'id'>,  JobAd>
   }
   let jobAd: JobAd | null;
   try {
-    console.log('id:', id)
     jobAd = await context.entities.JobAd.findUnique({ where: { id } });
   } catch (error) {
     console.error('Error while updating JobAd provider:', error)
