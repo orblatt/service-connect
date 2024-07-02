@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react'
-import { Card, Divider, CardBody, CardFooter, Heading, Text, Image, Stack, ButtonGroup, Button } from "@chakra-ui/react"
+import { Card, Divider, CardBody, CardFooter, Heading, Text, Image, Stack, ButtonGroup, Button, useToast } from "@chakra-ui/react"
 import { JobAd } from 'wasp/entities';
 import { updateJobAd, updateJobAdProvider } from 'wasp/client/operations'
 
@@ -7,23 +7,75 @@ import { updateJobAd, updateJobAdProvider } from 'wasp/client/operations'
 const SearchResult = ({ jobAd } : { jobAd: JobAd }) => {
     const { description, price, isDone, ownerId, providerId, title, duration, youngestChildAge, toolsProvided, numberOfRooms } = jobAd;
     const [refresh, setRefresh] = useState(false);
+    const toast = useToast()
 
     const handleProviderChange = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
+        if (!jobAd.id) {
+          toast({
+            title: 'Preview',
+            description: "Provider cannot be assigned to the ad during preview.",
+            status: 'warning',
+            duration: 3000,
+            isClosable: true,
+          })
+          return;
+        }
         try {
           await updateJobAdProvider({ id: jobAd.id })
+          toast({
+            title: 'Provider assigned.',
+            description: "We've assigned/unassigned you to this ad.",
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          })
         } catch (error: any) {
-          window.alert('Error while updating job ad provider: ' + error.message)
+          toast({
+            title: 'Provider not assigned.',
+            description: error.message,
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+          })
         }
       }
 
       const handleIsDoneChange = async (event: React.MouseEvent<HTMLButtonElement>) => { //TODO: fix it
         event.preventDefault()
+        if (!jobAd.id) {
+          toast({
+            title: 'Preview',
+            description: "Create the ad before marking it as done",
+            status: 'warning',
+            duration: 3000,
+            isClosable: true,
+          })
+          return;
+        }
+
         try {
-          await updateJobAd({
+          const result: { count: number } = await updateJobAd({
             id: jobAd.id,
             isDone: !isDone,
           })
+          if (result.count > 0) {
+            toast({
+              title: 'Status updated',
+              description: "We've updated the status of this ad.",
+              status: 'success',
+              duration: 3000,
+              isClosable: true,
+            })
+          } else {
+            toast({
+              title: 'Update your own ads',
+              description: "You are only allowed to modify ads that you have created.",
+              status: 'warning',
+              duration: 3000,
+              isClosable: true,
+            })
+          }
           setRefresh(!refresh); // Toggle state to force re-render
         } catch (error: any) {
           window.alert('Error while updating job Ad status: ' + error.message)

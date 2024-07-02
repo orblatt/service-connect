@@ -112,7 +112,7 @@ export const updateJobAdProvider: UpdateJobAdProvider<Pick<JobAd, 'id'>,  JobAd>
   if (!jobAd) {
     throw new HttpError(404, 'JobAd not found');
   } else if (jobAd.ownerId === currentUserId) {
-    throw new HttpError(403, 'You are the owner of this JobAd, you cannot be the provider as well.');
+    throw new HttpError(403, 'You are the owner of this ad, you cannot be the provider as well.');
   } else if (jobAd.providerId === currentUserId) {  // Disconnect 
     return context.entities.JobAd.update({
       where: { id },
