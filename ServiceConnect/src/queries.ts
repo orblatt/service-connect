@@ -1,8 +1,8 @@
 import { JobAd, SearchProfile } from 'wasp/entities'
 import { HttpError } from 'wasp/server'
 import { type GetJobAds, type GetFilteredJobAds, type GetFilteredSearchProfiles } from 'wasp/server/operations'
-import { defaultMaxPrice, defaultMinPrice } from './config'
-import { Interval } from './actions'
+import { defaultCategory, defaultCityPlaceholder, defaultIntervals, defaultMaxPrice, defaultMinPrice } from './config'
+import { type Interval } from './config'
 
 export const getJobAds: GetJobAds<void, JobAd[]> = async (args, context) => {
   if (!context.user) {
@@ -14,14 +14,20 @@ export const getJobAds: GetJobAds<void, JobAd[]> = async (args, context) => {
   })
 }
 
-
-export type JobAdFilters = { minPrice?: number | string, maxPrice?: number | string, isDone?: boolean, interval?: Interval }
+export type JobAdFilters = { 
+  minPrice?: number | string, 
+  maxPrice?: number | string, 
+  isDone?: boolean, 
+  interval?: Interval,
+  category?: string,
+  city?: string,
+}
 
 export const getFilteredJobAds: GetFilteredJobAds<
   JobAdFilters,
   JobAd[]
 > = async (args: JobAdFilters, context: any) => {
-  let { minPrice, maxPrice, isDone, interval } = args
+  let { minPrice, maxPrice, isDone, interval, category, city } = args
   minPrice = typeof minPrice === 'number' 
              ? minPrice 
              : parseFloat(minPrice || defaultMinPrice);
@@ -34,11 +40,17 @@ export const getFilteredJobAds: GetFilteredJobAds<
       { price: { lte: maxPrice } },  // lte means 'less than or equal to
     ]
   };
-  if (interval !== undefined) {  // TODO: support fetching job ads deltas for different intervals using dynamic where condition on createdAt property
+  if (interval !== undefined) {  
     whereCondition.AND.push({ interval });
   }
   if (isDone !== undefined) {
     whereCondition.AND.push({ isDone });
+  }
+  if (category !== defaultCategory) {
+    whereCondition.AND.push({ category });
+  }
+  if (city !== defaultCityPlaceholder)  {
+    whereCondition.AND.push({ city });
   }
   const jobAds: Promise<JobAd[]> = context.entities.JobAd.findMany({
       where: whereCondition,
@@ -55,7 +67,7 @@ SearchProfile[]
   const { interval } = args
   let whereCondition: any;
   if (!interval) {
-    whereCondition = { interval: { in: ['weekly', 'daily', 'hourly', 'minutely'] } }
+    whereCondition = { interval: { in: defaultIntervals } }
   } else {
     whereCondition = { interval }
   }

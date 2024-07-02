@@ -22,14 +22,14 @@ export interface PriceProps {
     valueAsNumber: number; 
 }
 
-interface PriceSliderProps {
+interface PriceRangeSliderProps {
     minPrice: PriceProps;
     maxPrice: PriceProps;
     handleMinChange: (valueAsString: string, valueAsNumber: number) => void;
     handleMaxChange: (valueAsString: string, valueAsNumber: number) => void;
 }
 
-export const PriceSlider: React.FC<PriceSliderProps> = ({ minPrice, maxPrice, handleMinChange, handleMaxChange }) => {
+export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ minPrice, maxPrice, handleMinChange, handleMaxChange }) => {
   
     const handleChange = (values: number[]) => {
         handleMinChange(values[0].toString(), values[0]);

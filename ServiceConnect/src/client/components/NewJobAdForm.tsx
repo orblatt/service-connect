@@ -11,7 +11,7 @@ export const NewJobAdForm = () => {
         const description = target.description.value
         const price = parseFloat(target.price.value)
         target.reset()
-        await createJobAd({ description, price })
+        // await createJobAd({ description, price })
       } catch (err: any) {
         window.alert('Error: ' + err.message)
       }

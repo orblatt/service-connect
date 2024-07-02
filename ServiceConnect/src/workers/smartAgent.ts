@@ -1,7 +1,8 @@
 import { type SmartAgentJob } from 'wasp/server/jobs'
 import { type JobAd, type SearchProfile } from 'wasp/entities'
 import { getFilteredJobAds, type JobAdFilters, getFilteredSearchProfiles } from '../queries';
-import { SendEmailOptions, sendEmail, type Interval } from '../actions';
+import { SendEmailOptions, sendEmail} from '../actions';
+import { type Interval } from '../config';
 
 type emailDigestInput = {
     interval: Interval
@@ -28,7 +29,7 @@ export const emailDigest: SmartAgentJob<emailDigestInput, any> = async (
                 emails.forEach(async (email: string) => {
                     const sendEmailOptions: SendEmailOptions = { jobAds, email };
                     console.log('Sending email to:', email, 'with number of job ads:', jobAds.length);
-                    const info = await sendEmail(sendEmailOptions, context); // TODO: test before sending emails
+                    const info = await sendEmail(sendEmailOptions, context);
                 });
             }
           });  

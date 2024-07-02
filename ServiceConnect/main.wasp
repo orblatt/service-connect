@@ -50,11 +50,11 @@ page CreateJobAdPage {
 }
 
 
-route TestRoute { path: "/test", to: TestPage }
-page TestPage {
-  authRequired: true,
-  component: import { TestPage } from "@src/client/app/TestPage"
-}
+// route TestRoute { path: "/test", to: TestPage }
+// page TestPage {
+//   authRequired: true,
+//   component: import { TestPage } from "@src/client/app/TestPage"
+// }
 
 // route SendEmailRoute { path: "/send-email", to: SendEmailPage }
 // page SendEmailPage {
@@ -70,7 +70,14 @@ entity JobAd {=psl
     owner        User    @relation(name: "createdBy", fields: [ownerId], references: [id])
     ownerId      Int
     provider     User?    @relation(name: "servedBy", fields: [providerId], references: [id])
-    providerId   Int?    
+    providerId   Int?   
+    category    String 
+    city        String
+    title       String
+    duration    Int
+    youngestChildAge Int?
+    toolsProvided Boolean?
+    numberOfRooms Float?
 psl=}
 
 query getJobAds {
