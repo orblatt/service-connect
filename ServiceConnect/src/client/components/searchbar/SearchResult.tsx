@@ -22,7 +22,7 @@ function useUserDetails(userId: number, userType: 'Provider' | 'Owner') {
   return username;
 }
 
-const SearchResult = ({ jobAd } : { jobAd: JobAd }) => {
+const SearchResult = ({ jobAd, isPreview } : { jobAd: JobAd, isPreview: boolean }) => {
     const { description, price, isDone, ownerId, providerId, title, duration, youngestChildAge, toolsProvided, numberOfRooms } = jobAd;
     const ownerUsername = ownerId ? useUserDetails(ownerId, 'Owner') : 'No Owner';
     const providerUsername = ownerId ? useUserDetails(providerId, 'Provider') : 'No Provider';
@@ -121,7 +121,7 @@ const SearchResult = ({ jobAd } : { jobAd: JobAd }) => {
             <Heading size='md'>{title}</Heading>
             <Text>
                 {description}<br/><br/>
-                <b>Owner:</b> &nbsp;{ownerUsername}<br/>
+                {!isPreview && (<div><b>Owner:</b> &nbsp;{ownerUsername}<br/></div>)}
                 <b>Provider:</b> &nbsp;{providerUsername}<br/>
                 {/* <b>ProviderId:</b> &nbsp;{providerId}<br/> */}
                 <b>Duration:</b> &nbsp;{duration} hours<br/>

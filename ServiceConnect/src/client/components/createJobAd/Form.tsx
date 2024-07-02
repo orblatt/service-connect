@@ -17,7 +17,7 @@ import { CreateJobAdPayload } from '../../../actions';
 const steps = [
   { title: 'First', description: 'Select Category' },
   { title: 'Second', description: 'Enter Details' },
-  { title: 'Third', description: 'Review Ad' },
+  { title: 'Third', description: 'Preview' },
 ];
 
 const CreateJobAdForm = () => {
@@ -254,7 +254,7 @@ const CreateJobAdForm = () => {
                   />
               </TabPanel>
               <TabPanel>
-                <SearchResult jobAd={jobAdPayload as JobAd} />
+                <SearchResult jobAd={jobAdPayload as JobAd} isPreview={true}/>
                 <NavigateFormButtons 
                   tabIndex={tabIndex} 
                   handleTabsChange={handleTabsChange} 
