@@ -198,3 +198,8 @@ job weeklySmartAgentJob {
   },
   entities: [SearchProfile, JobAd]
 }
+
+query getUserById {
+  fn: import { getUserById } from "@src/queries",
+  entities: [User],
+}

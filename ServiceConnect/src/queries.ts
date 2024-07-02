@@ -1,6 +1,6 @@
-import { JobAd, SearchProfile } from 'wasp/entities'
+import { JobAd, SearchProfile, User } from 'wasp/entities'
 import { HttpError } from 'wasp/server'
-import { type GetJobAds, type GetFilteredJobAds, type GetFilteredSearchProfiles } from 'wasp/server/operations'
+import { type GetJobAds, type GetFilteredJobAds, type GetFilteredSearchProfiles, type GetUserById } from 'wasp/server/operations'
 import { defaultCategory, defaultCityPlaceholder, defaultIntervals, defaultMaxPrice, defaultMinPrice } from './config'
 import { type Interval } from './config'
 
@@ -76,3 +76,35 @@ SearchProfile[]
     orderBy: { id: 'asc' },
   })
 }
+
+export const getUserById: GetUserById<{ userId: number }, User> = async (args: { userId: number }, context: any) => {
+  if (!args.userId) {
+    return null
+  }
+  return context.entities.User.findUnique({
+    where: {
+      id: args.userId
+    },
+    include: {
+      auth: {
+        include: {
+          identities: true
+        }
+      }
+    }
+  })
+}
+
+// async function getAuthUserData(prisma: PrismaClient, userId: User['id']): Promise<AuthUserData> {
+//   const user = await context.entities.user.findUnique({
+//       where: { id: userId },
+//       include: {
+//         auth: {
+//           include: {
+//             identities: true
+//           }
+//         }
+//       }
+//     })
+//   return user
+// }

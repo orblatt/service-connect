@@ -1,12 +1,31 @@
-import { ChangeEvent, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, Divider, CardBody, CardFooter, Heading, Text, Image, Stack, ButtonGroup, Button, useToast } from "@chakra-ui/react"
 import { JobAd } from 'wasp/entities';
-import { updateJobAd, updateJobAdProvider } from 'wasp/client/operations'
+import { updateJobAd, updateJobAdProvider, getUserById, useQuery } from 'wasp/client/operations'
 
+
+function useUserDetails(userId: number, userType: 'Provider' | 'Owner') {
+  const [username, setUsername] = useState(`No ${userType}`);
+  const { data: user, error } = useQuery(getUserById, { userId }, [userId]);
+
+  useEffect(() => {
+    if (error) {
+      setUsername(`No ${userType} (Error)`);
+    } else if (!user) {
+      setUsername(`No ${userType}`);
+    } else {
+      const email = user?.auth?.identities[0]?.providerUserId;
+      setUsername(email ? email.split('@')[0] : '');
+    }
+  }, [user, error, userType]);
+
+  return username;
+}
 
 const SearchResult = ({ jobAd } : { jobAd: JobAd }) => {
     const { description, price, isDone, ownerId, providerId, title, duration, youngestChildAge, toolsProvided, numberOfRooms } = jobAd;
-    const [refresh, setRefresh] = useState(false);
+    const ownerUsername = ownerId ? useUserDetails(ownerId, 'Owner') : 'No Owner';
+    const providerUsername = ownerId ? useUserDetails(providerId, 'Provider') : 'No Provider';
     const toast = useToast()
 
     const handleProviderChange = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -22,7 +41,7 @@ const SearchResult = ({ jobAd } : { jobAd: JobAd }) => {
           return;
         }
         try {
-          await updateJobAdProvider({ id: jobAd.id })
+          const result = await updateJobAdProvider({ id: jobAd.id })
           toast({
             title: 'Provider assigned.',
             description: "We've assigned/unassigned you to this ad.",
@@ -76,7 +95,6 @@ const SearchResult = ({ jobAd } : { jobAd: JobAd }) => {
               isClosable: true,
             })
           }
-          setRefresh(!refresh); // Toggle state to force re-render
         } catch (error: any) {
           window.alert('Error while updating job Ad status: ' + error.message)
         }
@@ -103,7 +121,9 @@ const SearchResult = ({ jobAd } : { jobAd: JobAd }) => {
             <Heading size='md'>{title}</Heading>
             <Text>
                 {description}<br/><br/>
-                <b>Provider:</b> &nbsp;{providerId ? providerId : 'No Provider'}<br/>
+                <b>Owner:</b> &nbsp;{ownerUsername}<br/>
+                <b>Provider:</b> &nbsp;{providerUsername}<br/>
+                {/* <b>ProviderId:</b> &nbsp;{providerId}<br/> */}
                 <b>Duration:</b> &nbsp;{duration} hours<br/>
                 {content}
             </Text>
