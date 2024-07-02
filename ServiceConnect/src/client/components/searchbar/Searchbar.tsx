@@ -28,7 +28,7 @@ const Searchbar = () => {
     );
     const { data: jobAds, isLoading, error } = useQuery(
         getFilteredJobAds, 
-        { minPrice: minPrice.valueAsNumber, maxPrice: maxPrice.valueAsNumber, isDone } as JobAdFilters
+        { minPrice: minPrice.valueAsNumber, maxPrice: maxPrice.valueAsNumber, isDone, category: menuButtonLabel } as JobAdFilters
       );
 
 

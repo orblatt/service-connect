@@ -4,21 +4,60 @@ import { CreateJobAd, UpdateJobAd, UpdateJobAdProvider, SendEmail, CreateSearchP
 import { emailSender } from "wasp/server/email";
 import { htmlToText } from 'html-to-text';
 import { JobAdFilters } from './queries';
+import { 
+  Interval, 
+  defaultCategory, 
+  defaultCityPlaceholder, 
+  prices, 
+  duration as defaultDuration, 
+  youngestChildAge as defaultYoungestChildAge,
+  rooms as defaultRooms,
+ } from './config';
 
-export type CreateJobAdPayload = Pick<JobAd, 'description' | 'price' >
+ type RequiredProps = Pick<JobAd, 'description' | 'price' | 'category' | 'city' | 'title' | 'duration'>;
+ type OptionalProps = Partial<Pick<JobAd, 'youngestChildAge' | 'toolsProvided' | 'numberOfRooms'>>;
+ export type CreateJobAdPayload = RequiredProps & OptionalProps;
 
-export const createJobAd: CreateJobAd<CreateJobAdPayload, JobAd> = async (
+const validateJobAd = (args: CreateJobAdPayload): void => {
+  const { description, price, category, city, title, duration, youngestChildAge, toolsProvided, numberOfRooms } = args;
+  const requiredFieldsOccupied: boolean = Boolean(category && price && title && description && city && duration);
+  const requiredFieldsValid: boolean = city !== defaultCityPlaceholder && 
+    category !== defaultCategory && 
+    price > prices.min && 
+    price <= prices.max && 
+    duration > defaultDuration.min && 
+    duration <= defaultDuration.max;
+  const optionalFieldsOccupied: boolean = Boolean(youngestChildAge || toolsProvided !== undefined || numberOfRooms);
+  const optionalFieldsValid: boolean = (youngestChildAge >= defaultYoungestChildAge.min &&
+    youngestChildAge <= defaultYoungestChildAge.max) ||
+    (numberOfRooms >= defaultRooms.min &&
+    numberOfRooms <= defaultRooms.max &&
+    numberOfRooms % defaultRooms.step === 0) ||
+    typeof toolsProvided === 'boolean';
+    
+  if (!requiredFieldsOccupied)
+    throw new HttpError(400, 'Please fill in all required fields');
+  else if (!requiredFieldsValid)
+    throw new HttpError(400, 'Please fill in all required fields with valid values');
+  else if (!(optionalFieldsOccupied && optionalFieldsValid))
+    throw new HttpError(400, 'Please fill in any optional field with valid values');
+  else 
+    console.log('JobAd is valid');
+    return;
+}
+export const createJobAd: CreateJobAd<CreateJobAdPayload, JobAd> = async ( 
   args,
   context
 ) => {
   if (!context.user) {
     throw new HttpError(401)
   }
+  validateJobAd(args)
+  console.log('This is server side:', JSON.stringify(args))
   try {
     return context.entities.JobAd.create({
       data: { 
-        description: args.description,
-        price: args.price,
+        ...args,
         owner: { connect: { id: context.user.id } },
       },
     })
@@ -134,7 +173,6 @@ export const sendEmail: SendEmail<SendEmailOptions , any>  = async (
   return info;
 };
 
-export type Interval = 'minutely' | 'hourly' | 'daily' | 'weekly';
 export type CreateSearchProfilePayload = Pick<SearchProfile, 'minPrice' | 'maxPrice' | 'isDone'> & { interval: Interval, emails: string[]}
 
 export const createSearchProfile: CreateSearchProfile<CreateSearchProfilePayload, SearchProfile> = async (

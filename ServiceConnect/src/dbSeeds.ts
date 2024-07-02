@@ -20,16 +20,41 @@ export const devSeedSimple = async (prisma: PrismaClient) => {
   })
 
   const mockJobAdsPayloads: CreateJobAdPayload[] = [
-    { description: 'Clean and cook once a week', price: 100 },
-    { description: 'Walk the dog twice a week', price: 49.99 },
-    { description: 'Babysit on weekends', price: 119.99 },
-    { description: 'Babysit everyday', price: 90 },
-    { description: 'Lawn mowing service', price: 75.5 },
-    { description: 'House painting service', price: 200 }
+    { category: 'Babysitting', 
+    title: 'Experienced Babysitter Required', 
+    description: 'Seeking experienced, warm babysitter for engaging child care in Tel Aviv.',
+    price: 80, city: 'Tel Aviv', duration: 2, youngestChildAge: 2 },
+    { category: 'House Keeping',
+    title: 'Housekeeper Needed for Busy Family',
+    description: 'Looking for reliable, experienced housekeeper for duties in Tel Aviv.',
+    price: 140, city: 'Ramat Gan', duration: 4, numberOfRooms: 3.5 },
+    { category: 'Gardening',
+    title: 'Gardener Wanted for Private Residence',
+    description: 'Seeking skilled gardener for diverse plant maintenance in Tel Aviv.',
+    price: 130, city: 'Petah Tikva', duration: 2, toolsProvided: true },
+    { category: 'Babysitting',
+      title: 'Sweet Babysitter Needed',
+      description: 'Seeking sweet, patient babysitter for daughter in Ramat Gan.',
+      price: 100, city: 'Ramat Gan', duration: 3, youngestChildAge: 5 },
+    { category: 'House Keeping',
+      title: 'Housekeeper Needed',
+      description: 'Seeking housekeeper to maintain our home in Petah Tikva.',
+      price: 250, city: 'Tel Aviv', duration: 5, numberOfRooms: 4.5 },
+    { category: 'Gardening',
+      title: 'Gardener Wanted Today!!!',
+      description: 'Seeking skilled gardener who loves plants for garden in Tel Aviv.',
+      price: 450, city: 'Tel Aviv', duration: 8, toolsProvided: false },
   ];
+
   
   mockJobAdsPayloads.forEach(async (payload: CreateJobAdPayload, index: number) => {
-    const assignedUser: AuthUser = index < Math.floor(mockJobAdsPayloads.length / 2) ? user1 : user2;
+    const oneThird = Math.floor(mockJobAdsPayloads.length / 3);
+    const twoThirds = Math.floor((mockJobAdsPayloads.length / 3) * 2);
+
+    const assignedUser: AuthUser =
+      index < oneThird ? user1 :
+      index < twoThirds ? user2 :
+      user3;
     try {
         await createJobAd(
             payload,
@@ -43,14 +68,12 @@ export const devSeedSimple = async (prisma: PrismaClient) => {
     }
   });  
 };
-
-
-
 async function createUser(
   prisma: PrismaClient,
   data: { username: string, password: string }
 ): Promise<AuthUser> {
-    const newUser = await prisma.user.create({
+    try {
+      const newUser = await prisma.user.create({
         data: {
         auth: {
             create: {
@@ -75,4 +98,7 @@ async function createUser(
             identities: []
         }
     };
+  } catch (err: any) {
+    console.error('Error creating user during db seed:', err.message);
+  }
 };

@@ -48,3 +48,6 @@ export const routes: any = {
 
 export const jobCategories = ['Babysitting', 'House Keeping', 'Gardening'] as const;
 export type JobCategory = typeof jobCategories[number];
+
+export const defaultIntervals = ['weekly', 'daily', 'hourly', 'minutely'] as const;
+export type Interval = typeof defaultIntervals[number];

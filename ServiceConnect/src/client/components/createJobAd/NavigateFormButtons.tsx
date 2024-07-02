@@ -7,13 +7,13 @@ interface NavigateFormButtonsProps {
     category: string;
     title: string;
     description: string;
-    address: string;
+    city: string;
     isSubmitting: boolean;
     isSubmittedOnce: boolean;
 }
 
-const NavigateFormButtons: React.FC<NavigateFormButtonsProps> = ({ tabIndex, handleTabsChange, category, title, description, address, isSubmitting, isSubmittedOnce }) => {
-    const allFieldsFilled = category !== defaultCategory && title !== '' && description !== '' && address !== defaultCityPlaceholder
+const NavigateFormButtons: React.FC<NavigateFormButtonsProps> = ({ tabIndex, handleTabsChange, category, title, description, city, isSubmitting, isSubmittedOnce }) => {
+    const allFieldsFilled = category !== defaultCategory && title !== '' && description !== '' && city !== defaultCityPlaceholder
     return (
         <ButtonGroup mt="2%" w="100%">
           <Flex w="100%" justifyContent="space-between">

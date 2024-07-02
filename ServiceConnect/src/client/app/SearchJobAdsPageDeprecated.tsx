@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { getEmail, AuthUser } from 'wasp/auth'
 import { getFilteredJobAds, sendEmail, createSearchProfile, useQuery } from 'wasp/client/operations'
 import { JobAdsList } from '../components/JobAdsList';
-import { defaultMaxPrice, defaultMinPrice, defaultSearchProfile } from '../../config';
-import { CreateSearchProfilePayload, Interval, SendEmailOptions } from '../../actions';
+import { Interval, defaultMaxPrice, defaultMinPrice, defaultSearchProfile } from '../../config';
+import { CreateSearchProfilePayload, SendEmailOptions } from '../../actions';
 import { JobAdFilters } from '../../queries';
 import { JobAd } from 'wasp/entities';
 

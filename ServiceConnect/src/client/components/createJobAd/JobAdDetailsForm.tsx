@@ -9,7 +9,7 @@ interface JobAdDetailsFormProps {
     title: string;
     description: string;
     price: number;
-    address: string;
+    city: string;
     duration: number;
     youngestChildAge: number;
     toolsProvided: boolean;
@@ -18,7 +18,7 @@ interface JobAdDetailsFormProps {
         handleTitleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
         handleDescriptionChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
         handlePriceChange: (newPrice: number) => void;
-        handleAddressChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+        handleCityChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
         handleDurationChange: (newDuration: number) => void;
         handleYoungestChildAgeChange: (newYoungestChildAge: number) => void;
         handleToolsProvidedChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -32,7 +32,7 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
     title, 
     description, 
     price, 
-    address, 
+    city, 
     duration, 
     youngestChildAge,
     toolsProvided,
@@ -41,7 +41,7 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
         handleTitleChange,
         handleDescriptionChange,
         handlePriceChange,
-        handleAddressChange,
+        handleCityChange,
         handleDurationChange,
         handleYoungestChildAgeChange,
         handleToolsProvidedChange,
@@ -90,8 +90,8 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
                     name="city"
                     autoComplete="city"
                     placeholder="Select City"
-                    value={address}
-                    onChange={handleAddressChange}
+                    value={city}
+                    onChange={handleCityChange}
                     focusBorderColor="purple.500"
                     shadow="md"
                     size="md"

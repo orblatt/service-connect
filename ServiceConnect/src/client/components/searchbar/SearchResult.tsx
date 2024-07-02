@@ -5,7 +5,7 @@ import { updateJobAd, updateJobAdProvider } from 'wasp/client/operations'
 
 
 const SearchResult = ({ jobAd } : { jobAd: JobAd }) => {
-    const { description, price, isDone, ownerId, providerId } = jobAd;
+    const { description, price, isDone, ownerId, providerId, title, duration, youngestChildAge, toolsProvided, numberOfRooms } = jobAd;
     const [refresh, setRefresh] = useState(false);
 
     const handleProviderChange = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -30,6 +30,15 @@ const SearchResult = ({ jobAd } : { jobAd: JobAd }) => {
         }
       }
 
+    let content = null;
+    if (youngestChildAge) {
+      content = <><b>Youngest Child:</b> &nbsp;{youngestChildAge} years old</>;
+    } else if (numberOfRooms) {
+      content = <><b>Rooms:</b> &nbsp;{numberOfRooms}</>;
+    } else if (typeof toolsProvided === 'boolean') {
+      content = <><b>Tools Provided:</b> &nbsp;{toolsProvided === true ? 'Yes' : 'No'}</>;
+    }
+
     return (
         <Card maxW='sm' shadow='xl'>
         <CardBody>
@@ -39,9 +48,12 @@ const SearchResult = ({ jobAd } : { jobAd: JobAd }) => {
             borderRadius='lg'
             />
             <Stack mt='6' spacing='3'>
-            <Heading size='md'>Living room Sofa</Heading>
+            <Heading size='md'>{title}</Heading>
             <Text>
-                {description}<br/><br/><b>Provider:</b> &nbsp;{providerId ? providerId : 'No Provider'}
+                {description}<br/><br/>
+                <b>Provider:</b> &nbsp;{providerId ? providerId : 'No Provider'}<br/>
+                <b>Duration:</b> &nbsp;{duration} hours<br/>
+                {content}
             </Text>
             <Text color='purple.600' fontSize='2xl'>
                 ${price}

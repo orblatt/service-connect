@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form'
-import { Card, Stack, useSteps, Box, Tabs, TabList, Tab, TabPanels, TabPanel, Stepper, Step, StepIndicator, StepStatus, StepIcon, StepNumber, StepTitle, StepDescription, StepSeparator, MenuItem, useToast, Button, Text } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { Link as ChakraLink } from '@chakra-ui/react';
+import { Card, Stack, useSteps, Box, Tabs, TabList, Tab, TabPanels, TabPanel, Stepper, Step, StepIndicator, StepStatus, StepIcon, StepNumber, StepTitle, StepDescription, StepSeparator, MenuItem, useToast, Button, Text } from '@chakra-ui/react';
 import { JobAd } from 'wasp/entities';
+import { createJobAd } from 'wasp/client/operations';
+
 import JobCategoriesDropdown from '../searchbar/JobCategoriesDropdown';
 import { jobCategories, defaultJobAd, defaultCityPlaceholder, defaultCategory, routes } from '../../../config';
 import JobAdDetailsForm from './JobAdDetailsForm';
 import NavigateFormButtons from './NavigateFormButtons';
 import SearchResult from '../searchbar/SearchResult';
 import { CreateJobAdPayload } from '../../../actions';
-import { createJobAd } from 'wasp/client/operations'
-import { LuBellPlus } from "react-icons/lu";
+
 
 const steps = [
   { title: 'First', description: 'Select Category' },
@@ -31,63 +32,86 @@ const CreateJobAdForm = () => {
   const [isDone, setIsDone] = useState(false);
   const [isSubmittedOnce, setIsSubmittedOnce] = useState(false);
   const [price, setPrice] = useState<number>(defaultJobAd.price);
-  const [address, setAddress] = useState(defaultCityPlaceholder);
+  const [city, setCity] = useState(defaultCityPlaceholder);
   const [duration, setDuration] = useState(defaultDuration);
   const [youngestChildAge, setYoungestChildAge] = useState(defaultYoungestChildAge);
   const [toolsProvided, setToolsProvided] = useState(defaultToolsProvided);
   const [numberOfRooms, setNumberOfRooms] = useState(defaultNumberOfRooms);
+  const [menuButtonLabel, setMenuButtonLabel] = useState(defaultCategory);
   const [jobAdPayload, setJobAdPayload] = useState<CreateJobAdPayload & { isDone: boolean }>( { 
     description, 
-    price, 
+    price,
+    category: menuButtonLabel,
+    city,
+    title,
+    duration,
+    youngestChildAge,
+    toolsProvided,
+    numberOfRooms,
     isDone,
   });
-
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
+  const handleJobAdPayloadChange = (field: any, value: any) => {
+    setJobAdPayload(prevState => ({ ...prevState, [field]: value }));
   };
-
-  const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(event.target.value);
-    const jobAdPayload: CreateJobAdPayload & { isDone: boolean } = { description: event.target.value, price, isDone }
-    setJobAdPayload(jobAdPayload)
-  };
-
-  const handlePriceChange = (newPrice: number) => {
-    setPrice(newPrice);
-    const jobAdPayload: CreateJobAdPayload & { isDone: boolean } = { description, price: newPrice, isDone }
-    setJobAdPayload(jobAdPayload)
+  const handleCategoryChange = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const category = event.currentTarget.textContent as string;
+    setMenuButtonLabel(category);
+    handleJobAdPayloadChange('category', category);
   }
 
-  const handleAddressChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setAddress(event.target.value);
-  };
-
-  const handleDurationChange = (newDuration: number) => {
-    setDuration(newDuration);
-  };
-
-  const handleYoungestChildAgeChange = (newYoungestChildAge: number) => {
-    setYoungestChildAge(newYoungestChildAge);
-  };
-
-  const handleToolsProvidedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setToolsProvided(event.target.checked);
-  };
-
-  const handleNumberOfRoomsChange = (newNumberOfRooms: number) => {
-    setNumberOfRooms(newNumberOfRooms);
-  };
-
-  const [menuButtonLabel, setMenuButtonLabel] = useState(defaultCategory);
   const menuItems: React.ReactElement<typeof MenuItem>[] = jobCategories.map(
     (category: string, index) => {
         return <MenuItem 
                   key={index} 
-                  onClick={() => setMenuButtonLabel(category)}>
+                  onClick={handleCategoryChange}>
                 {category}
               </MenuItem>
     }
   );
+
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = event.target.value;
+    setTitle(newTitle);
+    handleJobAdPayloadChange('title', newTitle);
+  };
+
+  const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newDescription = event.target.value;
+    setDescription(newDescription);
+    handleJobAdPayloadChange('description', newDescription);
+  };
+
+  const handlePriceChange = (newPrice: number) => {
+    setPrice(newPrice);
+    handleJobAdPayloadChange('price', newPrice);
+  }
+
+  const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCity = event.target.value;
+    setCity(newCity);
+    handleJobAdPayloadChange('city', newCity);
+  };
+
+  const handleDurationChange = (newDuration: number) => {
+    setDuration(newDuration);
+    handleJobAdPayloadChange('duration', newDuration);
+  };
+
+  const handleYoungestChildAgeChange = (newYoungestChildAge: number) => {
+    setYoungestChildAge(newYoungestChildAge);
+    handleJobAdPayloadChange('youngestChildAge', newYoungestChildAge);
+  };
+
+  const handleToolsProvidedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newToolsProvided = event.target.checked;
+    setToolsProvided(newToolsProvided);
+    handleJobAdPayloadChange('toolsProvided', newToolsProvided);
+  };
+
+  const handleNumberOfRoomsChange = (newNumberOfRooms: number) => {
+    setNumberOfRooms(newNumberOfRooms);
+    handleJobAdPayloadChange('numberOfRooms', newNumberOfRooms);
+  };
   
   const [tabIndex, setTabIndex] = useState(0);
   const { activeStep, setActiveStep } = useSteps({
@@ -112,11 +136,14 @@ const CreateJobAdForm = () => {
   
     switch (newObject.category) {
       case 'Babysitting':
-        return { ...newObject, youngestChildAge };
+        return { ...newObject, youngestChildAge } as CreateJobAdPayload;
       case 'House Keeping':
-        return { ...newObject, numberOfRooms };
+        return { ...newObject, numberOfRooms } as CreateJobAdPayload;
       case 'Gardening':
-        return { ...newObject, toolsProvided };
+        return { ...newObject, toolsProvided } as CreateJobAdPayload;
+      default:
+        console.error('Error: Invalid category');
+        return newObject as CreateJobAdPayload;
     }
   };
   
@@ -124,8 +151,8 @@ const CreateJobAdForm = () => {
   async function onSubmit() {
     try {
       const normalizedJobAdPayload: CreateJobAdPayload = normalizeJobAdPayload(jobAdPayload);
-      // await createJobAd(normalizedJobAdPayload);
-      console.log(JSON.stringify(normalizedJobAdPayload));
+      await createJobAd(normalizedJobAdPayload);
+      console.log("This is client side", JSON.stringify(normalizedJobAdPayload));
       setIsSubmittedOnce(true);
       // Return a new Promise that resolves after a second delay
       return new Promise((resolve) => {
@@ -189,7 +216,7 @@ const CreateJobAdForm = () => {
                   category={menuButtonLabel} 
                   title={title} 
                   description={description}
-                  address={address}
+                  city={city}
                   isSubmitting={isSubmitting}
                   isSubmittedOnce={isSubmittedOnce}
                 />
@@ -200,7 +227,7 @@ const CreateJobAdForm = () => {
                   title={title}
                   description={description}
                   price={price}
-                  address={address}
+                  city={city}
                   duration={duration}
                   youngestChildAge={youngestChildAge}
                   toolsProvided={toolsProvided}
@@ -209,7 +236,7 @@ const CreateJobAdForm = () => {
                     handleTitleChange,
                     handleDescriptionChange,
                     handlePriceChange,
-                    handleAddressChange,
+                    handleCityChange,
                     handleDurationChange,
                     handleYoungestChildAgeChange,
                     handleToolsProvidedChange,
@@ -222,7 +249,7 @@ const CreateJobAdForm = () => {
                   category={menuButtonLabel} 
                   title={title} 
                   description={description}
-                  address={address}
+                  city={city}
                   isSubmitting={isSubmitting}
                   isSubmittedOnce={isSubmittedOnce}
                   />
@@ -235,7 +262,7 @@ const CreateJobAdForm = () => {
                   category={menuButtonLabel} 
                   title={title} 
                   description={description}
-                  address={address}
+                  city={city}
                   isSubmitting={isSubmitting}
                   isSubmittedOnce={isSubmittedOnce}
                 />

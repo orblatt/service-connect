@@ -70,7 +70,14 @@ entity JobAd {=psl
     owner        User    @relation(name: "createdBy", fields: [ownerId], references: [id])
     ownerId      Int
     provider     User?    @relation(name: "servedBy", fields: [providerId], references: [id])
-    providerId   Int?    
+    providerId   Int?   
+    category    String 
+    city        String
+    title       String
+    duration    Int
+    youngestChildAge Int?
+    toolsProvided Boolean?
+    numberOfRooms Float?
 psl=}
 
 query getJobAds {
