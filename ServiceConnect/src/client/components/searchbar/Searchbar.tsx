@@ -52,12 +52,12 @@ const Searchbar = () => {
 
     return (
         <Box>
-            <Stack spacing='4'>
+            <Stack>
                 <Card key='md' size='md' variant='elevated'>
-                <CardHeader>
+                <CardHeader mb={0}>
                     <Heading size='md'><Flex> Search &nbsp; <FiSearch/></Flex></Heading>
                 </CardHeader>
-                <CardBody>
+                <CardBody mt={0}>
                     <Flex>
                         <JobCategoriesDropdown menuButtonLabel={menuButtonLabel} menuItems={menuItems}/>
                         <Stack align='center' direction='row'>
