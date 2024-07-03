@@ -125,8 +125,8 @@ const SearchResult = ({ jobAd, isPreview } : { jobAd: JobAd, isPreview: boolean 
             <Button variant='solid' colorScheme='purple' onClick={handleProviderChange}>
                 Assign Me
             </Button>
-            <Button variant='ghost' colorScheme='purple' onClick={handleIsDoneChange}>
-                Done
+            <Button variant='outline' colorScheme='purple' onClick={handleIsDoneChange}>
+                {!isDone ? 'Done' : 'Undone'}
             </Button>
             </ButtonGroup>
         </CardFooter>
