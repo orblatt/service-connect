@@ -84,7 +84,8 @@ const SearchResult = ({ jobAd, isPreview } : { jobAd: JobAd, isPreview: boolean 
 
     let content = null;
     if (youngestChildAge) {
-      content = <><b>Youngest Child:</b> &nbsp;{youngestChildAge} years old</>;
+      const age = youngestChildAge === 1 ? 'year' : 'years';
+      content = <><b>Youngest Child:</b> &nbsp;{youngestChildAge} {age} old</>;
     } else if (numberOfRooms) {
       content = <><b>Rooms:</b> &nbsp;{numberOfRooms}</>;
     } else if (typeof toolsProvided === 'boolean') {
