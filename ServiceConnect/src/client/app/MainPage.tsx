@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Heading, Text, Button, Box } from "@chakra-ui/react"
+import { Card, CardBody, CardHeader, Heading, Text, Button, Box, Flex } from "@chakra-ui/react"
 import MainLayout from "./MainLayout"
 import { AuthUser } from "wasp/auth"
 import { useUserDetails } from '../../utils'
@@ -24,27 +24,29 @@ export const MainPage = ({ user }: { user: AuthUser }) => {
                         As a customer, you can browse job ads and hire service providers.<br/>
                         <b>Are you ready?</b>
                     </Text>
-                    <Box h='2'></Box>
-                    <ChakraLink as={ReactRouterLink} to={routes.createJobAd} style={{ textDecoration: 'none' }}>
-                        <Button
-                            variant={'solid'}
-                            colorScheme={'green'}
-                            size={'sm'}
-                            mr={4}
-                        >
-                        Create Ad
-                    </Button>
-                    </ChakraLink>
-                    <ChakraLink as={ReactRouterLink} to={routes.searchJobAds} style={{ textDecoration: 'none' }}>
-                        <Button
-                            variant={'solid'}
-                            colorScheme={'green'}
-                            size={'sm'}
-                            mr={4}
-                        >
-                        Browse Ads
-                    </Button>
-                    </ChakraLink>
+                    <Box h='5'></Box>
+                    <Flex>
+                        <ChakraLink as={ReactRouterLink} to={routes.createJobAd} style={{ textDecoration: 'none' }}>
+                            <Button
+                                variant={'solid'}
+                                colorScheme={'green'}
+                                size={'sm'}
+                                mr={4}
+                            >
+                                Create Ad
+                            </Button>
+                        </ChakraLink>
+                        <ChakraLink as={ReactRouterLink} to={routes.searchJobAds} style={{ textDecoration: 'none' }}>
+                            <Button
+                                variant={'solid'}
+                                colorScheme={'green'}
+                                size={'sm'}
+                                mr={4}
+                            >
+                              Browse Ads
+                          </Button>
+                        </ChakraLink>
+                    </Flex>
                 </CardBody>
             </Card>
         </MainLayout>
