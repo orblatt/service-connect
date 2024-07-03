@@ -1,26 +1,8 @@
-import { useEffect, useState } from 'react'
 import { Card, Divider, CardBody, CardFooter, Heading, Text, Image, Stack, ButtonGroup, Button, useToast } from "@chakra-ui/react"
 import { JobAd } from 'wasp/entities';
-import { updateJobAd, updateJobAdProvider, getUserById, useQuery } from 'wasp/client/operations'
+import { updateJobAd, updateJobAdProvider } from 'wasp/client/operations'
 import { jobImages, type JobCategory } from '../../../config'
-
-function useUserDetails(userId: number, userType: 'Provider' | 'Owner') {
-  const [username, setUsername] = useState(`No ${userType}`);
-  const { data: user, error } = useQuery(getUserById, { userId }, [userId]);
-
-  useEffect(() => {
-    if (error) {
-      setUsername(`No ${userType} (Error)`);
-    } else if (!user) {
-      setUsername(`No ${userType}`);
-    } else {
-      const email = (user as any)?.auth?.identities[0]?.providerUserId;
-      setUsername(email ? email.split('@')[0] : '');
-    }
-  }, [user, error, userType]);
-
-  return username;
-}
+import { useUserDetails } from '../../../utils'
 
 const SearchResult = ({ jobAd, isPreview } : { jobAd: JobAd, isPreview: boolean }) => {
     const { category, description, price, isDone, ownerId, providerId, title, city, duration, youngestChildAge, toolsProvided, numberOfRooms } = jobAd;
