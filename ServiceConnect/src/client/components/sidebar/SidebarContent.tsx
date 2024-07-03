@@ -4,7 +4,8 @@ import {
     Flex,
     useColorModeValue,
     Text,
-    BoxProps
+    BoxProps,
+    useToast
   } from '@chakra-ui/react'
 import { IconType } from 'react-icons'
 import {
@@ -16,6 +17,8 @@ import {
     FiPlusCircle,
   } from 'react-icons/fi'
 import NavItem from './NavItem'
+import { useLocation } from 'react-router-dom';
+
 import { routes } from '../../../config'
 
 interface LinkItemProps {
@@ -30,15 +33,18 @@ interface LinkItemProps {
   }
   
   const LinkItems: Array<LinkItemProps> = [
-    { name: 'Home', icon: FiHome, to: routes.home },
+    { name: 'Home', icon: FiHome, to: location.pathname },
     { name: 'Create Ad', icon: FiPlusCircle, to: routes.createJobAd},
     { name: 'Explore', icon: FiCompass, to: routes.searchJobAds},
     { name: 'Reports', icon: FiTrendingUp, to: routes.myJobAds },
-    { name: 'Reviews', icon: FiStar, to: routes.test },
-    { name: 'Settings', icon: FiSettings, to: routes.test},
+    { name: 'Reviews', icon: FiStar, to: location.pathname },
+    { name: 'Settings', icon: FiSettings, to: location.pathname},
   ]
   
   const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+    const location = useLocation();
+    const toast = useToast();
+
     return (
       <Box
         transition="3s ease"
@@ -56,7 +62,24 @@ interface LinkItemProps {
           <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
         </Flex>
         {LinkItems.map((link) => (
-          <NavItem key={link.name} icon={link.icon} to={link.to}>
+          <NavItem 
+            key={link.name} 
+            icon={link.icon} 
+            to={link.to} 
+            onClick={
+              () => { 
+                if (link.name === 'Reviews' || link.name === 'Settings') {
+                  toast({
+                    title: 'Coming Soon',
+                    description: "We're workig on it",
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true,
+                  })
+                }
+              }
+          }
+          >
             {link.name}
           </NavItem>
         ))}

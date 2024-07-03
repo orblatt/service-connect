@@ -14,6 +14,7 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  useToast,
 } from '@chakra-ui/react'
 import {
   FiMenu,
@@ -32,6 +33,7 @@ interface MobileProps extends FlexProps {
 }
 
 const MobileNav = ({ onOpen, user, ...rest }: MobileProps & { user: AuthUser }) => {
+    const toast = useToast();
     const email = getUsername(user);
     const username = typeof email === 'string' && email.split('@').length > 0 ? email.split('@')[0] : ''
     return (
@@ -99,8 +101,22 @@ const MobileNav = ({ onOpen, user, ...rest }: MobileProps & { user: AuthUser }) 
               <MenuList
                 bg={useColorModeValue('white', 'gray.900')}
                 borderColor={useColorModeValue('gray.200', 'gray.700')}>
-                <MenuItem>Profile</MenuItem>
-                <MenuItem>Settings</MenuItem>
+                <ChakraLink as={ReactRouterLink} to={routes.myJobAds} style={{ textDecoration: 'none' }}>
+                  <MenuItem>
+                    Profile
+                  </MenuItem>
+                </ChakraLink>
+                <MenuItem onClick={() =>
+                  toast({
+                    title: 'Coming Soon',
+                    description: "We're workig on it",
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true,
+                  })
+                } >
+                  Settings
+                  </MenuItem>
                 <MenuDivider />
                 <MenuItem onClick={logout}>Sign out</MenuItem>
               </MenuList>
