@@ -32,18 +32,20 @@ interface LinkItemProps {
     onClose: () => void
   }
   
-  const LinkItems: Array<LinkItemProps> = [
-    { name: 'Home', icon: FiHome, to: location.pathname },
-    { name: 'Create Ad', icon: FiPlusCircle, to: routes.createJobAd},
-    { name: 'Explore', icon: FiCompass, to: routes.searchJobAds},
-    { name: 'Reports', icon: FiTrendingUp, to: routes.myJobAds },
-    { name: 'Reviews', icon: FiStar, to: location.pathname },
-    { name: 'Settings', icon: FiSettings, to: location.pathname},
-  ]
+  
   
   const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
     const location = useLocation();
     const toast = useToast();
+
+    const LinkItems: Array<LinkItemProps> = [
+      { name: 'Home', icon: FiHome, to: routes.home },
+      { name: 'Create Ad', icon: FiPlusCircle, to: routes.createJobAd},
+      { name: 'Explore', icon: FiCompass, to: routes.searchJobAds},
+      { name: 'Reports', icon: FiTrendingUp, to: routes.myJobAds },
+      { name: 'Reviews', icon: FiStar, to: location.pathname },
+      { name: 'Settings', icon: FiSettings, to: location.pathname},
+    ]
 
     return (
       <Box
