@@ -40,9 +40,9 @@ interface LinkItemProps {
 
     const LinkItems: Array<LinkItemProps> = [
       { name: 'Home', icon: FiHome, to: routes.home },
+      { name: 'Search', icon: FiCompass, to: routes.searchJobAds},
       { name: 'Create Ad', icon: FiPlusCircle, to: routes.createJobAd},
-      { name: 'Explore', icon: FiCompass, to: routes.searchJobAds},
-      { name: 'Reports', icon: FiTrendingUp, to: routes.myJobAds },
+      { name: 'My Ads', icon: FiTrendingUp, to: routes.myJobAds },
       { name: 'Reviews', icon: FiStar, to: location.pathname },
       { name: 'Settings', icon: FiSettings, to: location.pathname},
     ]
@@ -58,7 +58,7 @@ interface LinkItemProps {
         h="full"
         {...rest}>
         <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-          <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
+          <Text fontSize="xl" fontWeight="bold" color='purple.600'>
             Service Connect
           </Text>
           <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
