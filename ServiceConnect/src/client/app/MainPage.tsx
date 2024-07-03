@@ -34,6 +34,8 @@ export const MainPage = ({ user }: { user: AuthUser }) => {
                                 colorScheme={'teal'}
                                 size={'lg'}
                                 mr={4}
+                                rounded={'full'}
+
                             >
                                 Create Ad
                             </Button>
@@ -45,6 +47,8 @@ export const MainPage = ({ user }: { user: AuthUser }) => {
                                 colorScheme={'teal'}
                                 size={'lg'}
                                 mr={4}
+                                rounded={'full'}
+
                             >
                               Browse Ads
                           </Button>
