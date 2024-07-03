@@ -83,12 +83,12 @@ const SearchResult = ({ jobAd, isPreview } : { jobAd: JobAd, isPreview: boolean 
       }
 
     let content = null;
-    if (youngestChildAge) {
+    if (youngestChildAge && category === 'Babysitting') {
       const age = youngestChildAge === 1 ? 'year' : 'years';
       content = <><b>Youngest Child:</b> &nbsp;{youngestChildAge} {age} old</>;
-    } else if (numberOfRooms) {
+    } else if (numberOfRooms && category === 'House Keeping') {
       content = <><b>Rooms:</b> &nbsp;{numberOfRooms}</>;
-    } else if (typeof toolsProvided === 'boolean') {
+    } else if (typeof toolsProvided === 'boolean' && category === 'Gardening') {
       content = <><b>Tools Provided:</b> &nbsp;{toolsProvided === true ? 'Yes' : 'No'}</>;
     }
     const imageUrl = jobImages[category as JobCategory]?.src || '';
@@ -105,10 +105,10 @@ const SearchResult = ({ jobAd, isPreview } : { jobAd: JobAd, isPreview: boolean 
             />
             <Stack mt='6' spacing='3'>
             <Heading size='md'>{title}</Heading>
-            <Text>
+            <Text as='div'>
                 {description}<br/><br/>
 
-                {/* {!isPreview && (<div><b>Owner:</b> &nbsp;{ownerUsername}<br/></div>)} */}
+                {!isPreview && (<div><b>Owner:</b> &nbsp;{ownerUsername}<br/></div>)}
                 <b>Provider:</b> &nbsp;{providerUsername}<br/>
                 <b>Location:</b> &nbsp;{city}<br/>
                 <b>Duration:</b> &nbsp;{duration} hours<br/>
