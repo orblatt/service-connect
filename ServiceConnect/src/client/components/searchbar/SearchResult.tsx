@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Card, Divider, CardBody, CardFooter, Heading, Text, Image, Stack, ButtonGroup, Button, useToast } from "@chakra-ui/react"
 import { JobAd } from 'wasp/entities';
 import { updateJobAd, updateJobAdProvider, getUserById, useQuery } from 'wasp/client/operations'
-
+import { jobImages, type JobCategory } from '../../../config'
 
 function useUserDetails(userId: number, userType: 'Provider' | 'Owner') {
   const [username, setUsername] = useState(`No ${userType}`);
@@ -23,7 +23,7 @@ function useUserDetails(userId: number, userType: 'Provider' | 'Owner') {
 }
 
 const SearchResult = ({ jobAd, isPreview } : { jobAd: JobAd, isPreview: boolean }) => {
-    const { description, price, isDone, ownerId, providerId, title, duration, youngestChildAge, toolsProvided, numberOfRooms } = jobAd;
+    const { category, description, price, isDone, ownerId, providerId, title, city, duration, youngestChildAge, toolsProvided, numberOfRooms } = jobAd;
     const ownerUsername = ownerId ? useUserDetails(ownerId, 'Owner') : 'No Owner';
     const providerUsername = ownerId ? useUserDetails(providerId, 'Provider') : 'No Provider';
     const toast = useToast()
@@ -108,22 +108,26 @@ const SearchResult = ({ jobAd, isPreview } : { jobAd: JobAd, isPreview: boolean 
     } else if (typeof toolsProvided === 'boolean') {
       content = <><b>Tools Provided:</b> &nbsp;{toolsProvided === true ? 'Yes' : 'No'}</>;
     }
+    const imageUrl = jobImages[category as JobCategory]?.src || '';
+    const imageAlt = jobImages[category as JobCategory]?.alt || '';
 
     return (
         <Card maxW='sm' shadow='xl'
         >
         <CardBody >
             <Image
-            src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
-            alt='Green double couch with wooden legs'
+            src={imageUrl}
+            alt={imageAlt}
             borderRadius='lg'
             />
             <Stack mt='6' spacing='3'>
             <Heading size='md'>{title}</Heading>
             <Text>
                 {description}<br/><br/>
-                {!isPreview && (<div><b>Owner:</b> &nbsp;{ownerUsername}<br/></div>)}
+
+                {/* {!isPreview && (<div><b>Owner:</b> &nbsp;{ownerUsername}<br/></div>)} */}
                 <b>Provider:</b> &nbsp;{providerUsername}<br/>
+                <b>Location:</b> &nbsp;{city}<br/>
                 <b>Duration:</b> &nbsp;{duration} hours<br/>
                 {content}
             </Text>
@@ -139,7 +143,7 @@ const SearchResult = ({ jobAd, isPreview } : { jobAd: JobAd, isPreview: boolean 
                 Assign Me
             </Button>
             <Button variant='ghost' colorScheme='purple' onClick={handleIsDoneChange}>
-                Mark Done
+                Done
             </Button>
             </ButtonGroup>
         </CardFooter>

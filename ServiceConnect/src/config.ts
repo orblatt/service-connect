@@ -46,6 +46,13 @@ export const routes: any = {
     myJobAds: "/my-job-ads"
 };
 
+export const jobImages = {
+    defaultCategory: { alt: '', src: ''},
+    'Babysitting': { alt: 'Babysitting', src: 'https://images.unsplash.com/photo-1713942589571-c19b1a7a14e4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
+    'House Keeping': { alt: 'House Keeping', src: 'https://images.unsplash.com/photo-1574320200632-4e123899b003?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
+    'Gardening': { alt: 'Gardening', src: 'https://images.unsplash.com/photo-1611843467160-25afb8df1074?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
+};
+
 export const jobCategories = ['Babysitting', 'House Keeping', 'Gardening'] as const;
 export type JobCategory = typeof jobCategories[number];
 
