@@ -1,7 +1,13 @@
-import { Card, CardBody, CardHeader, Heading, Text } from "@chakra-ui/react"
+import { Card, CardBody, CardHeader, Heading, Text, Button, Box } from "@chakra-ui/react"
 import MainLayout from "./MainLayout"
 import { AuthUser } from "wasp/auth"
 import { useUserDetails } from '../../utils'
+import { Link as ReactRouterLink } from 'react-router-dom';
+import { Link as ChakraLink } from '@chakra-ui/react';
+import { routes } from '../../config';
+import {
+    FiPlus,
+  } from 'react-icons/fi'
 
 export const MainPage = ({ user }: { user: AuthUser }) => {
     const username = user.id ? useUserDetails(user.id, 'Owner') : '';
@@ -18,9 +24,27 @@ export const MainPage = ({ user }: { user: AuthUser }) => {
                         As a customer, you can browse job ads and hire service providers.<br/>
                         <b>Are you ready?</b>
                     </Text>
-                    <Text>
-
-                    </Text>
+                    <Box h='2'></Box>
+                    <ChakraLink as={ReactRouterLink} to={routes.createJobAd} style={{ textDecoration: 'none' }}>
+                        <Button
+                            variant={'solid'}
+                            colorScheme={'green'}
+                            size={'sm'}
+                            mr={4}
+                        >
+                        Create Ad
+                    </Button>
+                    </ChakraLink>
+                    <ChakraLink as={ReactRouterLink} to={routes.searchJobAds} style={{ textDecoration: 'none' }}>
+                        <Button
+                            variant={'solid'}
+                            colorScheme={'green'}
+                            size={'sm'}
+                            mr={4}
+                        >
+                        Browse Ads
+                    </Button>
+                    </ChakraLink>
                 </CardBody>
             </Card>
         </MainLayout>
