@@ -23,10 +23,10 @@ export const SettingsPage = ({ user }: { user: AuthUser }) => {
         setTimeout(() => {
           resolve("Search Profiles deleted successfully");
           toast({
-            title: 'Unsubscribed from all alerts successfully.',
-            description: "You've been unsubscribed successfully. No alerts will be sent to you.",
+            title: 'Unsubscribed successfully.',
+            description: "You will no longer receive alerts to your email.",
             status: 'success',
-            duration: 3000,
+            duration: 5000,
             isClosable: true,
           })
           setIsSubmittedOnce(true)
