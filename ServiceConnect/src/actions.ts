@@ -1,9 +1,8 @@
 import { JobAd, SearchProfile } from 'wasp/entities'
 import { HttpError } from 'wasp/server'
-import { CreateJobAd, UpdateJobAd, UpdateJobAdProvider, SendEmail, CreateSearchProfile } from 'wasp/server/operations'
+import { CreateJobAd, UpdateJobAd, UpdateJobAdProvider, SendEmail, CreateSearchProfile, DeleteSearchProfiles } from 'wasp/server/operations'
 import { emailSender } from "wasp/server/email";
 import { htmlToText } from 'html-to-text';
-import { JobAdFilters } from './queries';
 import { 
   Interval, 
   defaultCategory, 
@@ -50,7 +49,7 @@ export const createJobAd: CreateJobAd<CreateJobAdPayload, JobAd> = async (
   context
 ) => {
   if (!context.user) {
-    throw new HttpError(401)
+    throw new HttpError(401, "Unauthorized access attempt.")
   }
   validateJobAd(args)
   try {
@@ -72,7 +71,7 @@ export const updateJobAd: UpdateJobAd<UpdateJobAdPayload,  { count: number } > =
   context
 ) => {
   if (!context.user) {
-    throw new HttpError(401)
+    throw new HttpError(401, "Unauthorized access attempt.")
   }
   if (!id) {
     console.error('Error while updating JobAd provider: id is missing')
@@ -93,7 +92,7 @@ export const updateJobAdProvider: UpdateJobAdProvider<Pick<JobAd, 'id'>,  JobAd>
   context
 ) => {
   if (!context.user) {
-    throw new HttpError(401)
+    throw new HttpError(401, "Unauthorized access attempt.")
   }
   if (!id) {
     console.error('Error while updating JobAd provider: id is missing')
@@ -178,7 +177,7 @@ export const createSearchProfile: CreateSearchProfile<CreateSearchProfilePayload
   context
 ) => {
   if (!context.user) {
-    throw new HttpError(401)
+    throw new HttpError(401, "Unauthorized access attempt.")
   }
   const { emails: inputEmails, minPrice, maxPrice, category, isDone, interval } = args;
   if (!interval || interval === 'Interval') {
@@ -201,3 +200,20 @@ export const createSearchProfile: CreateSearchProfile<CreateSearchProfilePayload
 
   return context.entities.SearchProfile.create({ data });
 };
+
+// DeleteSearchProfiles<{}, SearchProfile[]>
+export const deleteSearchProfiles:any = async ( 
+  args,
+  context
+) => {
+  if (!context.user) {
+    throw new HttpError(401, "Unauthorized access attempt.")
+  }
+  try {
+    return context.entities.SearchProfile.deleteMany({
+      where: { searcher: { id: context.user.id } },
+    })
+  } catch (error) {
+    console.error('Error while deleting Search Profiles:', error)
+  }
+}

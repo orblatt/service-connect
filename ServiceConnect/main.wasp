@@ -49,17 +49,11 @@ page CreateJobAdPage {
   component: import { CreateJobAdPage } from "@src/client/app/CreateJobAdPage"
 }
 
-
-// route TestRoute { path: "/test", to: TestPage }
-// page TestPage {
-//   authRequired: true,
-//   component: import { TestPage } from "@src/client/app/TestPage"
-// }
-
-// route SendEmailRoute { path: "/send-email", to: SendEmailPage }
-// page SendEmailPage {
-//   component: import { SendEmailPage } from "@src/client/app/SendEmailPage"
-// }
+route SettingsRoute { path: "/settings", to: SettingsPage }
+page SettingsPage {
+  authRequired: true,
+  component: import { SettingsPage } from "@src/client/app/SettingsPage"
+}
 
 entity JobAd {=psl
     id          Int     @id @default(autoincrement())
@@ -108,6 +102,11 @@ action updateJobAdProvider {
 action sendEmail {
   fn: import { sendEmail } from "@src/actions",
   // entities: [JobAd]
+}
+
+action deleteSearchProfiles {
+  fn: import { deleteSearchProfiles } from "@src/actions",
+  entities: [SearchProfile]
 }
 
 

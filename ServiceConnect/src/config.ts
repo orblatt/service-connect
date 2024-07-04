@@ -43,7 +43,8 @@ export const routes: any = {
     createJobAd: '/create-job-ad',
     searchJobAds: '/search-job-ads',
     test: '/test',
-    myJobAds: "/my-job-ads"
+    myJobAds: "/my-job-ads",
+    settings: "/settings",
 };
 
 export const jobImages = {

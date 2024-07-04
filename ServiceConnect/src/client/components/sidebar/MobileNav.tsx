@@ -106,7 +106,12 @@ const MobileNav = ({ onOpen, user, ...rest }: MobileProps & { user: AuthUser }) 
                     Profile
                   </MenuItem>
                 </ChakraLink>
-                <MenuItem onClick={() =>
+                <ChakraLink as={ReactRouterLink} to={routes.settings} style={{ textDecoration: 'none' }}>
+                  <MenuItem>
+                    Settings
+                  </MenuItem>
+                </ChakraLink>
+                {/* <MenuItem onClick={() =>
                   toast({
                     title: 'Coming Soon',
                     description: "We're workig on it",
@@ -116,7 +121,7 @@ const MobileNav = ({ onOpen, user, ...rest }: MobileProps & { user: AuthUser }) 
                   })
                 } >
                   Settings
-                  </MenuItem>
+                  </MenuItem> */}
                 <MenuDivider />
                 <MenuItem onClick={logout}>Sign out</MenuItem>
               </MenuList>

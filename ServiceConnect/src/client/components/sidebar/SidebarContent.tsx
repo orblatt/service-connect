@@ -44,7 +44,7 @@ interface LinkItemProps {
       { name: 'Create Ad', icon: FiPlusCircle, to: routes.createJobAd},
       { name: 'My Ads', icon: FiTrendingUp, to: routes.myJobAds },
       { name: 'Reviews', icon: FiStar, to: location.pathname },
-      { name: 'Settings', icon: FiSettings, to: location.pathname},
+      { name: 'Settings', icon: FiSettings, to: routes.settings},
     ]
 
     return (
@@ -70,7 +70,7 @@ interface LinkItemProps {
             to={link.to} 
             onClick={
               () => { 
-                if (link.name === 'Reviews' || link.name === 'Settings') {
+                if (link.name === 'Reviews') {
                   toast({
                     title: 'Coming Soon',
                     description: "We're workig on it",
