@@ -1,6 +1,6 @@
-import { JobAd, SearchProfile } from 'wasp/entities'
+import { JobAd, SearchProfile, User } from 'wasp/entities'
 import { HttpError } from 'wasp/server'
-import { type GetJobAds, type GetFilteredJobAds, type GetFilteredSearchProfiles } from 'wasp/server/operations'
+import { type GetJobAds, type GetFilteredJobAds, type GetFilteredSearchProfiles, type GetUserById } from 'wasp/server/operations'
 import { defaultCategory, defaultCityPlaceholder, defaultIntervals, defaultMaxPrice, defaultMinPrice } from './config'
 import { type Interval } from './config'
 
@@ -18,7 +18,7 @@ export type JobAdFilters = {
   minPrice?: number | string, 
   maxPrice?: number | string, 
   isDone?: boolean, 
-  interval?: Interval,
+  interval?: Interval | 'Interval',
   category?: string,
   city?: string,
 }
@@ -40,16 +40,16 @@ export const getFilteredJobAds: GetFilteredJobAds<
       { price: { lte: maxPrice } },  // lte means 'less than or equal to
     ]
   };
-  if (interval !== undefined) {  
+  if (interval && interval !== 'Interval') {  
     whereCondition.AND.push({ interval });
   }
-  if (isDone !== undefined) {
+  if (isDone !== undefined && typeof isDone === 'boolean') {
     whereCondition.AND.push({ isDone });
   }
-  if (category !== defaultCategory) {
+  if (category && category !== defaultCategory) {
     whereCondition.AND.push({ category });
   }
-  if (city !== defaultCityPlaceholder)  {
+  if (city && city !== defaultCityPlaceholder)  {
     whereCondition.AND.push({ city });
   }
   const jobAds: Promise<JobAd[]> = context.entities.JobAd.findMany({
@@ -68,6 +68,8 @@ SearchProfile[]
   let whereCondition: any;
   if (!interval) {
     whereCondition = { interval: { in: defaultIntervals } }
+  } else if (interval === 'Interval') {
+    throw new HttpError(400, 'Invalid interval')
   } else {
     whereCondition = { interval }
   }
@@ -76,3 +78,35 @@ SearchProfile[]
     orderBy: { id: 'asc' },
   })
 }
+
+export const getUserById: GetUserById<{ userId: number }, User> = async (args: { userId: number }, context: any) => {
+  if (!args.userId) {
+    return null
+  }
+  return context.entities.User.findUnique({
+    where: {
+      id: args.userId
+    },
+    include: {
+      auth: {
+        include: {
+          identities: true
+        }
+      }
+    }
+  })
+}
+
+// async function getAuthUserData(prisma: PrismaClient, userId: User['id']): Promise<AuthUserData> {
+//   const user = await context.entities.user.findUnique({
+//       where: { id: userId },
+//       include: {
+//         auth: {
+//           include: {
+//             identities: true
+//           }
+//         }
+//       }
+//     })
+//   return user
+// }

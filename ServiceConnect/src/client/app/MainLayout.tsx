@@ -11,16 +11,17 @@ import {
 import { ChakraProvider } from '@chakra-ui/react'
 import MobileNav from '../components/sidebar/MobileNav'
 import SidebarContent from '../components/sidebar/SidebarContent'
+import { AuthUser } from 'wasp/auth';
 
-const MainLayout = ({ children }: { children: React.ReactNode }) => {
+const MainLayout = ({ children, user }: { children: React.ReactNode, user: AuthUser } ) => {
   return (
     <ChakraProvider>
-      <SidebarWithHeader>{children}</SidebarWithHeader>
+      <SidebarWithHeader user={user}>{children}</SidebarWithHeader>
     </ChakraProvider>
   )
 }
 
-const SidebarWithHeader = ({ children }: { children: React.ReactNode } ) => {
+const SidebarWithHeader = ({ children, user }: { children: React.ReactNode, user: AuthUser } ) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
@@ -38,7 +39,7 @@ const SidebarWithHeader = ({ children }: { children: React.ReactNode } ) => {
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />
+      <MobileNav onOpen={onOpen} user={user} />
       <Box ml={{ base: 0, md: 60 }} p="4">
       { children }  
       </Box>

@@ -6,7 +6,7 @@ import CreateJobAdForm from '../components/createJobAd/Form';
 
 export const CreateJobAdPage = ({ user }: { user: AuthUser }) => {
   return (
-    <MainLayout>
+    <MainLayout user={user}>
         <CreateJobAdForm/>
     </MainLayout>
   );

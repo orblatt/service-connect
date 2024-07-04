@@ -49,17 +49,11 @@ page CreateJobAdPage {
   component: import { CreateJobAdPage } from "@src/client/app/CreateJobAdPage"
 }
 
-
-// route TestRoute { path: "/test", to: TestPage }
-// page TestPage {
-//   authRequired: true,
-//   component: import { TestPage } from "@src/client/app/TestPage"
-// }
-
-// route SendEmailRoute { path: "/send-email", to: SendEmailPage }
-// page SendEmailPage {
-//   component: import { SendEmailPage } from "@src/client/app/SendEmailPage"
-// }
+route SettingsRoute { path: "/settings", to: SettingsPage }
+page SettingsPage {
+  authRequired: true,
+  component: import { SettingsPage } from "@src/client/app/SettingsPage"
+}
 
 entity JobAd {=psl
     id          Int     @id @default(autoincrement())
@@ -110,6 +104,11 @@ action sendEmail {
   // entities: [JobAd]
 }
 
+action deleteSearchProfiles {
+  fn: import { deleteSearchProfiles } from "@src/actions",
+  entities: [SearchProfile]
+}
+
 
 entity SearchProfile {=psl
     id          Int     @id @default(autoincrement())
@@ -121,6 +120,7 @@ entity SearchProfile {=psl
     createdAt   DateTime @default(now()) @db.Timestamptz
     searcher    User    @relation(name: "searchedBy", fields: [searcherId], references: [id])
     searcherId  Int
+    category    String?
 psl=}
 
 action createSearchProfile {
@@ -158,7 +158,7 @@ job smartAgentJob {
   },
   schedule: {
     cron: "* * * * *", // Every minute
-    args: {=json { "interval": "minutely" } json=}
+    args: {=json { "interval": "Minutely" } json=}
   },
   entities: [SearchProfile, JobAd]
 }
@@ -170,7 +170,7 @@ job hourlySmartAgentJob {
   },
   schedule: {
     cron: "0 * * * *", // Every hour
-    args: {=json { "interval": "hourly" } json=}
+    args: {=json { "interval": "Hourly" } json=}
   },
   entities: [SearchProfile, JobAd]
 }
@@ -182,7 +182,7 @@ job dailySmartAgentJob {
   },
   schedule: {
     cron: "0 10 * * *", // Every day at 10:00am
-    args: {=json { "interval": "daily" } json=}
+    args: {=json { "interval": "Daily" } json=}
   },
   entities: [SearchProfile, JobAd]
 }
@@ -194,7 +194,12 @@ job weeklySmartAgentJob {
   },
   schedule: {
     cron: "0 10 * * SUN", // Every Sunday at 10:00am
-    args: {=json { "interval": "weekly" } json=}
+    args: {=json { "interval": "Weekly" } json=}
   },
   entities: [SearchProfile, JobAd]
+}
+
+query getUserById {
+  fn: import { getUserById } from "@src/queries",
+  entities: [User],
 }

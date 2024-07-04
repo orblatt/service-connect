@@ -14,6 +14,7 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  useToast,
 } from '@chakra-ui/react'
 import {
   FiMenu,
@@ -24,13 +25,17 @@ import {
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { logout } from 'wasp/client/auth'
+import { getEmail, AuthUser, getUsername } from 'wasp/auth'
 import { routes } from '../../../config';
 
 interface MobileProps extends FlexProps {
   onOpen: () => void
 }
 
-const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+const MobileNav = ({ onOpen, user, ...rest }: MobileProps & { user: AuthUser }) => {
+    const toast = useToast();
+    const email = getUsername(user);
+    const username = typeof email === 'string' && email.split('@').length > 0 ? email.split('@')[0] : ''
     return (
       <Flex
         ml={{ base: 0, md: 60 }}
@@ -69,23 +74,21 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             <FiPlus/> &nbsp; Create Ad
             </Button>
           </ChakraLink>
-          <IconButton size="lg" variant="ghost" aria-label="open menu" icon={<FiBell />} />
+          {/* <IconButton size="lg" variant="ghost" aria-label="open menu" icon={<FiBell />} /> */}
           <Flex alignItems={'center'}>
             <Menu>
               <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
                 <HStack>
                   <Avatar
                     size={'sm'}
-                    src={
-                      'https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                    }
+                    src='https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_640.png'
                   />
                   <VStack
                     display={{ base: 'none', md: 'flex' }}
                     alignItems="flex-start"
                     spacing="1px"
                     ml="2">
-                    <Text fontSize="sm">Or Golan</Text>
+                    <Text fontSize="sm">{username}</Text>
                     <Text fontSize="xs" color="gray.600">
                       User
                     </Text>
@@ -98,8 +101,27 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <MenuList
                 bg={useColorModeValue('white', 'gray.900')}
                 borderColor={useColorModeValue('gray.200', 'gray.700')}>
-                <MenuItem>Profile</MenuItem>
-                <MenuItem>Settings</MenuItem>
+                <ChakraLink as={ReactRouterLink} to={routes.myJobAds} style={{ textDecoration: 'none' }}>
+                  <MenuItem>
+                    Profile
+                  </MenuItem>
+                </ChakraLink>
+                <ChakraLink as={ReactRouterLink} to={routes.settings} style={{ textDecoration: 'none' }}>
+                  <MenuItem>
+                    Settings
+                  </MenuItem>
+                </ChakraLink>
+                {/* <MenuItem onClick={() =>
+                  toast({
+                    title: 'Coming Soon',
+                    description: "We're workig on it",
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true,
+                  })
+                } >
+                  Settings
+                  </MenuItem> */}
                 <MenuDivider />
                 <MenuItem onClick={logout}>Sign out</MenuItem>
               </MenuList>

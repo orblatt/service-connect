@@ -1,22 +1,38 @@
-import React, { useState } from 'react';
-import { Box, Stack, Card, CardHeader, CardBody, Heading, Flex, MenuItem } from '@chakra-ui/react';
+import React, { useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form'
+import { Box, Stack, Card, CardHeader, CardBody, Heading, Flex, MenuItem, Button, useToast } from '@chakra-ui/react';
 import { FiSearch } from 'react-icons/fi'
+import { JobAd } from 'wasp/entities';
+import { AuthUser } from 'wasp/auth';
+import { useQuery, getFilteredJobAds, createSearchProfile } from 'wasp/client/operations'
+import SearchProfileButton from './SearchProfileButton';
 import JobCategoriesDropdown from './JobCategoriesDropdown';
 import IsDoneSwitch from './IsDoneSwitch';
-import { PriceRangeSlider, PriceProps } from './PriceRangeSlider';
-import { jobCategories, prices } from '../../../config';
 import SearchResults from './SearchResults';
+import { PriceRangeSlider, PriceProps } from './PriceRangeSlider';
 import { JobAdFilters } from '../../../queries';
-import { JobAd } from 'wasp/entities';
-import { useQuery, getFilteredJobAds } from 'wasp/client/operations'
+import { defaultCategory, jobCategories, prices, type Interval } from '../../../config';
 
 
-const Searchbar = () => {
+
+const Searchbar = ({ user }: { user: AuthUser }) => {
     const { defaultMinPrice, defaultMaxPrice } = prices;
     const [minPrice, setMinPrice] = useState<PriceProps>({valueAsString: defaultMinPrice.toString(), valueAsNumber: defaultMinPrice});
     const [maxPrice, setMaxPrice] = useState<PriceProps>({valueAsString: defaultMaxPrice.toString(), valueAsNumber: defaultMaxPrice});
     const [isDone, setIsDone] = useState(false);
-    const [menuButtonLabel, setMenuButtonLabel] = useState('Category');
+    const [interval, setInterval] = useState<Interval | 'Interval'>('Interval');
+    const [menuButtonLabel, setMenuButtonLabel] = useState(defaultCategory);
+    const userEmail = user?.auth?.identities[0]?.providerUserId;
+    const emails = userEmail ? [userEmail] : [];
+    const searchProfile = useMemo(() => ({
+        minPrice: minPrice.valueAsNumber,
+        maxPrice: maxPrice.valueAsNumber,
+        isDone,
+        category: menuButtonLabel,
+        interval,
+        emails
+      }), [minPrice, maxPrice, isDone, menuButtonLabel, interval, emails]);
+
     const menuItems: React.ReactElement<typeof MenuItem>[] = jobCategories.map(
         (category: string, index) => {
             return <MenuItem 
@@ -34,51 +50,90 @@ const Searchbar = () => {
 
     const handleMinChange = (valueAsString: string, valueAsNumber: number) => {
         const newMin = valueAsNumber;
-        if (newMin <= maxPrice.valueAsNumber) { // Ensuring new min is not greater than current max
+        if (newMin <= maxPrice.valueAsNumber) { 
             setMinPrice({ valueAsString, valueAsNumber});
         }
     };
 
     const handleMaxChange = (valueAsString: string, valueAsNumber: number) => {
         const newMax = valueAsNumber;
-        if (newMax >= minPrice.valueAsNumber) { // Ensuring new min is not greater than current max
+        if (newMax >= minPrice.valueAsNumber) { 
             setMaxPrice({ valueAsString, valueAsNumber});
         }
      };
 
     const handleIsDoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setIsDone(!event.target.checked);
+      const newIsDone = !event.target.checked
+      setIsDone(newIsDone);
     };
 
+    const handleIntervalChange = (event: React.MouseEvent<HTMLButtonElement>) => {
+        const newInterval = event.currentTarget.textContent! as Interval | 'Interval';
+        setInterval(newInterval);
+      }
+
+    const {
+        handleSubmit,
+        register,
+        formState: { errors, isSubmitting },
+    } = useForm()
+    const toast = useToast()
+    
+    async function onSubmit() {
+        try {
+          await createSearchProfile(searchProfile);
+          // Return a new Promise that resolves after a second delay
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              resolve("Search Profile created successfully");
+              toast({
+                title: 'Alert subscribed successfully.',
+                description: "We've subscribed you to get alerts with similar job ads according to current filters.",
+                status: 'success',
+                duration: 5500,
+                isClosable: true,
+              })
+            }, 1000); // Delay in milliseconds
+          });
+        } catch (err: any) {
+          console.log('Error: ' + err.message);
+        }
+      }
+
     return (
-        <Box>
-            <Stack spacing='4'>
-                <Card key='md' size='md' variant='elevated'>
-                <CardHeader>
-                    <Heading size='md'><Flex> Search &nbsp; <FiSearch/></Flex></Heading>
-                </CardHeader>
-                <CardBody>
-                    <Flex>
-                        <JobCategoriesDropdown menuButtonLabel={menuButtonLabel} menuItems={menuItems}/>
-                        <Stack align='center' direction='row'>
-                        </Stack>
-                    </Flex>
-                    <br/>
-                    <IsDoneSwitch isDone={isDone} handleIsDoneChange={handleIsDoneChange}/>
-                    <PriceRangeSlider 
-                        minPrice={minPrice} 
-                        maxPrice={maxPrice} 
-                        handleMinChange={handleMinChange} 
-                        handleMaxChange={handleMaxChange} 
-                    />
-                </CardBody>
-                </Card>
-            </Stack>
-            <Box p={2} ></Box>
-            {jobAds && <SearchResults jobAds={jobAds as JobAd[]}/>}
-            {/* {isLoading && 'Loading...'} */}
-            {error && 'Error: ' + error}
-        </Box>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <Box>
+                <Stack>
+                    <Card key='md' size='md' variant='elevated'>
+                    <CardHeader mb={0}>
+                        <Heading size='md'><Flex> Search &nbsp; <FiSearch/></Flex></Heading>
+                    </CardHeader>
+                    <CardBody mt={0}>
+                        <Flex>
+                            <JobCategoriesDropdown menuButtonLabel={menuButtonLabel} menuItems={menuItems}/>
+                            <Stack align='center' direction='row'>
+                            </Stack>
+                        </Flex>
+                        <br/>
+                        <IsDoneSwitch isDone={isDone} handleIsDoneChange={handleIsDoneChange}/>
+                        
+                            <PriceRangeSlider 
+                                minPrice={minPrice} 
+                                maxPrice={maxPrice} 
+                                handleMinChange={handleMinChange} 
+                                handleMaxChange={handleMaxChange} 
+                            />
+                            <Box h={3}></Box>
+                            <SearchProfileButton searchProfile={searchProfile} handleIntervalChange={handleIntervalChange} isSubmitting={isSubmitting}/>                    
+                    </CardBody>
+                    </Card>
+                </Stack>
+                <Box p={2} ></Box>
+                {jobAds && <SearchResults jobAds={jobAds as JobAd[]}/>}
+                {/* {isLoading && 'Loading...'} */}
+                {error && 'Error: ' + error}
+            </Box>
+        </form>
     );
 }
 

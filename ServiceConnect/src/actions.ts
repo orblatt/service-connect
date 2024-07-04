@@ -1,9 +1,8 @@
 import { JobAd, SearchProfile } from 'wasp/entities'
 import { HttpError } from 'wasp/server'
-import { CreateJobAd, UpdateJobAd, UpdateJobAdProvider, SendEmail, CreateSearchProfile } from 'wasp/server/operations'
+import { CreateJobAd, UpdateJobAd, UpdateJobAdProvider, SendEmail, CreateSearchProfile, DeleteSearchProfiles } from 'wasp/server/operations'
 import { emailSender } from "wasp/server/email";
 import { htmlToText } from 'html-to-text';
-import { JobAdFilters } from './queries';
 import { 
   Interval, 
   defaultCategory, 
@@ -50,10 +49,9 @@ export const createJobAd: CreateJobAd<CreateJobAdPayload, JobAd> = async (
   context
 ) => {
   if (!context.user) {
-    throw new HttpError(401)
+    throw new HttpError(401, "Unauthorized access attempt.")
   }
   validateJobAd(args)
-  console.log('This is server side:', JSON.stringify(args))
   try {
     return context.entities.JobAd.create({
       data: { 
@@ -73,7 +71,7 @@ export const updateJobAd: UpdateJobAd<UpdateJobAdPayload,  { count: number } > =
   context
 ) => {
   if (!context.user) {
-    throw new HttpError(401)
+    throw new HttpError(401, "Unauthorized access attempt.")
   }
   if (!id) {
     console.error('Error while updating JobAd provider: id is missing')
@@ -94,7 +92,7 @@ export const updateJobAdProvider: UpdateJobAdProvider<Pick<JobAd, 'id'>,  JobAd>
   context
 ) => {
   if (!context.user) {
-    throw new HttpError(401)
+    throw new HttpError(401, "Unauthorized access attempt.")
   }
   if (!id) {
     console.error('Error while updating JobAd provider: id is missing')
@@ -102,7 +100,6 @@ export const updateJobAdProvider: UpdateJobAdProvider<Pick<JobAd, 'id'>,  JobAd>
   }
   let jobAd: JobAd | null;
   try {
-    console.log('id:', id)
     jobAd = await context.entities.JobAd.findUnique({ where: { id } });
   } catch (error) {
     console.error('Error while updating JobAd provider:', error)
@@ -112,7 +109,7 @@ export const updateJobAdProvider: UpdateJobAdProvider<Pick<JobAd, 'id'>,  JobAd>
   if (!jobAd) {
     throw new HttpError(404, 'JobAd not found');
   } else if (jobAd.ownerId === currentUserId) {
-    throw new HttpError(403, 'You are the owner of this JobAd, you cannot be the provider as well.');
+    throw new HttpError(403, 'You are the owner of this ad, you cannot be the provider as well.');
   } else if (jobAd.providerId === currentUserId) {  // Disconnect 
     return context.entities.JobAd.update({
       where: { id },
@@ -173,27 +170,50 @@ export const sendEmail: SendEmail<SendEmailOptions , any>  = async (
   return info;
 };
 
-export type CreateSearchProfilePayload = Pick<SearchProfile, 'minPrice' | 'maxPrice' | 'isDone'> & { interval: Interval, emails: string[]}
+export type CreateSearchProfilePayload = Pick<SearchProfile, 'minPrice' | 'maxPrice' | 'isDone' | 'category'> & { interval: Interval | 'Interval', emails: string[]}
 
 export const createSearchProfile: CreateSearchProfile<CreateSearchProfilePayload, SearchProfile> = async (
   args,
   context
 ) => {
   if (!context.user) {
-    throw new HttpError(401)
+    throw new HttpError(401, "Unauthorized access attempt.")
   }
-  const { emails: inputEmails, minPrice, maxPrice, isDone, interval } = args;
+  const { emails: inputEmails, minPrice, maxPrice, category, isDone, interval } = args;
+  if (!interval || interval === 'Interval') {
+    throw new HttpError(400, 'Interval is missing');
+  }
   const currentUserEmail: string = context.user.auth.identities[0].providerUserId; // TODO: change this to support second identity provider like Google OAuth
   const emails: string[] = inputEmails === undefined || inputEmails.length == 0 ? [ currentUserEmail ] : inputEmails;
 
-  return context.entities.SearchProfile.create({
-    data: { 
-      emails,
-      minPrice,
-      maxPrice,
-      isDone,
-      interval,
-      searcher: { connect: { id: context.user.id } },
-    },
-  })
+  const data: any = {
+    emails,
+    minPrice,
+    maxPrice,
+    isDone,
+    interval,
+    searcher: { connect: { id: context.user.id } },
+  };
+  if (category && category !== defaultCategory) {
+    data.category = category;
+  }
+
+  return context.entities.SearchProfile.create({ data });
 };
+
+// DeleteSearchProfiles<{}, SearchProfile[]>
+export const deleteSearchProfiles:any = async ( 
+  args,
+  context
+) => {
+  if (!context.user) {
+    throw new HttpError(401, "Unauthorized access attempt.")
+  }
+  try {
+    return context.entities.SearchProfile.deleteMany({
+      where: { searcher: { id: context.user.id } },
+    })
+  } catch (error) {
+    console.error('Error while deleting Search Profiles:', error)
+  }
+}
