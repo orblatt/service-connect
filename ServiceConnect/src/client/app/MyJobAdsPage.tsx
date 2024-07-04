@@ -18,7 +18,7 @@ export const MyJobAdsPage = ({ user }: { user: AuthUser }) => {
             </Card>
             <Box h={3}></Box>
             {jobAds && <SearchResults jobAds={jobAds as JobAd[]}/>}
-            {isLoading && 'Loading...'}
+            {/* {isLoading && 'Loading...'} */}
             {error && 'Error: ' + error}
         </MainLayout>
     )

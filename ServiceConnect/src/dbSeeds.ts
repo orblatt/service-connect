@@ -1,49 +1,97 @@
 import { CreateJobAdPayload, CreateSearchProfilePayload, createJobAd, createSearchProfile } from './actions.js'
-import { sanitizeAndSerializeProviderData } from 'wasp/server/auth'
+import { sanitizeAndSerializeProviderData, type EmailProviderData } from 'wasp/server/auth'
 import { type AuthUser } from 'wasp/auth'
 import { PrismaClient } from '@prisma/client'
 
 export const devSeedSimple = async (prisma: PrismaClient) => {
   const user1: AuthUser = await createUser(prisma, {
-    username: 'user1@example.com',
+    email: 'nathanch@mta.ac.il',
     password: '12345678',
   })
 
   const user2: AuthUser = await createUser(prisma, {
-    username: 'user2@example.com',
+    email: 'tomeryh@mta.ac.il',
     password: '12345678',
   })
 
   const user3: AuthUser = await createUser(prisma, {
-    username: 'orblatt@gmail.com',
+    email: 'orblatt@gmail.com',
     password: '12345678',
   })
 
   const mockJobAdsPayloads: CreateJobAdPayload[] = [
-    { category: 'Babysitting', 
-    title: 'Experienced Babysitter Required', 
-    description: 'Seeking experienced, warm babysitter for engaging child care in Tel Aviv.',
-    price: 80, city: 'Tel Aviv', duration: 2, youngestChildAge: 2 },
-    { category: 'House Keeping',
-    title: 'Housekeeper Needed for Busy Family',
-    description: 'Looking for reliable, experienced housekeeper for duties in Tel Aviv.',
-    price: 140, city: 'Ramat Gan', duration: 4, numberOfRooms: 3.5 },
-    { category: 'Gardening',
-    title: 'Gardener Wanted for Private Residence',
-    description: 'Seeking skilled gardener for diverse plant maintenance in Tel Aviv.',
-    price: 130, city: 'Petah Tikva', duration: 2, toolsProvided: true },
     { category: 'Babysitting',
-      title: 'Sweet Babysitter Needed',
-      description: 'Seeking sweet, patient babysitter for daughter in Ramat Gan.',
-      price: 100, city: 'Ramat Gan', duration: 3, youngestChildAge: 5 },
+      title: 'Weekend Babysitter Needed',
+      description: 'Looking for a friendly and dependable babysitter for weekends in Tel Aviv.',
+      price: 90, city: 'Tel Aviv', duration: 3, youngestChildAge: 3 },
     { category: 'House Keeping',
-      title: 'Housekeeper Needed',
-      description: 'Seeking housekeeper to maintain our home in Petah Tikva.',
-      price: 250, city: 'Tel Aviv', duration: 5, numberOfRooms: 4.5 },
+      title: 'Part-Time Housekeeper',
+      description: 'Part-time housekeeper required for a small apartment in Ramat Gan.',
+      price: 70, city: 'Ramat Gan', duration: 2, numberOfRooms: 2 },
     { category: 'Gardening',
-      title: 'Gardener Wanted Today!!!',
-      description: 'Seeking skilled gardener who loves plants for garden in Tel Aviv.',
-      price: 450, city: 'Tel Aviv', duration: 8, toolsProvided: false },
+      title: 'Gardener for Small Garden',
+      description: 'Need a gardener to take care of a small garden space in Petah Tikva. Tools not provided.',
+      price: 60, city: 'Petah Tikva', duration: 1, toolsProvided: false },
+    { category: 'Babysitting',
+      title: 'After-School Care Required',
+      description: 'Responsible babysitter needed for after-school care in Petah Tikva.',
+      price: 85, city: 'Petah Tikva', duration: 4, youngestChildAge: 7 },
+    { category: 'House Keeping',
+      title: 'Full-Time Housekeeper Wanted',
+      description: 'Full-time housekeeper wanted for a large home in Tel Aviv.',
+      price: 300, city: 'Tel Aviv', duration: 6, numberOfRooms: 5.5 },
+    { category: 'Gardening',
+      title: 'Experienced Gardener Required',
+      description: 'Experienced gardener needed for routine garden maintenance in Ramat Gan.',
+      price: 120, city: 'Ramat Gan', duration: 3, toolsProvided: true },
+    { category: 'Babysitting',
+      title: 'Evening Babysitter for Young Child',
+      description: 'Seeking a gentle babysitter for evening hours in Tel Aviv.',
+      price: 75, city: 'Tel Aviv', duration: 2, youngestChildAge: 4 },
+    { category: 'House Keeping',
+      title: 'Weekend Cleaner Needed',
+      description: 'Looking for a cleaner to work on weekends in a mid-sized house in Petah Tikva.',
+      price: 200, city: 'Petah Tikva', duration: 5, numberOfRooms: 3 },
+    { category: 'Gardening',
+      title: 'Professional Gardener for Large Estate',
+      description: 'Professional gardener needed for a large estate garden in Tel Aviv.',
+      price: 500, city: 'Tel Aviv', duration: 7, toolsProvided: true },
+      { category: 'Babysitting', 
+      title: 'Morning Babysitter for Toddler', 
+      description: 'Urgently seeking a patient and energetic babysitter for morning care in Ramat Gan.',
+      price: 120, city: 'Ramat Gan', duration: 4, youngestChildAge: 1 },
+    { category: 'House Keeping',
+      title: 'Daily Housekeeper Needed',
+      description: 'Daily housekeeper needed for routine cleaning and maintenance in a family home in Tel Aviv.',
+      price: 180, city: 'Tel Aviv', duration: 6, numberOfRooms: 2 },
+    { category: 'Gardening',
+      title: 'Weekend Gardening Help',
+      description: 'Casual gardener needed for weekends to manage and beautify a small garden in Petah Tikva.',
+      price: 250, city: 'Petah Tikva', duration: 5, toolsProvided: true },
+    { category: 'Babysitting',
+      title: 'Evening Babysitter for Two Children',
+      description: 'Experienced babysitter needed for evenings to look after two children in Tel Aviv.',
+      price: 150, city: 'Tel Aviv', duration: 3, youngestChildAge: 6 },
+    { category: 'House Keeping',
+      title: 'Reliable Cleaner for Large Apartment',
+      description: 'Reliable cleaner required for a large apartment in Ramat Gan. Attention to detail a must.',
+      price: 90, city: 'Ramat Gan', duration: 2, numberOfRooms: 4 },
+    { category: 'Gardening',
+      title: 'Professional Landscape Gardener',
+      description: 'Professional landscape gardener needed to redesign and maintain large garden in Tel Aviv.',
+      price: 800, city: 'Tel Aviv', duration: 8, toolsProvided: false },
+    { category: 'Babysitting',
+      title: 'Weekend Babysitter for Infant',
+      description: 'Seeking a gentle and experienced babysitter for infant care during weekends in Petah Tikva.',
+      price: 200, city: 'Petah Tikva', duration: 5, youngestChildAge: 0.5 },
+    { category: 'House Keeping',
+      title: 'Organizer and Cleaner Needed',
+      description: 'Organizer needed for sorting and cleaning a cluttered home office in Tel Aviv.',
+      price: 300, city: 'Tel Aviv', duration: 9, numberOfRooms: 1 },
+    { category: 'Gardening',
+      title: 'Gardener for Urban Balcony',
+      description: 'Looking for a gardener with experience in balcony and small space gardening in Ramat Gan.',
+      price: 70, city: 'Ramat Gan', duration: 1, toolsProvided: false }
   ];
 
   
@@ -70,24 +118,27 @@ export const devSeedSimple = async (prisma: PrismaClient) => {
 };
 async function createUser(
   prisma: PrismaClient,
-  data: { username: string, password: string }
+  data: { email: string, password: string }
 ): Promise<AuthUser> {
     try {
       const newUser = await prisma.user.create({
         data: {
-        auth: {
-            create: {
-            identities: {
-                create: {
-                providerName: 'username',
-                providerUserId: data.username,
-                providerData: await sanitizeAndSerializeProviderData<'username'>({
-                    hashedPassword: data.password
-                }),
+          auth: {
+              create: {
+                identities: {
+                    create: {
+                      providerName: 'email',
+                      providerUserId: data.email,
+                      providerData: await sanitizeAndSerializeProviderData<'email'>({
+                          hashedPassword: data.password,
+                          isEmailVerified: true, // Set isEmailVerified to true
+                          emailVerificationSentAt: new Date().toISOString(), // Set the verification sent date to now
+                          passwordResetSentAt: null,
+                      }),
+                    },
                 },
-            },
-            },
-        },
+              },
+          },
         },
     })
     return {

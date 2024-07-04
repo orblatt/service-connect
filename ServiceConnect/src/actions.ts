@@ -22,9 +22,9 @@ const validateJobAd = (args: CreateJobAdPayload): void => {
   const requiredFieldsOccupied: boolean = Boolean(category && price && title && description && city && duration);
   const requiredFieldsValid: boolean = city !== defaultCityPlaceholder && 
     category !== defaultCategory && 
-    price > prices.min && 
+    price >= prices.min && 
     price <= prices.max && 
-    duration > defaultDuration.min && 
+    duration >= defaultDuration.min && 
     duration <= defaultDuration.max;
   const optionalFieldsOccupied: boolean = Boolean(youngestChildAge || toolsProvided !== undefined || numberOfRooms);
   const optionalFieldsValid: boolean = (youngestChildAge >= defaultYoungestChildAge.min &&
