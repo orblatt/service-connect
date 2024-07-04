@@ -8,7 +8,7 @@ const JobCategoriesDropdown = (
     } :
     {
         menuButtonLabel: string,
-        menuItems: React.ReactElement<typeof MenuItem>[]
+        menuItems: React.ReactElement[]
     }
 ) => {
     return <DropdownButton menuButtonLabel={menuButtonLabel} menuItems={menuItems} />  

@@ -5,12 +5,9 @@ import { useUserDetails } from '../../utils'
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { routes } from '../../config';
-import {
-    FiPlus,
-  } from 'react-icons/fi'
 
 export const MainPage = ({ user }: { user: AuthUser }) => {
-    const username = user.id ? useUserDetails(user.id, 'Owner') : '';
+    const username = user.id ? useUserDetails(user.id, 'Owner').username : '';
     return (
         <MainLayout user={user}>
             <Card>
@@ -34,8 +31,6 @@ export const MainPage = ({ user }: { user: AuthUser }) => {
                                 colorScheme={'teal'}
                                 size={'lg'}
                                 mr={4}
-                                rounded={'full'}
-
                             >
                                 Create Ad
                             </Button>
@@ -47,7 +42,6 @@ export const MainPage = ({ user }: { user: AuthUser }) => {
                                 colorScheme={'teal'}
                                 size={'lg'}
                                 mr={4}
-                                rounded={'full'}
 
                             >
                               Browse Ads

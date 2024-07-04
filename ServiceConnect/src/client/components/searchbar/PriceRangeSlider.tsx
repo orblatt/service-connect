@@ -63,7 +63,7 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ minPrice, ma
                 </RangeSliderThumb>
                 </RangeSlider>
             </Flex>
-            <br/>
+            <Box h={1}></Box>
             <Flex>
                 <NumberInput 
                     maxW="140px" 
@@ -73,6 +73,7 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ minPrice, ma
                     max={maxPrice.valueAsNumber} 
                     step={prices.step} 
                     onChange={handleMinChange} 
+                    marginTop={0}
                 > 
                     <NumberInputField />
                     <NumberInputStepper>
@@ -89,6 +90,7 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ minPrice, ma
                     max={prices.max} 
                     step={prices.step} 
                     onChange={handleMaxChange} 
+                    marginTop={0}
                 > 
                     <NumberInputField />
                     <NumberInputStepper>

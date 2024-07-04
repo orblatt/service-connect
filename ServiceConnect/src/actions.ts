@@ -171,7 +171,7 @@ export const sendEmail: SendEmail<SendEmailOptions , any>  = async (
   return info;
 };
 
-export type CreateSearchProfilePayload = Pick<SearchProfile, 'minPrice' | 'maxPrice' | 'isDone'> & { interval: Interval, emails: string[]}
+export type CreateSearchProfilePayload = Pick<SearchProfile, 'minPrice' | 'maxPrice' | 'isDone' | 'category'> & { interval: Interval | 'Interval', emails: string[]}
 
 export const createSearchProfile: CreateSearchProfile<CreateSearchProfilePayload, SearchProfile> = async (
   args,
@@ -180,18 +180,24 @@ export const createSearchProfile: CreateSearchProfile<CreateSearchProfilePayload
   if (!context.user) {
     throw new HttpError(401)
   }
-  const { emails: inputEmails, minPrice, maxPrice, isDone, interval } = args;
+  const { emails: inputEmails, minPrice, maxPrice, category, isDone, interval } = args;
+  if (!interval || interval === 'Interval') {
+    throw new HttpError(400, 'Interval is missing');
+  }
   const currentUserEmail: string = context.user.auth.identities[0].providerUserId; // TODO: change this to support second identity provider like Google OAuth
   const emails: string[] = inputEmails === undefined || inputEmails.length == 0 ? [ currentUserEmail ] : inputEmails;
 
-  return context.entities.SearchProfile.create({
-    data: { 
-      emails,
-      minPrice,
-      maxPrice,
-      isDone,
-      interval,
-      searcher: { connect: { id: context.user.id } },
-    },
-  })
+  const data: any = {
+    emails,
+    minPrice,
+    maxPrice,
+    isDone,
+    interval,
+    searcher: { connect: { id: context.user.id } },
+  };
+  if (category && category !== defaultCategory) {
+    data.category = category;
+  }
+
+  return context.entities.SearchProfile.create({ data });
 };

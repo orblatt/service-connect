@@ -18,7 +18,7 @@ export type JobAdFilters = {
   minPrice?: number | string, 
   maxPrice?: number | string, 
   isDone?: boolean, 
-  interval?: Interval,
+  interval?: Interval | 'Interval',
   category?: string,
   city?: string,
 }
@@ -40,16 +40,16 @@ export const getFilteredJobAds: GetFilteredJobAds<
       { price: { lte: maxPrice } },  // lte means 'less than or equal to
     ]
   };
-  if (interval !== undefined) {  
+  if (interval && interval !== 'Interval') {  
     whereCondition.AND.push({ interval });
   }
-  if (isDone !== undefined) {
+  if (isDone !== undefined && typeof isDone === 'boolean') {
     whereCondition.AND.push({ isDone });
   }
-  if (category !== defaultCategory) {
+  if (category && category !== defaultCategory) {
     whereCondition.AND.push({ category });
   }
-  if (city !== defaultCityPlaceholder)  {
+  if (city && city !== defaultCityPlaceholder)  {
     whereCondition.AND.push({ city });
   }
   const jobAds: Promise<JobAd[]> = context.entities.JobAd.findMany({
@@ -68,6 +68,8 @@ SearchProfile[]
   let whereCondition: any;
   if (!interval) {
     whereCondition = { interval: { in: defaultIntervals } }
+  } else if (interval === 'Interval') {
+    throw new HttpError(400, 'Invalid interval')
   } else {
     whereCondition = { interval }
   }

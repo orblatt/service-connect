@@ -121,6 +121,7 @@ entity SearchProfile {=psl
     createdAt   DateTime @default(now()) @db.Timestamptz
     searcher    User    @relation(name: "searchedBy", fields: [searcherId], references: [id])
     searcherId  Int
+    category    String?
 psl=}
 
 action createSearchProfile {
@@ -158,7 +159,7 @@ job smartAgentJob {
   },
   schedule: {
     cron: "* * * * *", // Every minute
-    args: {=json { "interval": "minutely" } json=}
+    args: {=json { "interval": "Minutely" } json=}
   },
   entities: [SearchProfile, JobAd]
 }
@@ -170,7 +171,7 @@ job hourlySmartAgentJob {
   },
   schedule: {
     cron: "0 * * * *", // Every hour
-    args: {=json { "interval": "hourly" } json=}
+    args: {=json { "interval": "Hourly" } json=}
   },
   entities: [SearchProfile, JobAd]
 }
@@ -182,7 +183,7 @@ job dailySmartAgentJob {
   },
   schedule: {
     cron: "0 10 * * *", // Every day at 10:00am
-    args: {=json { "interval": "daily" } json=}
+    args: {=json { "interval": "Daily" } json=}
   },
   entities: [SearchProfile, JobAd]
 }
@@ -194,7 +195,7 @@ job weeklySmartAgentJob {
   },
   schedule: {
     cron: "0 10 * * SUN", // Every Sunday at 10:00am
-    args: {=json { "interval": "weekly" } json=}
+    args: {=json { "interval": "Weekly" } json=}
   },
   entities: [SearchProfile, JobAd]
 }

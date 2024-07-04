@@ -8,7 +8,7 @@ import { Box } from '@chakra-ui/react';
 export const SearchJobAdsPage = ({ user }: { user: AuthUser }) => {
   return (
     <MainLayout user={user}>
-        <Searchbar/>
+        <Searchbar user={user}/>
     </MainLayout>
   );
 };

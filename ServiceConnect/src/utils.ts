@@ -3,6 +3,7 @@ import { getUserById, useQuery } from 'wasp/client/operations'
 
 export function useUserDetails (userId: number, userType: 'Provider' | 'Owner') {
     const [username, setUsername] = useState(`No ${userType}`);
+    const [email, setEmail] = useState('');
     const { data: user, error } = useQuery(getUserById, { userId }, [userId]);
   
     useEffect(() => {
@@ -11,10 +12,11 @@ export function useUserDetails (userId: number, userType: 'Provider' | 'Owner') 
       } else if (!user) {
         setUsername(`No ${userType}`);
       } else {
-        const email = (user as any)?.auth?.identities[0]?.providerUserId;
-        setUsername(email ? email.split('@')[0] : '');
+        const userEmail = (user as any)?.auth?.identities[0]?.providerUserId;
+        setEmail(userEmail || '');
+        setUsername(userEmail ? userEmail.split('@')[0] : '');
       }
     }, [user, error, userType]);
   
-    return username;
+    return {username, email};
   }

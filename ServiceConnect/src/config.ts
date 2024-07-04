@@ -36,7 +36,7 @@ export const defaultCategory: string = 'Category';
 export const defaultMinPrice: string = '0';
 export const defaultMaxPrice: string = '99999';
 export const defaultSearchProfile: any = {
-    interval: 'minutely'
+    interval: 'Minutely'
 };
 export const routes: any = {
     home: '/',
@@ -56,5 +56,6 @@ export const jobImages = {
 export const jobCategories = ['Babysitting', 'House Keeping', 'Gardening'] as const;
 export type JobCategory = typeof jobCategories[number];
 
-export const defaultIntervals = ['weekly', 'daily', 'hourly', 'minutely'] as const;
+export const defaultInterval: string = 'Interval';
+export const defaultIntervals = ['Weekly', 'Daily', 'Hourly', 'Minutely'] as const;
 export type Interval = typeof defaultIntervals[number];

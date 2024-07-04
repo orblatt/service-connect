@@ -9,7 +9,7 @@ import { FiChevronDown } from 'react-icons/fi'
 
 export type MenuInput = {
     menuButtonLabel: string,
-    menuItems: React.ReactElement<typeof MenuItem>[]
+    menuItems: React.ReactElement[]
 }
 
 export const DropdownButton = ( { 

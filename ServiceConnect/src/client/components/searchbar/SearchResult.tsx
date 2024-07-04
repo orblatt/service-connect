@@ -6,8 +6,8 @@ import { useUserDetails } from '../../../utils'
 
 const SearchResult = ({ jobAd, isPreview } : { jobAd: JobAd, isPreview: boolean }) => {
     const { category, description, price, isDone, ownerId, providerId, title, city, duration, youngestChildAge, toolsProvided, numberOfRooms } = jobAd;
-    const ownerUsername = ownerId ? useUserDetails(ownerId, 'Owner') : 'No Owner';
-    const providerUsername = ownerId ? useUserDetails(providerId, 'Provider') : 'No Provider';
+    const ownerUsername = ownerId ? useUserDetails(ownerId, 'Owner').username : 'No Owner';
+    const providerUsername = ownerId ? useUserDetails(providerId, 'Provider').username : 'No Provider';
     const toast = useToast()
 
     const handleProviderChange = async (event: React.MouseEvent<HTMLButtonElement>) => {
