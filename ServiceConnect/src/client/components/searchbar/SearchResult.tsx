@@ -3,8 +3,9 @@ import { JobAd } from 'wasp/entities';
 import { updateJobAd, updateJobAdProvider } from 'wasp/client/operations'
 import { jobImages, type JobCategory } from '../../../config'
 import { useUserDetails } from '../../../utils'
+import { AuthUser } from 'wasp/auth'
 
-const SearchResult = ({ jobAd, isPreview } : { jobAd: JobAd, isPreview: boolean }) => {
+const SearchResult = ({ jobAd, isPreview, user } : { jobAd: JobAd, isPreview: boolean, user: AuthUser }) => {
     const { category, description, price, isDone, ownerId, providerId, title, city, duration, youngestChildAge, toolsProvided, numberOfRooms } = jobAd;
     const ownerUsername = ownerId ? useUserDetails(ownerId, 'Owner').username : 'No Owner';
     const providerUsername = ownerId ? useUserDetails(providerId, 'Provider').username : 'No Provider';
@@ -122,8 +123,14 @@ const SearchResult = ({ jobAd, isPreview } : { jobAd: JobAd, isPreview: boolean 
         <Divider />
         <CardFooter>
             <ButtonGroup spacing='2'>
-            <Button variant='solid' colorScheme='purple' onClick={handleProviderChange}>
-                Assign Me
+            <Button variant='solid' colorScheme='purple' onClick={handleProviderChange} isDisabled={user.id === ownerId || providerId && providerId !== user.id}>
+            {
+              providerId && providerId !== user.id
+              ? 'Already Assigned'
+              : providerId
+              ? 'Unassign Me'
+              : 'Assign Me'
+            }
             </Button>
             <Button variant='outline' colorScheme='purple' onClick={handleIsDoneChange}>
                 {!isDone ? 'Done' : 'Undone'}

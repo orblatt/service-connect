@@ -16,6 +16,7 @@ import {
     FiSettings,
     FiPlusCircle,
   } from 'react-icons/fi'
+import { TbHammer } from "react-icons/tb";
 import NavItem from './NavItem'
 import { useLocation } from 'react-router-dom';
 
@@ -43,6 +44,7 @@ interface LinkItemProps {
       { name: 'Browse', icon: FiCompass, to: routes.searchJobAds},
       { name: 'Create Ad', icon: FiPlusCircle, to: routes.createJobAd},
       { name: 'My Ads', icon: FiTrendingUp, to: routes.myJobAds },
+      { name: 'My Jobs', icon: TbHammer, to: routes.myJobs },
       { name: 'Reviews', icon: FiStar, to: location.pathname },
       { name: 'Settings', icon: FiSettings, to: routes.settings},
     ]
