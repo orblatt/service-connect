@@ -40,7 +40,7 @@ interface LinkItemProps {
 
     const LinkItems: Array<LinkItemProps> = [
       { name: 'Home', icon: FiHome, to: routes.home },
-      { name: 'Search', icon: FiCompass, to: routes.searchJobAds},
+      { name: 'Browse', icon: FiCompass, to: routes.searchJobAds},
       { name: 'Create Ad', icon: FiPlusCircle, to: routes.createJobAd},
       { name: 'My Ads', icon: FiTrendingUp, to: routes.myJobAds },
       { name: 'Reviews', icon: FiStar, to: location.pathname },

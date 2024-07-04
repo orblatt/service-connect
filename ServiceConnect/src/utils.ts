@@ -14,7 +14,7 @@ export function useUserDetails (userId: number, userType: 'Provider' | 'Owner') 
       } else {
         const userEmail = (user as any)?.auth?.identities[0]?.providerUserId;
         setEmail(userEmail || '');
-        setUsername(userEmail ? userEmail.split('@')[0] : '');
+        setUsername(typeof userEmail === 'string' && userEmail && email.split('@').length > 0 ? userEmail.split('@')[0] : '');
       }
     }, [user, error, userType]);
   

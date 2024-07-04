@@ -1,0 +1,5 @@
+.customSpan {
+    font-size: 0.875rem; /* Approximately 14px assuming the base font size is 16px */
+    font-weight: 500;    /* Medium font weight */
+    color: #111827;      /* A very dark shade of gray, nearly black */
+}

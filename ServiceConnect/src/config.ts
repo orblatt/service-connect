@@ -1,5 +1,5 @@
 export const prices = {
-    min: 0,
+    min: 1,
     max: 1000,
     defaultMinPrice: 100,
     defaultMaxPrice: 500,
@@ -33,7 +33,7 @@ export const rooms = {
 }
 
 export const defaultCategory: string = 'Category';
-export const defaultMinPrice: string = '0';
+export const defaultMinPrice: string = '1';
 export const defaultMaxPrice: string = '99999';
 export const defaultSearchProfile: any = {
     interval: 'Minutely'

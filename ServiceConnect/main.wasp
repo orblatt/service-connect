@@ -6,15 +6,27 @@ app ServiceConnect {
   auth: {
     userEntity: User,
     methods: {
-      usernameAndPassword: {}
+      email: {
+        fromField: {
+          name: "Or Golan",
+          email: "or.golan@service-connect.me"
+        },
+        emailVerification: {
+          clientRoute: EmailVerificationRoute,
+        },
+        passwordReset: {
+          clientRoute: PasswordResetRoute,
+        },
+      },
     },
-    onAuthFailedRedirectTo: "/login"
+    onAuthFailedRedirectTo: "/login",
+    onAuthSucceededRedirectTo: "/"
   },
   emailSender: {
     provider: Mailgun,
     defaultFrom: {
-      name: "Tomer Yahpes",
-      email: "tomer.yahpes@service-connect.me"
+      name: "Smart Agent",
+      email: "alerts@service-connect.me"
     }
   },
   db: {
@@ -101,7 +113,6 @@ action updateJobAdProvider {
 
 action sendEmail {
   fn: import { sendEmail } from "@src/actions",
-  // entities: [JobAd]
 }
 
 action deleteSearchProfiles {
@@ -143,12 +154,27 @@ psl=}
 
 route SignupRoute { path: "/signup", to: SignupPage }
 page SignupPage {
-  component: import { SignupPage } from "@src/SignupPage"
+  component: import { Signup } from "@src/client/app/auth/auth.tsx"
 }
 
 route LoginRoute { path: "/login", to: LoginPage }
 page LoginPage {
-  component: import { LoginPage } from "@src/LoginPage"
+  component: import { Login } from "@src/client/app/auth/auth.tsx"
+}
+
+route RequestPasswordResetRoute { path: "/request-password-reset", to: RequestPasswordResetPage }
+page RequestPasswordResetPage {
+  component: import { RequestPasswordReset } from "@src/client/app/auth/auth.tsx",
+}
+
+route PasswordResetRoute { path: "/password-reset", to: PasswordResetPage }
+page PasswordResetPage {
+  component: import { PasswordReset } from "@src/client/app/auth/auth.tsx",
+}
+
+route EmailVerificationRoute { path: "/email-verification", to: EmailVerificationPage }
+page EmailVerificationPage {
+  component: import { EmailVerification } from "@src/client/app/auth/auth.tsx",
 }
 
 job smartAgentJob {

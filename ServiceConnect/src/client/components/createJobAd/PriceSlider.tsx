@@ -51,12 +51,34 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
         <Box>
             <Box h={2}></Box>
             <Flex maxW='400px'>
-                <Box><FormLabel fontWeight={'normal'}>Price</FormLabel></Box>
+                <Box alignContent={'center'}><FormLabel fontWeight={'normal'}>Price ($)</FormLabel></Box>
+                <NumberInput 
+                    maxW="102px" 
+                    shadow="md"
+                    focusBorderColor="purple.500"
+                    value={price} 
+                    min={prices.min} 
+                    max={prices.max} 
+                    step={prices.step} 
+                    minH={10}
+                    maxH={10}
+                    onChange={handleNumberInputChange}
+                >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                    </NumberInputStepper>
+                </NumberInput>
                 <Box w={3}></Box>
+            </Flex>
+            <br/>
+            <Flex>
                 <Slider 
                     id='price-slider'
                     aria-label='price-slider' 
                     value={price}
+                    maxW="400px" 
                     defaultValue={price}
                     min={prices.min}
                     max={prices.max}
@@ -70,25 +92,6 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
                         <Box color='purple.500' as={MdGraphicEq} />
                     </SliderThumb>
                 </Slider>
-            </Flex>
-            <br/>
-            <Flex>
-                <NumberInput 
-                    maxW="150px" 
-                    shadow="md"
-                    focusBorderColor="purple.500"
-                    value={price} 
-                    min={prices.min} 
-                    max={prices.max} 
-                    step={prices.step} 
-                    onChange={handleNumberInputChange}
-                >
-                    <NumberInputField />
-                    <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                    </NumberInputStepper>
-                </NumberInput>
             </Flex>
         </Box>
     );

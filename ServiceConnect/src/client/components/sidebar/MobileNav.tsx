@@ -25,8 +25,9 @@ import {
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { logout } from 'wasp/client/auth'
-import { getEmail, AuthUser, getUsername } from 'wasp/auth'
+import { getEmail, AuthUser } from 'wasp/auth'
 import { routes } from '../../../config';
+import { useUserDetails } from '../../../utils';
 
 interface MobileProps extends FlexProps {
   onOpen: () => void
@@ -34,8 +35,9 @@ interface MobileProps extends FlexProps {
 
 const MobileNav = ({ onOpen, user, ...rest }: MobileProps & { user: AuthUser }) => {
     const toast = useToast();
-    const email = getUsername(user);
-    const username = typeof email === 'string' && email.split('@').length > 0 ? email.split('@')[0] : ''
+    // const email = getUsername(user);
+    // const username = typeof email === 'string' && email.split('@').length > 0 ? email.split('@')[0] : ''
+    const username = useUserDetails(user.id, 'Owner').username;
     return (
       <Flex
         ml={{ base: 0, md: 60 }}
@@ -111,17 +113,6 @@ const MobileNav = ({ onOpen, user, ...rest }: MobileProps & { user: AuthUser }) 
                     Settings
                   </MenuItem>
                 </ChakraLink>
-                {/* <MenuItem onClick={() =>
-                  toast({
-                    title: 'Coming Soon',
-                    description: "We're workig on it",
-                    status: 'error',
-                    duration: 3000,
-                    isClosable: true,
-                  })
-                } >
-                  Settings
-                  </MenuItem> */}
                 <MenuDivider />
                 <MenuItem onClick={logout}>Sign out</MenuItem>
               </MenuList>

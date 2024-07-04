@@ -48,6 +48,8 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
         handleNumberOfRoomsChange
     }
 }) => {    
+    const titlePlaceholderText = titlePlaceholder(category);    
+    const descriptionPlaceholderText = descriptionPlaceholder(category);
     return (
         <FormControl>
             <Stack spacing='4'>
@@ -57,7 +59,7 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
                     </FormLabel>
                     <Input 
                         id="title" 
-                        placeholder="Babysitting 3 Kids" 
+                        placeholder={titlePlaceholderText}
                         value={title}
                         onChange={handleTitleChange}
                         shadow="md"
@@ -70,7 +72,7 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
                     </FormLabel>
                     <Textarea
                         id="description"
-                        placeholder="Join our family! We need a caring babysitter for our three kids (ages 3, 5, and 8), weekdays from 3 PM to 7 PM."
+                        placeholder={descriptionPlaceholderText}
                         value={description}
                         onChange={handleDescriptionChange}
                         rows={3}
@@ -102,13 +104,13 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
                     <option>Petah Tikva</option>
                     </Select>
                 </FormControl>
-                <PriceSlider
-                    price={price}
-                    handlePriceChange={handlePriceChange}
-                />
                 <DurationNumberInput
                     duration={duration}
                     handleDurationChange={handleDurationChange}
+                />
+                <PriceSlider
+                    price={price}
+                    handlePriceChange={handlePriceChange}
                 />
                 <Box position='relative' padding='7'>
                 <Divider />
@@ -129,6 +131,32 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
             </Stack>
         </FormControl>
     );
+}
+
+function descriptionPlaceholder (category: string) {
+    switch (category) {
+        case 'Babysitting':
+            return 'Join our family! We need a caring babysitter for our three kids (ages 3, 5, and 8), weekdays from 3 PM to 7 PM.';
+        case 'House Keeping':
+            return 'Seeking housekeeper to maintain our home in Petah Tikva.';
+        case 'Gardening':
+            return 'Seeking skilled gardener who loves plants for garden in Tel Aviv.';
+        default:
+            return 'Enter a description';
+    }
+}
+
+function titlePlaceholder (category: string) {
+    switch (category) {
+        case 'Babysitting':
+            return 'Babysitting 3 Kids';
+        case 'House Keeping':
+            return 'Housekeeper Needed';
+        case 'Gardening':
+            return 'Gardener Wanted Today';
+        default:
+            return 'Enter a title';
+    }
 }
 
 export default JobAdDetailsForm;
