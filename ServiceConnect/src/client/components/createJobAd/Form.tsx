@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { Link as ChakraLink } from '@chakra-ui/react';
@@ -174,11 +174,9 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
     }
   }
 
-  const ResponsiveStepper = ({ steps, activeStep, handleTabsChange }) => {
-    // Use `useBreakpointValue` to adjust styles based on the breakpoint
-    const orientation = useBreakpointValue<'horizontal' | 'vertical' | undefined>({ base: 'vertical', md: 'horizontal' });
-    const size = useBreakpointValue({ base: 'sm', md: 'lg' });
-  
+  const orientation = useBreakpointValue<'horizontal' | 'vertical' | undefined>({ base: 'vertical', md: 'horizontal' });
+  const size = useBreakpointValue({ base: 'sm', md: 'lg' });
+  const ResponsiveStepper = ({ steps, activeStep, handleTabsChange }) => {  
     return (
       <Stepper orientation={orientation} size={size} index={activeStep} onChange={handleTabsChange} overflowX="auto">
         {steps.map((step, index) => (
