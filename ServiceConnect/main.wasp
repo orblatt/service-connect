@@ -8,8 +8,8 @@ app ServiceConnect {
     methods: {
       email: {
         fromField: {
-          name: "Or Golan",
-          email: "or.golan@service-connect.me"
+          name: "Service Connect",
+          email: "no-reply@service-connect.me"
         },
         emailVerification: {
           clientRoute: EmailVerificationRoute,
