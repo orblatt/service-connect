@@ -31,24 +31,22 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
         setValueAsString(price.toString());
     }, [price]);
 
-
     const handleTotalPriceChange = (valueAsString: string, valueAsNumber: number) => {
         if (valueAsNumber !== sliderValue) {
             handlePriceChange(valueAsNumber);
             setSliderValue(valueAsNumber);
         }
         setValueAsString(valueAsString);
-    }
+    };
 
     const handleHourlyRateChange = (valueAsString: string, valueAsNumber: number) => {
-        if (valueAsNumber !== sliderValue * duration) {
-            handlePriceChange(valueAsNumber * duration);
-            setSliderValue(valueAsNumber * duration);
+        const newTotalPrice = valueAsNumber * duration;
+        if (newTotalPrice !== sliderValue) {
+            handlePriceChange(newTotalPrice);
+            setSliderValue(newTotalPrice);
         }
-        setValueAsString(valueAsString);
-    }
-
-
+        setValueAsString(newTotalPrice.toString());
+    };
 
     const handleSliderChange = (newPrice: number) => {
         if (newPrice !== sliderValue) {
@@ -58,9 +56,16 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
         }
     };
 
+    const hourlyRateCeiled = Math.ceil(price / duration);
+    const hourlyRateFloored = Math.floor(price / duration) === 0 ? 1 : Math.floor(price / duration);
+    const maxHourlyRateCeiled = Math.ceil(prices.max / duration);
+    const maxHourlyRateFloored = Math.floor(prices.max / duration);
+    const hourlyRateMaximum = hourlyRateCeiled * duration > prices.max  ? 
+    maxHourlyRateFloored : hourlyRateCeiled * duration;
+
     return (
         <Box>
-            <Box h={2}></Box>
+            {/* Total Price Input */}
             <Flex maxW='400px'>
                 <Box alignContent={'center'} paddingRight={5}><FormLabel fontWeight={'normal'}>Total Price (₪)</FormLabel></Box>
                 <NumberInput 
@@ -68,11 +73,9 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
                     shadow="md"
                     focusBorderColor="purple.500"
                     value={price} 
-                    min={prices.min} 
+                    min={hourlyRateFloored * duration} 
                     max={prices.max} 
                     step={prices.step} 
-                    minH={10}
-                    maxH={10}
                     onChange={handleTotalPriceChange}
                 >
                     <NumberInputField />
@@ -81,22 +84,19 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
                         <NumberDecrementStepper />
                     </NumberInputStepper>
                 </NumberInput>
-                <Box w={3}></Box>
-                
             </Flex>
-            <Box h={2}></Box>
-            <Flex maxW='400px'>
+
+            {/* Hourly Rate Input */}
+            <Flex maxW='400px' mb={2}>
                 <Box alignContent={'center'}><FormLabel fontWeight={'normal'} paddingRight={3}>Hourly Rate (₪)</FormLabel></Box>
                 <NumberInput 
                     maxW="102px" 
                     shadow="md"
                     focusBorderColor="purple.500"
-                    value={Math.ceil(price / duration)} 
-                    min={Math.ceil(prices.min / duration) || 1} 
-                    max={Math.round(prices.max / duration)} 
+                    value={hourlyRateFloored} 
+                    min={Math.ceil(prices.min / duration)} 
+                    max={hourlyRateMaximum} 
                     step={prices.step} 
-                    minH={10}
-                    maxH={10}
                     onChange={handleHourlyRateChange}
                 >
                     <NumberInputField />
@@ -105,30 +105,26 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
                         <NumberDecrementStepper />
                     </NumberInputStepper>
                 </NumberInput>
-                <Box w={3}></Box>
-                
             </Flex>
-            <br/>
-            <Flex>
-                <Slider 
-                    id='price-slider'
-                    aria-label='price-slider' 
-                    value={price}
-                    maxW="400px" 
-                    defaultValue={price}
-                    min={prices.min}
-                    max={prices.max}
-                    step={prices.step}
-                    onChange={handleSliderChange}
-                >
-                    <SliderTrack bg='purple.200'>
-                        <SliderFilledTrack bg='purple.500' />
-                    </SliderTrack>
-                    <SliderThumb boxSize={7}>
-                        <Box color='purple.500' as={MdGraphicEq} />
-                    </SliderThumb>
-                </Slider>
-            </Flex>
+
+            {/* Price Slider */}
+            <Slider 
+                id='price-slider'
+                aria-label='price-slider' 
+                value={price}
+                maxW="400px" 
+                min={prices.min * duration}
+                max={prices.max}
+                step={prices.step}
+                onChange={handleSliderChange}
+            >
+                <SliderTrack bg='purple.200'>
+                    <SliderFilledTrack bg='purple.500' />
+                </SliderTrack>
+                <SliderThumb boxSize={7}>
+                    <Box color='purple.500' as={MdGraphicEq} />
+                </SliderThumb>
+            </Slider>
         </Box>
     );
 };
