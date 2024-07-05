@@ -120,6 +120,7 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
                 <PriceSlider
                     price={price}
                     handlePriceChange={handlePriceChange}
+                    duration={duration}
                 />
                 <Box display="flex" alignItems="center" position="relative" py={7} px={4} width="full">
                     <Divider orientation="horizontal" flex="1" />

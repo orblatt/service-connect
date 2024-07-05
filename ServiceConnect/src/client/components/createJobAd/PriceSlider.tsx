@@ -19,9 +19,10 @@ import { prices } from '../../../config';
 interface PriceSliderProps {
     price: number;
     handlePriceChange: (newPrice: number) => void;
+    duration: number;
 }
 
-export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChange }) => {
+export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChange, duration }) => {
     const [sliderValue, setSliderValue] = useState(price);
     const [valueAsString, setValueAsString] = useState(price.toString());
 
@@ -31,13 +32,23 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
     }, [price]);
 
 
-    const handleNumberInputChange = (valueAsString: string, valueAsNumber: number) => {
+    const handleTotalPriceChange = (valueAsString: string, valueAsNumber: number) => {
         if (valueAsNumber !== sliderValue) {
             handlePriceChange(valueAsNumber);
             setSliderValue(valueAsNumber);
         }
         setValueAsString(valueAsString);
     }
+
+    const handleHourlyRateChange = (valueAsString: string, valueAsNumber: number) => {
+        if (valueAsNumber !== sliderValue * duration) {
+            handlePriceChange(valueAsNumber * duration);
+            setSliderValue(valueAsNumber * duration);
+        }
+        setValueAsString(valueAsString);
+    }
+
+
 
     const handleSliderChange = (newPrice: number) => {
         if (newPrice !== sliderValue) {
@@ -51,7 +62,7 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
         <Box>
             <Box h={2}></Box>
             <Flex maxW='400px'>
-                <Box alignContent={'center'}><FormLabel fontWeight={'normal'}>Price (₪)</FormLabel></Box>
+                <Box alignContent={'center'} paddingRight={2}><FormLabel fontWeight={'normal'}>Total Price (₪)</FormLabel></Box>
                 <NumberInput 
                     maxW="102px" 
                     shadow="md"
@@ -62,7 +73,7 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
                     step={prices.step} 
                     minH={10}
                     maxH={10}
-                    onChange={handleNumberInputChange}
+                    onChange={handleTotalPriceChange}
                 >
                     <NumberInputField />
                     <NumberInputStepper>
@@ -71,6 +82,31 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
                     </NumberInputStepper>
                 </NumberInput>
                 <Box w={3}></Box>
+                
+            </Flex>
+            <Box h={2}></Box>
+            <Flex maxW='400px'>
+                <Box alignContent={'center'}><FormLabel fontWeight={'normal'}>Hourly Rate (₪)</FormLabel></Box>
+                <NumberInput 
+                    maxW="102px" 
+                    shadow="md"
+                    focusBorderColor="purple.500"
+                    value={Math.ceil(price / duration)} 
+                    min={Math.ceil(prices.min / duration) || 1} 
+                    max={Math.round(prices.max / duration)} 
+                    step={prices.step} 
+                    minH={10}
+                    maxH={10}
+                    onChange={handleHourlyRateChange}
+                >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                    </NumberInputStepper>
+                </NumberInput>
+                <Box w={3}></Box>
+                
             </Flex>
             <br/>
             <Flex>
