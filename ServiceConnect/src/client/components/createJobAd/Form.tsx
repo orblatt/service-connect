@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { Card, Stack, useSteps, Box, Tabs, TabList, Tab, TabPanels, TabPanel, Stepper, Step, StepIndicator, StepStatus, StepIcon, StepNumber, StepTitle, StepDescription, StepSeparator, MenuItem, useToast, Button, Text } from '@chakra-ui/react';
+import { useBreakpointValue, HStack, VStack } from '@chakra-ui/react';
 import { JobAd } from 'wasp/entities';
 import { createJobAd } from 'wasp/client/operations';
 
@@ -173,13 +174,52 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
     }
   }
 
+  const ResponsiveStepper = ({ steps, activeStep, handleTabsChange }) => {
+    // Use `useBreakpointValue` to adjust styles based on the breakpoint
+    const orientation = useBreakpointValue<'horizontal' | 'vertical' | undefined>({ base: 'vertical', md: 'horizontal' });
+    const size = useBreakpointValue({ base: 'sm', md: 'lg' });
   
+    return (
+      <Stepper orientation={orientation} size={size} index={activeStep} onChange={handleTabsChange} overflowX="auto">
+        {steps.map((step, index) => (
+          <Step key={index} onClick={() => handleTabsChange(index)}>
+            <StepIndicator>
+              <StepStatus
+                complete={<StepIcon />}
+                incomplete={<StepNumber />}
+                active={<StepNumber />}
+              />
+            </StepIndicator>
+  
+            {/* Adjust layout based on the orientation */}
+            {orientation === 'horizontal' ? (
+              <HStack spacing={4} flexShrink={0}>
+                <StepTitle>{step.title}</StepTitle>
+                <StepDescription>{step.description}</StepDescription>
+              </HStack>
+            ) : (
+              <VStack spacing={2} flexShrink={0} alignItems={'left'} paddingLeft={1}>
+                {/* <StepTitle>{step.title}</StepTitle>
+                <StepDescription>{step.description}</StepDescription> */}
+                <Text fontWeight="bold" alignContent={'left'}>{step.title}</Text>
+                <Text fontSize="sm" align={'left'}>{step.description}</Text>
+              </VStack>
+            )}
+  
+            <StepSeparator />
+          </Step>
+        ))}
+      </Stepper>
+    );
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
     <Box>
       <Card key='md' size='md' variant='elevated' p={8}>
         <Stack spacing='4'>
-          <Stepper size='lg' index={activeStep} onChange={handleTabsChange} >
+          <ResponsiveStepper steps={steps} activeStep={activeStep} handleTabsChange={handleTabsChange}/>
+          {/* <Stepper size='lg' index={activeStep} onChange={handleTabsChange} >
             {steps.map((step, index) => (
               <Step key={index} onClick={() => handleTabsChange(index)}>
                 <StepIndicator>
@@ -198,7 +238,7 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
                 <StepSeparator />
               </Step>
             ))}
-          </Stepper>
+          </Stepper> */}
 
           <Tabs index={tabIndex} onChange={handleTabsChange}>
             <TabList>
@@ -256,6 +296,7 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
               </TabPanel>
               <TabPanel>
                 <SearchResult jobAd={jobAdPayload as JobAd} isPreview={true} user={user}/>
+                <Box h={3}></Box>
                 <NavigateFormButtons 
                   tabIndex={tabIndex} 
                   handleTabsChange={handleTabsChange} 
