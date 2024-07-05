@@ -8,7 +8,7 @@ import { AuthUser } from 'wasp/auth'
 const SearchResult = ({ jobAd, isPreview, user } : { jobAd: JobAd, isPreview: boolean, user: AuthUser }) => {
     const { category, description, price, isDone, ownerId, providerId, title, city, duration, youngestChildAge, toolsProvided, numberOfRooms } = jobAd;
     const ownerUsername = ownerId ? useUserDetails(ownerId, 'Owner').username : 'No Owner';
-    const providerUsername = ownerId ? useUserDetails(providerId, 'Provider').username : 'No Provider';
+    const providerUsername = ownerId ? useUserDetails(providerId, 'Provider').username : 'Not yet assigned';
     const toast = useToast()
 
     const handleProviderChange = async (event: React.MouseEvent<HTMLButtonElement>) => {
