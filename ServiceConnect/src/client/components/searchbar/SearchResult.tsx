@@ -116,23 +116,23 @@ const SearchResult = ({ jobAd, isPreview, user } : { jobAd: JobAd, isPreview: bo
                 {content}
             </Text>
             <Text color='purple.600' fontSize='2xl'>
-                ${price}
+                ₪{price}
             </Text>
             </Stack>
         </CardBody>
         <Divider />
         <CardFooter>
             <ButtonGroup spacing='2'>
-            <Button variant='solid' colorScheme='purple' onClick={handleProviderChange} isDisabled={user.id === ownerId || providerId && providerId !== user.id}>
+            <Button variant='solid' colorScheme='purple' onClick={handleProviderChange} isDisabled={isPreview || user.id === ownerId || providerId && providerId !== user.id}>
             {
               providerId && providerId !== user.id
               ? 'Already Assigned'
               : providerId
               ? 'Unassign Me'
-              : 'Assign Me'
+              : 'Accept Job'
             }
             </Button>
-            <Button variant='outline' colorScheme='purple' onClick={handleIsDoneChange}>
+            <Button variant='outline' colorScheme='purple' onClick={handleIsDoneChange} isDisabled={isPreview}>
                 {!isDone ? 'Done' : 'Undone'}
             </Button>
             </ButtonGroup>

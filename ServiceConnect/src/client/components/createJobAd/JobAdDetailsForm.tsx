@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteCenter, Box, Divider, Flex, FormControl, FormLabel, GridItem, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Slider, SliderFilledTrack, SliderThumb, SliderTrack, Stack, Textarea } from '@chakra-ui/react'
+import { useBreakpointValue, Box, Divider, FormControl, FormLabel, GridItem, Input, Select, Stack, Textarea } from '@chakra-ui/react'
 import { PriceSlider } from './PriceSlider';
 import DurationNumberInput from './DurationNumberInput';
 import CategorySpecificFormElements from './CategorySpecificFormElements';
@@ -26,6 +26,9 @@ interface JobAdDetailsFormProps {
     };
 }
 
+function useResponsiveRows() {
+    return useBreakpointValue({ base: 4, sm: 4, md: 3 });
+}
 
 const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
     category, 
@@ -50,9 +53,10 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
 }) => {    
     const titlePlaceholderText = titlePlaceholder(category);    
     const descriptionPlaceholderText = descriptionPlaceholder(category);
+    const responsiveRows = useResponsiveRows();
     return (
         <FormControl>
-            <Stack spacing='4'>
+            <Stack spacing='4' overflow='visible'>
                 <FormControl mr="5%">
                     <FormLabel htmlFor="title" fontWeight={'normal'}>
                         Title
@@ -75,7 +79,7 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
                         placeholder={descriptionPlaceholderText}
                         value={description}
                         onChange={handleDescriptionChange}
-                        rows={3}
+                        rows={responsiveRows}
                         shadow="md"
                         focusBorderColor="purple.500"
                         fontSize={{
@@ -98,7 +102,8 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
                     shadow="md"
                     size="md"
                     w="full"
-                    rounded="md">
+                    rounded="md"
+                    >
                     <option>Tel Aviv</option>
                     <option>Ramat Gan</option>
                     <option>Petah Tikva</option>
@@ -112,11 +117,22 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
                     price={price}
                     handlePriceChange={handlePriceChange}
                 />
-                <Box position='relative' padding='7'>
-                <Divider />
-                    <AbsoluteCenter bg='white' px='4'>
+                <Box display="flex" alignItems="center" position="relative" py={7} px={4} width="full">
+                    <Divider orientation="horizontal" flex="1" />
+                    <Box
+                        position="absolute"
+                        left="50%"
+                        transform="translateX(-50%)"
+                        bg="white"
+                        px={4}
+                        whiteSpace="nowrap"
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                        fontSize={{ base: "14px", sm: "16px", md: "18px" }} // Responsive font size
+                        fontWeight={{ base: "bold", sm: "normal", md: "normal" }} // Bold on mobile, normal on tablet and desktop
+                    >
                         Category Specific Details
-                    </AbsoluteCenter>
+                    </Box>
                 </Box>
                 <CategorySpecificFormElements 
                     category={category}
@@ -127,6 +143,7 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
                     youngestChildAge={youngestChildAge}
                     handleYoungestChildAgeChange={handleYoungestChildAgeChange}
                 />
+                <Box h={1}></Box>
                 
             </Stack>
         </FormControl>

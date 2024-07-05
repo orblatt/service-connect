@@ -21,6 +21,8 @@ const YoungestChildAgeNumberInput: React.FC<YoungestChildAgeNumberInputProps> = 
                     defaultValue={youngestChildAge}
                     min={youngestChildAgeConfig.min}
                     max={youngestChildAgeConfig.max}
+                    minH={10}
+                    maxH={10}
                     onChange={(valueAsString, valueAsNumber) => handleYoungestChildAgeChange(valueAsNumber)}
                 >
                     <NumberInputField />

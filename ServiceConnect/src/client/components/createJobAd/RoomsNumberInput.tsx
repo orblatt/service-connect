@@ -10,7 +10,7 @@ const RoomsNumberInput: React.FC<RoomsNumberInputProps> = ({ numberOfRooms, hand
     return (
         <Box>
             <Flex maxW='400px'>
-                <Box><FormLabel fontWeight={'normal'}>Number of Rooms</FormLabel></Box>
+                <Box><FormLabel fontWeight={'normal'} paddingRight={4}>Rooms</FormLabel></Box>
                 <NumberInput 
                     id='rooms-number-input'
                     aria-label='rooms-number-input'
@@ -21,6 +21,10 @@ const RoomsNumberInput: React.FC<RoomsNumberInputProps> = ({ numberOfRooms, hand
                     min={roomsConfig.min}
                     max={roomsConfig.max}
                     step={roomsConfig.step}
+                    minH={10}
+                    maxH={10}
+                    minW={103}
+                    maxW={103}
                     onChange={(valueAsString, valueAsNumber) => handleNumberOfRoomsChange(valueAsNumber)}
                 >
                     <NumberInputField />

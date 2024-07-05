@@ -3,7 +3,6 @@ import {
   IconButton,
   Avatar,
   Box,
-  Flex,
   HStack,
   VStack,
   useColorModeValue,
@@ -15,6 +14,8 @@ import {
   MenuItem,
   MenuList,
   useToast,
+  Flex,
+  Spacer,
 } from '@chakra-ui/react'
 import {
   FiMenu,
@@ -35,8 +36,6 @@ interface MobileProps extends FlexProps {
 
 const MobileNav = ({ onOpen, user, ...rest }: MobileProps & { user: AuthUser }) => {
     const toast = useToast();
-    // const email = getUsername(user);
-    // const username = typeof email === 'string' && email.split('@').length > 0 ? email.split('@')[0] : ''
     const username = useUserDetails(user.id, 'Owner').username;
     return (
       <Flex
@@ -56,16 +55,7 @@ const MobileNav = ({ onOpen, user, ...rest }: MobileProps & { user: AuthUser }) 
           aria-label="open menu"
           icon={<FiMenu />}
         />
-  
-        <Text
-          display={{ base: 'flex', md: 'none' }}
-          fontSize="2xl"
-          fontFamily="monospace"
-          fontWeight="bold">
-          Logo
-        </Text>
-  
-        <HStack spacing={{ base: '0', md: '6' }}>
+        <Flex justifyContent={{base: 'center',  md: 'flex-end'}} flex="1">
           <ChakraLink as={ReactRouterLink} to={routes.createJobAd} style={{ textDecoration: 'none' }}>
             <Button
                   variant={'solid'}
@@ -76,6 +66,8 @@ const MobileNav = ({ onOpen, user, ...rest }: MobileProps & { user: AuthUser }) 
             <FiPlus/> &nbsp; Create Ad
             </Button>
           </ChakraLink>
+          </Flex>
+          <HStack spacing={{ base: '0', md: '6' }}>
           {/* <IconButton size="lg" variant="ghost" aria-label="open menu" icon={<FiBell />} /> */}
           <Flex alignItems={'center'}>
             <Menu>
@@ -86,7 +78,7 @@ const MobileNav = ({ onOpen, user, ...rest }: MobileProps & { user: AuthUser }) 
                     src='https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_640.png'
                   />
                   <VStack
-                    display={{ base: 'none', md: 'flex' }}
+                    display={{ base: 'flex', md: 'flex' }}
                     alignItems="flex-start"
                     spacing="1px"
                     ml="2">
