@@ -49,6 +49,12 @@ page MyJobAdsPage {
   component: import { MyJobAdsPage } from "@src/client/app/MyJobAdsPage"
 }
 
+route MyJobsRoute { path: "/my-jobs", to: MyJobsPage }
+page MyJobsPage {
+  authRequired: true,
+  component: import { MyJobsPage } from "@src/client/app/MyJobsPage"
+}
+
 route SearchJobAdsRoute { path: "/search-job-ads", to: SearchJobAdsPage }
 page SearchJobAdsPage {
   authRequired: true,
@@ -228,4 +234,9 @@ job weeklySmartAgentJob {
 query getUserById {
   fn: import { getUserById } from "@src/queries",
   entities: [User],
+}
+
+query getMyJobs {
+  fn: import { getMyJobs } from "@src/queries",
+  entities: [JobAd],
 }
