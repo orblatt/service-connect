@@ -6,11 +6,14 @@ import {
     ResetPasswordForm,
   } from 'wasp/client/auth'
   import { Link } from 'react-router-dom'
+  import { authAppearance } from './appearance'
   
   export function Login() {
     return (
       <Layout>
-        <LoginForm />
+        <LoginForm 
+          appearance={authAppearance}
+        />
         <br />
         <span className='customSpan'>
           Don't have an account yet? <Link to="/signup">go to signup</Link>.
@@ -27,7 +30,9 @@ import {
   export function Signup() {
     return (
       <Layout>
-        <SignupForm />
+        <SignupForm 
+          appearance={authAppearance}
+        />
         <br />
         <span className='customSpan'>
           I already have an account (<Link to="/login">go to login</Link>).
@@ -39,7 +44,9 @@ import {
   export function EmailVerification() {
     return (
       <Layout>
-        <VerifyEmailForm />
+        <VerifyEmailForm 
+        appearance={authAppearance}        
+        />
         <br />
         <span className='customSpan'>
           If everything is okay, <Link to="/login">go to login</Link>
@@ -51,7 +58,9 @@ import {
   export function RequestPasswordReset() {
     return (
       <Layout>
-        <ForgotPasswordForm />
+        <ForgotPasswordForm
+        appearance={authAppearance}
+         />
       </Layout>
     );
   }
@@ -59,7 +68,9 @@ import {
   export function PasswordReset() {
     return (
       <Layout>
-        <ResetPasswordForm />
+        <ResetPasswordForm 
+        appearance={authAppearance}
+        />
         <br />
         <span className='customSpan'>
           If everything is okay, <Link to="/login">go to login</Link>
