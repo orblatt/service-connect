@@ -35,8 +35,6 @@ interface MobileProps extends FlexProps {
 
 const MobileNav = ({ onOpen, user, ...rest }: MobileProps & { user: AuthUser }) => {
     const toast = useToast();
-    // const email = getUsername(user);
-    // const username = typeof email === 'string' && email.split('@').length > 0 ? email.split('@')[0] : ''
     const username = useUserDetails(user.id, 'Owner').username;
     return (
       <Flex
@@ -57,13 +55,16 @@ const MobileNav = ({ onOpen, user, ...rest }: MobileProps & { user: AuthUser }) 
           icon={<FiMenu />}
         />
   
-        <Text
+        {/* <Text
           display={{ base: 'flex', md: 'none' }}
-          fontSize="2xl"
+          fontSize="md"
           fontFamily="monospace"
-          fontWeight="bold">
-          Logo
-        </Text>
+          fontWeight="bold"
+          flexShrink={'0'}
+          color='purple.600'
+          >
+          Service Connect
+        </Text> */}
   
         <HStack spacing={{ base: '0', md: '6' }}>
           <ChakraLink as={ReactRouterLink} to={routes.createJobAd} style={{ textDecoration: 'none' }}>
