@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { Link as ChakraLink } from '@chakra-ui/react';
@@ -40,7 +40,7 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
   const [toolsProvided, setToolsProvided] = useState(defaultToolsProvided);
   const [numberOfRooms, setNumberOfRooms] = useState(defaultNumberOfRooms);
   const [menuButtonLabel, setMenuButtonLabel] = useState(defaultCategory);
-  const [jobAdPayload, setJobAdPayload] = useState<CreateJobAdPayload & { isDone: boolean }>( { 
+  const jobAdPayload = useMemo(() => ({
     description, 
     price,
     category: menuButtonLabel,
@@ -51,14 +51,31 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
     toolsProvided,
     numberOfRooms,
     isDone,
-  });
-  const handleJobAdPayloadChange = (field: any, value: any) => {
-    setJobAdPayload(prevState => ({ ...prevState, [field]: value }));
-  };
+  }), [
+    description, 
+    price,
+    menuButtonLabel,
+    city,
+    title,
+    duration,
+    youngestChildAge,
+    toolsProvided,
+    numberOfRooms,
+    isDone,
+  ]);
+
   const handleCategoryChange = (event: React.MouseEvent<HTMLButtonElement>) => {
     const category = event.currentTarget.textContent as string;
     setMenuButtonLabel(category);
-    handleJobAdPayloadChange('category', category);
+    // Reset all fields
+    setTitle('');
+    setDescription('');
+    setPrice(defaultJobAd.price);
+    setCity(defaultCityPlaceholder);
+    setDuration(defaultDuration);
+    setYoungestChildAge(defaultYoungestChildAge);
+    setToolsProvided(defaultToolsProvided);
+    setNumberOfRooms(defaultNumberOfRooms);
   }
 
   const menuItems: React.ReactElement<typeof MenuItem>[] = jobCategories.map(
@@ -74,45 +91,37 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newTitle = event.target.value;
     setTitle(newTitle);
-    handleJobAdPayloadChange('title', newTitle);
   };
 
   const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newDescription = event.target.value;
     setDescription(newDescription);
-    handleJobAdPayloadChange('description', newDescription);
   };
 
   const handlePriceChange = (newPrice: number) => {
     setPrice(newPrice);
-    handleJobAdPayloadChange('price', newPrice);
   }
 
   const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newCity = event.target.value;
     setCity(newCity);
-    handleJobAdPayloadChange('city', newCity);
   };
 
   const handleDurationChange = (newDuration: number) => {
     setDuration(newDuration);
-    handleJobAdPayloadChange('duration', newDuration);
   };
 
   const handleYoungestChildAgeChange = (newYoungestChildAge: number) => {
     setYoungestChildAge(newYoungestChildAge);
-    handleJobAdPayloadChange('youngestChildAge', newYoungestChildAge);
   };
 
   const handleToolsProvidedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newToolsProvided = event.target.checked;
     setToolsProvided(newToolsProvided);
-    handleJobAdPayloadChange('toolsProvided', newToolsProvided);
   };
 
   const handleNumberOfRoomsChange = (newNumberOfRooms: number) => {
     setNumberOfRooms(newNumberOfRooms);
-    handleJobAdPayloadChange('numberOfRooms', newNumberOfRooms);
   };
   
   const [tabIndex, setTabIndex] = useState(0);
