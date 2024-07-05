@@ -75,7 +75,7 @@ interface LinkItemProps {
                 if (link.name === 'Reviews') {
                   toast({
                     title: 'Coming Soon',
-                    description: "We're workig on it",
+                    description: "We're working on it",
                     status: 'error',
                     duration: 3000,
                     isClosable: true,
