@@ -13,11 +13,11 @@ export const MyJobAdsPage = ({ user }: { user: AuthUser }) => {
         <MainLayout user={user}>
             <Card shadow='lg' variant='elevated'>
                 <CardHeader>
-                    <Heading>My Job Ads</Heading>
+                    <Heading>My Ads</Heading>
                 </CardHeader>
             </Card>
             <Box h={3}></Box>
-            {jobAds && <SearchResults jobAds={jobAds as JobAd[]}/>}
+            {jobAds && <SearchResults jobAds={jobAds as JobAd[]} user={user}/>}
             {/* {isLoading && 'Loading...'} */}
             {error && 'Error: ' + error}
         </MainLayout>

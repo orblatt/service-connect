@@ -129,7 +129,7 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
                     </Card>
                 </Stack>
                 <Box p={2} ></Box>
-                {jobAds && <SearchResults jobAds={jobAds as JobAd[]}/>}
+                {jobAds && <SearchResults jobAds={jobAds as JobAd[]} user={user}/>}
                 {/* {isLoading && 'Loading...'} */}
                 {error && 'Error: ' + error}
             </Box>

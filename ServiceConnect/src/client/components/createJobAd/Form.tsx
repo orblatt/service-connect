@@ -12,6 +12,7 @@ import JobAdDetailsForm from './JobAdDetailsForm';
 import NavigateFormButtons from './NavigateFormButtons';
 import SearchResult from '../searchbar/SearchResult';
 import { CreateJobAdPayload } from '../../../actions';
+import { AuthUser } from 'wasp/auth';
 
 
 const steps = [
@@ -20,7 +21,7 @@ const steps = [
   { title: 'Third', description: 'Preview' },
 ];
 
-const CreateJobAdForm = () => {
+const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
   const { 
     duration: defaultDuration, 
     youngestChildAge: defaultYoungestChildAge,
@@ -254,7 +255,7 @@ const CreateJobAdForm = () => {
                   />
               </TabPanel>
               <TabPanel>
-                <SearchResult jobAd={jobAdPayload as JobAd} isPreview={true}/>
+                <SearchResult jobAd={jobAdPayload as JobAd} isPreview={true} user={user}/>
                 <NavigateFormButtons 
                   tabIndex={tabIndex} 
                   handleTabsChange={handleTabsChange} 
