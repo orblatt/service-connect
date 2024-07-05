@@ -56,7 +56,7 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
     const responsiveRows = useResponsiveRows();
     return (
         <FormControl>
-            <Stack spacing='4'>
+            <Stack spacing='4' overflow='visible'>
                 <FormControl mr="5%">
                     <FormLabel htmlFor="title" fontWeight={'normal'}>
                         Title
@@ -102,7 +102,8 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
                     shadow="md"
                     size="md"
                     w="full"
-                    rounded="md">
+                    rounded="md"
+                    >
                     <option>Tel Aviv</option>
                     <option>Ramat Gan</option>
                     <option>Petah Tikva</option>
