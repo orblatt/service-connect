@@ -219,27 +219,6 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
       <Card key='md' size='md' variant='elevated' p={8}>
         <Stack spacing='4'>
           <ResponsiveStepper steps={steps} activeStep={activeStep} handleTabsChange={handleTabsChange}/>
-          {/* <Stepper size='lg' index={activeStep} onChange={handleTabsChange} >
-            {steps.map((step, index) => (
-              <Step key={index} onClick={() => handleTabsChange(index)}>
-                <StepIndicator>
-                  <StepStatus
-                    complete={<StepIcon />}
-                    incomplete={<StepNumber />}
-                    active={<StepNumber />}
-                  />
-                </StepIndicator>
-
-                <Box flexShrink='0'>
-                  <StepTitle>{step.title}</StepTitle>
-                  <StepDescription>{step.description}</StepDescription>
-                </Box>
-
-                <StepSeparator />
-              </Step>
-            ))}
-          </Stepper> */}
-
           <Tabs index={tabIndex} onChange={handleTabsChange}>
             <TabList>
               <Tab>Step 1</Tab>
@@ -248,8 +227,9 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <Box p={2}></Box>
+                <Box h={2}></Box>
                 <JobCategoriesDropdown menuButtonLabel={menuButtonLabel} menuItems={menuItems}/>
+                <Box h={3}></Box>
                 <NavigateFormButtons 
                   tabIndex={tabIndex} 
                   handleTabsChange={handleTabsChange} 
