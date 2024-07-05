@@ -132,7 +132,7 @@ const SearchResult = ({ jobAd, isPreview, user } : { jobAd: JobAd, isPreview: bo
               : 'Accept Job'
             }
             </Button>
-            <Button variant='outline' colorScheme='purple' onClick={handleIsDoneChange} isDisabled={isPreview}>
+            <Button variant='outline' colorScheme='purple' onClick={handleIsDoneChange} isDisabled={isPreview || user.id !== ownerId}>
                 {!isDone ? 'Done' : 'Undone'}
             </Button>
             </ButtonGroup>
