@@ -22,6 +22,7 @@ import {
   FiBell,
   FiChevronDown,
   FiPlus,
+  FiCompass
 } from 'react-icons/fi'
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { Link as ChakraLink } from '@chakra-ui/react';
@@ -29,14 +30,53 @@ import { logout } from 'wasp/client/auth'
 import { getEmail, AuthUser } from 'wasp/auth'
 import { routes } from '../../../config';
 import { useUserDetails } from '../../../utils';
+import { useLocation } from 'react-router-dom';
 
 interface MobileProps extends FlexProps {
   onOpen: () => void
 }
 
-const MobileNav = ({ onOpen, user, ...rest }: MobileProps & { user: AuthUser }) => {
+const callToActionButton = (role: 'Provider' | 'Customer' | 'Base') => {
+  if (role === 'Customer') {
+    return (
+      <Flex justifyContent={{base: 'center',  md: 'flex-end'}} flex="1">
+            <ChakraLink as={ReactRouterLink} to={routes.createJobAd} style={{ textDecoration: 'none' }}>
+              <Button
+                    variant={'solid'}
+                    colorScheme={'purple'}
+                    size={'sm'}
+                    mr={4}
+              >
+              <FiPlus/> &nbsp; Create Ad
+              </Button>
+            </ChakraLink>
+      </Flex>
+    )
+  } else if (role === 'Provider') {
+    return (
+      <Flex justifyContent={{base: 'center',  md: 'flex-end'}} flex="1">
+            <ChakraLink as={ReactRouterLink} to={routes.searchJobAds} style={{ textDecoration: 'none' }}>
+              <Button
+                    variant={'solid'}
+                    colorScheme={'purple'}
+                    size={'sm'}
+                    mr={4}
+              >
+              <FiCompass/> &nbsp; Browse Ads
+              </Button>
+            </ChakraLink>
+      </Flex>
+    )
+  } else {
+    return <></>
+  }
+}
+
+const MobileNav = ({ onOpen, user, role, ...rest }: MobileProps & { user: AuthUser, role: 'Provider' | 'Customer' | 'Base' }) => {
+    const location = useLocation();
     const toast = useToast();
     const username = useUserDetails(user.id, 'Owner').username;
+    const settingsRoute = role !== 'Customer' ? routes.settings : location.pathname;
     return (
       <Flex
         ml={{ base: 0, md: 60 }}
@@ -55,18 +95,7 @@ const MobileNav = ({ onOpen, user, ...rest }: MobileProps & { user: AuthUser }) 
           aria-label="open menu"
           icon={<FiMenu />}
         />
-        <Flex justifyContent={{base: 'center',  md: 'flex-end'}} flex="1">
-          <ChakraLink as={ReactRouterLink} to={routes.createJobAd} style={{ textDecoration: 'none' }}>
-            <Button
-                  variant={'solid'}
-                  colorScheme={'purple'}
-                  size={'sm'}
-                  mr={4}
-            >
-            <FiPlus/> &nbsp; Create Ad
-            </Button>
-          </ChakraLink>
-          </Flex>
+          {callToActionButton(role)}
           <HStack spacing={{ base: '0', md: '6' }}>
           {/* <IconButton size="lg" variant="ghost" aria-label="open menu" icon={<FiBell />} /> */}
           <Flex alignItems={'center'}>
@@ -100,7 +129,22 @@ const MobileNav = ({ onOpen, user, ...rest }: MobileProps & { user: AuthUser }) 
                     Profile
                   </MenuItem>
                 </ChakraLink>
-                <ChakraLink as={ReactRouterLink} to={routes.settings} style={{ textDecoration: 'none' }}>
+                <ChakraLink 
+                  as={ReactRouterLink} 
+                  to={settingsRoute} 
+                  style={{ textDecoration: 'none' }}
+                  onClick={() => {
+                    if (role === 'Customer') {
+                      toast({
+                        title: 'Coming Soon',
+                        description: "We're working on it",
+                        status: 'error',
+                        duration: 3000,
+                        isClosable: true,
+                      })
+                    }
+                  }}
+                  >
                   <MenuItem>
                     Settings
                   </MenuItem>

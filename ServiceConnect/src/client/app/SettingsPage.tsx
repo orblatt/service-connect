@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AuthUser } from 'wasp/auth'
-import MainLayout from './MainLayout'
+import { ProviderLayout } from './MainLayout'
 import { Box, Button, Card, CardBody, CardHeader, Heading, useToast } from '@chakra-ui/react';
 import { deleteSearchProfiles } from 'wasp/client/operations'
 import { useForm } from 'react-hook-form'
@@ -46,7 +46,7 @@ export const SettingsPage = ({ user }: { user: AuthUser }) => {
 
   return (
 
-    <MainLayout user={user}>
+    <ProviderLayout user={user}>
         <form onSubmit={handleSubmit(onSubmit)}>
         <Card shadow='lg' variant='elevated'>
                 <CardHeader>
@@ -66,6 +66,6 @@ export const SettingsPage = ({ user }: { user: AuthUser }) => {
                 </CardBody>
         </Card>
         </form>
-    </MainLayout>
+    </ProviderLayout>
   );
 };

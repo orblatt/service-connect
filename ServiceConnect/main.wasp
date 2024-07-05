@@ -43,6 +43,18 @@ page MainPage {
   component: import { MainPage } from "@src/client/app/MainPage"
 }
 
+route ProviderRoute { path: "/provider-homepage", to: ProviderHomepage }
+page ProviderHomepage {
+  authRequired: true,
+  component: import { ProviderHomepage } from "@src/client/app/ProviderHomepage"
+}
+
+route CustomerRoute { path: "/customer-homepage", to: CustomerHomepage }
+page CustomerHomepage {
+  authRequired: true,
+  component: import { CustomerHomepage } from "@src/client/app/CustomerHomepage"
+}
+
 route MyJobAdsRoute { path: "/my-job-ads", to: MyJobAdsPage }
 page MyJobAdsPage {
   authRequired: true,
