@@ -51,7 +51,7 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
         <Box>
             <Box h={2}></Box>
             <Flex maxW='400px'>
-                <Box alignContent={'center'}><FormLabel fontWeight={'normal'}>Price ($)</FormLabel></Box>
+                <Box alignContent={'center'}><FormLabel fontWeight={'normal'}>Price (₪)</FormLabel></Box>
                 <NumberInput 
                     maxW="102px" 
                     shadow="md"

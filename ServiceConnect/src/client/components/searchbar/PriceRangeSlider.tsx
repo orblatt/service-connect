@@ -41,7 +41,7 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ minPrice, ma
     return (
         <Box>
             <Flex maxW='400px'>
-               <FormLabel>Price Range</FormLabel>
+               <FormLabel>Price Range (₪)</FormLabel>
                 {/* <Text></Text> */}
                 <RangeSlider 
                     aria-label={['min', 'max']} 
