@@ -5,6 +5,10 @@ import { useUserDetails } from '../../utils'
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { routes } from '../../config';
+import { GoChecklist } from "react-icons/go";
+import {
+    FiPlus
+  } from 'react-icons/fi'
 
 export const CustomerHomepage = ({ user }: { user: AuthUser }) => {
     const username = user.id ? useUserDetails(user.id, 'Provider').username : '';
@@ -29,7 +33,7 @@ export const CustomerHomepage = ({ user }: { user: AuthUser }) => {
                                 mr={4}
 
                             >
-                              Create Ad
+                            <FiPlus/> &nbsp; Create Ad
                           </Button>
                         </ChakraLink>
                         <ChakraLink as={ReactRouterLink} to={routes.myJobAds} style={{ textDecoration: 'none' }}>
@@ -39,7 +43,7 @@ export const CustomerHomepage = ({ user }: { user: AuthUser }) => {
                                 size={'lg'}
                                 mr={4}
                             >
-                              My Ads
+                            My Ads &nbsp; <GoChecklist/>
                           </Button>
                         </ChakraLink>
                     </Flex>

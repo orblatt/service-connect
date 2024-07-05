@@ -5,6 +5,10 @@ import { useUserDetails } from '../../utils'
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { routes } from '../../config';
+import {
+    FiCompass,
+  } from 'react-icons/fi'
+import { TbHammer } from "react-icons/tb";
 
 export const ProviderHomepage = ({ user }: { user: AuthUser }) => {
     const username = user.id ? useUserDetails(user.id, 'Provider').username : '';
@@ -34,7 +38,7 @@ export const ProviderHomepage = ({ user }: { user: AuthUser }) => {
                                   }}
 
                             >
-                              Browse Ads
+                            <FiCompass/> &nbsp;  Browse Ads
                           </Button>
                         </ChakraLink>
                         <ChakraLink as={ReactRouterLink} to={routes.myJobs} style={{ textDecoration: 'none' }}>
@@ -49,7 +53,7 @@ export const ProviderHomepage = ({ user }: { user: AuthUser }) => {
                                     },
                                   }}
                             >
-                              My Jobs
+                              My Jobs &nbsp; <TbHammer/>
                           </Button>
                         </ChakraLink>
                     </Flex>

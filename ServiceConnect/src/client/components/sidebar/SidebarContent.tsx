@@ -17,6 +17,7 @@ import {
     FiPlusCircle,
   } from 'react-icons/fi'
 import { TbHammer } from "react-icons/tb";
+import { GoChecklist } from "react-icons/go";
 import NavItem from './NavItem'
 import { useLocation } from 'react-router-dom';
 
@@ -50,7 +51,7 @@ interface LinkItemProps {
     const CustomerItems: Array<LinkItemProps> = [
       { name: 'Home', icon: FiHome, to: routes.home },
       { name: 'Create Ad', icon: FiPlusCircle, to: routes.createJobAd},
-      { name: 'My Ads', icon: FiTrendingUp, to: routes.myJobAds },
+      { name: 'My Ads', icon: GoChecklist, to: routes.myJobAds },
       { name: 'Reviews', icon: FiStar, to: location.pathname },
       { name: 'Settings', icon: FiSettings, to: location.pathname},
     ]
@@ -58,7 +59,7 @@ interface LinkItemProps {
     const BaseItems: Array<LinkItemProps> = [
       { name: 'Home', icon: FiHome, to: routes.home },
       { name: 'Create Ad', icon: FiPlusCircle, to: routes.createJobAd},
-      { name: 'My Ads', icon: FiTrendingUp, to: routes.myJobAds },
+      { name: 'My Ads', icon: GoChecklist, to: routes.myJobAds },
       { name: 'Browse', icon: FiCompass, to: routes.searchJobAds},
       { name: 'My Jobs', icon: TbHammer, to: routes.myJobs },
       { name: 'Reviews', icon: FiStar, to: location.pathname },
