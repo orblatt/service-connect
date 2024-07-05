@@ -86,11 +86,11 @@ const SearchResult = ({ jobAd, isPreview, user } : { jobAd: JobAd, isPreview: bo
     let content = null;
     if (youngestChildAge && category === 'Babysitting') {
       const age = youngestChildAge === 1 ? 'year' : 'years';
-      content = <><b>Youngest Child:</b> &nbsp;{youngestChildAge} {age} old</>;
+      content = <><b>Youngest child:</b> &nbsp;{youngestChildAge} {age} old</>;
     } else if (numberOfRooms && category === 'House Keeping') {
       content = <><b>Rooms:</b> &nbsp;{numberOfRooms}</>;
     } else if (typeof toolsProvided === 'boolean' && category === 'Gardening') {
-      content = <><b>Tools Provided:</b> &nbsp;{toolsProvided === true ? 'Yes' : 'No'}</>;
+      content = <><b>Tools provided:</b> &nbsp;{toolsProvided === true ? 'Yes' : 'No'}</>;
     }
     const imageUrl = jobImages[category as JobCategory]?.src || '';
     const imageAlt = jobImages[category as JobCategory]?.alt || '';

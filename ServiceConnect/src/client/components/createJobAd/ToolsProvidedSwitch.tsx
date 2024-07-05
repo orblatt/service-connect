@@ -12,7 +12,7 @@ const ToolsProvidedSwitch = (
     return (
         <FormControl>
             <Flex>
-                <FormLabel htmlFor='isChecked'>Tools Provided?</FormLabel>
+                <FormLabel htmlFor='isChecked'>Tools provided?</FormLabel>
                 <Switch 
                     colorScheme='purple' 
                     isChecked={toolsProvided} 
