@@ -40,6 +40,8 @@ export const defaultSearchProfile: any = {
 };
 export const routes: any = {
     home: '/',
+    providerHome: '/provider-homepage',
+    customerHome: '/customer-homepage',
     createJobAd: '/create-job-ad',
     searchJobAds: '/search-job-ads',
     test: '/test',

@@ -1,5 +1,5 @@
 import { AuthUser } from "wasp/auth"
-import MainLayout from "./MainLayout"
+import { ProviderLayout } from "./MainLayout"
 import SearchResults from '../components/searchbar/SearchResults';
 import { getMyJobs, useQuery } from 'wasp/client/operations'
 import { JobAd } from "wasp/entities";
@@ -10,7 +10,7 @@ export const MyJobsPage = ({ user }: { user: AuthUser }) => {
     const { data: jobAds, isLoading, error } = useQuery(getMyJobs)
 
     return (
-        <MainLayout user={user}>
+        <ProviderLayout user={user}>
             <Card shadow='lg' variant='elevated'>
                 <CardHeader>
                     <Heading>My Jobs</Heading>
@@ -20,6 +20,6 @@ export const MyJobsPage = ({ user }: { user: AuthUser }) => {
             {jobAds && <SearchResults jobAds={jobAds as JobAd[]} user={user}/>}
             {/* {isLoading && 'Loading...'} */}
             {error && 'Error: ' + error}
-        </MainLayout>
+        </ProviderLayout>
     )
 }

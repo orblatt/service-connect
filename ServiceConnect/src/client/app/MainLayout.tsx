@@ -13,20 +13,36 @@ import MobileNav from '../components/sidebar/MobileNav'
 import SidebarContent from '../components/sidebar/SidebarContent'
 import { AuthUser } from 'wasp/auth';
 
-const MainLayout = ({ children, user }: { children: React.ReactNode, user: AuthUser } ) => {
+export const MainLayout = ({ children, user }: { children: React.ReactNode, user: AuthUser } ) => {
   return (
     <ChakraProvider>
-      <SidebarWithHeader user={user}>{children}</SidebarWithHeader>
+      <SidebarWithHeader user={user} role='Base'>{children}</SidebarWithHeader>
     </ChakraProvider>
   )
 }
 
-const SidebarWithHeader = ({ children, user }: { children: React.ReactNode, user: AuthUser } ) => {
+export const ProviderLayout = ({ children, user }: { children: React.ReactNode, user: AuthUser } ) => {
+  return (
+    <ChakraProvider>
+      <SidebarWithHeader user={user} role='Provider'>{children}</SidebarWithHeader>
+    </ChakraProvider>
+  )
+}
+
+export const CustomerLayout = ({ children, user }: { children: React.ReactNode, user: AuthUser } ) => {
+  return (
+    <ChakraProvider>
+      <SidebarWithHeader user={user} role='Customer'>{children}</SidebarWithHeader>
+    </ChakraProvider>
+  )
+}
+
+const SidebarWithHeader = ({ children, user, role }: { children: React.ReactNode, user: AuthUser, role: 'Provider' | 'Customer' | 'Base' } ) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
-      <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
+      <SidebarContent role={role} onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
       <Drawer
         isOpen={isOpen}
         placement="left"
@@ -35,11 +51,11 @@ const SidebarWithHeader = ({ children, user }: { children: React.ReactNode, user
         onOverlayClick={onClose}
         size="full">
         <DrawerContent>
-          <SidebarContent onClose={onClose} />
+          <SidebarContent role={role} onClose={onClose} />
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav onOpen={onOpen} user={user} />
+      <MobileNav onOpen={onOpen} user={user} role={role}/>
       <Box ml={{ base: 0, md: 60 }} p="4">
       { children }  
       </Box>
@@ -47,5 +63,3 @@ const SidebarWithHeader = ({ children, user }: { children: React.ReactNode, user
     </Box>
     )
 }
-
-export default MainLayout;

@@ -35,19 +35,43 @@ interface LinkItemProps {
   
   
   
-  const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  const SidebarContent = ({ onClose, role, ...rest }: SidebarProps) => {
     const location = useLocation();
     const toast = useToast();
 
-    const LinkItems: Array<LinkItemProps> = [
+    const ProviderItems: Array<LinkItemProps> = [
       { name: 'Home', icon: FiHome, to: routes.home },
       { name: 'Browse', icon: FiCompass, to: routes.searchJobAds},
-      { name: 'Create Ad', icon: FiPlusCircle, to: routes.createJobAd},
-      { name: 'My Ads', icon: FiTrendingUp, to: routes.myJobAds },
       { name: 'My Jobs', icon: TbHammer, to: routes.myJobs },
       { name: 'Reviews', icon: FiStar, to: location.pathname },
       { name: 'Settings', icon: FiSettings, to: routes.settings},
     ]
+
+    const CustomerItems: Array<LinkItemProps> = [
+      { name: 'Home', icon: FiHome, to: routes.home },
+      { name: 'Create Ad', icon: FiPlusCircle, to: routes.createJobAd},
+      { name: 'My Ads', icon: FiTrendingUp, to: routes.myJobAds },
+      { name: 'Reviews', icon: FiStar, to: location.pathname },
+      { name: 'Settings', icon: FiSettings, to: location.pathname},
+    ]
+
+    const BaseItems: Array<LinkItemProps> = [
+      { name: 'Home', icon: FiHome, to: routes.home },
+      { name: 'Create Ad', icon: FiPlusCircle, to: routes.createJobAd},
+      { name: 'My Ads', icon: FiTrendingUp, to: routes.myJobAds },
+      { name: 'Browse', icon: FiCompass, to: routes.searchJobAds},
+      { name: 'My Jobs', icon: TbHammer, to: routes.myJobs },
+      { name: 'Reviews', icon: FiStar, to: location.pathname },
+      { name: 'Settings', icon: FiSettings, to: routes.settings},
+
+    ]
+
+    const LinkItems = 
+      role === 'Provider' 
+      ? ProviderItems 
+      : role === 'Customer' 
+      ? CustomerItems 
+      : BaseItems;
 
     return (
       <Box
@@ -72,7 +96,7 @@ interface LinkItemProps {
             to={link.to} 
             onClick={
               () => { 
-                if (link.name === 'Reviews') {
+                if (link.name === 'Reviews' || (link.name === 'Settings' && role ==='Customer')) {
                   toast({
                     title: 'Coming Soon',
                     description: "We're working on it",
