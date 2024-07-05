@@ -11,7 +11,7 @@ const DurationNumberInput: React.FC<DurationNumberInputProps> = ({ duration, han
         <Box>
             <Box h={2}></Box>
             <Flex maxW='150px'>
-                <Box alignContent={'center'}><FormLabel fontWeight={'normal'}>Duration (Hours)</FormLabel></Box>
+                <Box alignContent={'center'} flexShrink={0} paddingRight={0.5}><FormLabel fontWeight={'normal'}>Duration (Hours)</FormLabel></Box>
                 <NumberInput 
                     id='duration-number-input'
                     aria-label='duration-number-input'
@@ -23,8 +23,8 @@ const DurationNumberInput: React.FC<DurationNumberInputProps> = ({ duration, han
                     max={durationConfig.max}
                     minH={10}
                     maxH={10}
-                    minW={103}
-                    maxW={103}
+                    minW={102}
+                    maxW={102}
                     onChange={(valueAsString, valueAsNumber) => handleDurationChange(valueAsNumber)}
                 >
                     <NumberInputField />

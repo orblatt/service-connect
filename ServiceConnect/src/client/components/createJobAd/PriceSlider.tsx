@@ -62,7 +62,7 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
         <Box>
             <Box h={2}></Box>
             <Flex maxW='400px'>
-                <Box alignContent={'center'} paddingRight={2}><FormLabel fontWeight={'normal'}>Total Price (₪)</FormLabel></Box>
+                <Box alignContent={'center'} paddingRight={5}><FormLabel fontWeight={'normal'}>Total Price (₪)</FormLabel></Box>
                 <NumberInput 
                     maxW="102px" 
                     shadow="md"
@@ -86,7 +86,7 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
             </Flex>
             <Box h={2}></Box>
             <Flex maxW='400px'>
-                <Box alignContent={'center'}><FormLabel fontWeight={'normal'}>Hourly Rate (₪)</FormLabel></Box>
+                <Box alignContent={'center'}><FormLabel fontWeight={'normal'} paddingRight={3}>Hourly Rate (₪)</FormLabel></Box>
                 <NumberInput 
                     maxW="102px" 
                     shadow="md"

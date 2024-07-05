@@ -113,6 +113,7 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
                     <option>Petah Tikva</option>
                     </Select>
                 </FormControl>
+                <Stack>
                 <DurationNumberInput
                     duration={duration}
                     handleDurationChange={handleDurationChange}
@@ -122,6 +123,7 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
                     handlePriceChange={handlePriceChange}
                     duration={duration}
                 />
+                </Stack>
                 <Box display="flex" alignItems="center" position="relative" py={7} px={4} width="full">
                     <Divider orientation="horizontal" flex="1" />
                     <Box
