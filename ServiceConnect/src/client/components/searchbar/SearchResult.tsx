@@ -116,7 +116,7 @@ const SearchResult = ({ jobAd, isPreview, user } : { jobAd: JobAd, isPreview: bo
                 {content}
             </Text>
             <Text color='purple.600' fontSize='2xl'>
-                ${price}
+                ₪{price}
             </Text>
             </Stack>
         </CardBody>
