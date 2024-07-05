@@ -193,10 +193,12 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
   
             {/* Adjust layout based on the orientation */}
             {orientation === 'horizontal' ? (
-              <HStack spacing={4} flexShrink={0}>
+              <Box flexShrink={0}>
+              {/* <HStack spacing={4} flexShrink={0}> */}
                 <StepTitle>{step.title}</StepTitle>
                 <StepDescription>{step.description}</StepDescription>
-              </HStack>
+              {/* </HStack> */}
+              </Box>
             ) : (
               <VStack spacing={2} flexShrink={0} alignItems={'left'} paddingLeft={1}>
                 {/* <StepTitle>{step.title}</StepTitle>
