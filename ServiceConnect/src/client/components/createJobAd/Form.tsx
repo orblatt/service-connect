@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { Link as ReactRouterLink } from 'react-router-dom';
-import { Link as ChakraLink } from '@chakra-ui/react';
+import { Link as ChakraLink, Heading } from '@chakra-ui/react';
 import { Card, Stack, useSteps, Box, Tabs, TabList, Tab, TabPanels, TabPanel, Stepper, Step, StepIndicator, StepStatus, StepIcon, StepNumber, StepTitle, StepDescription, StepSeparator, MenuItem, useToast, Button, Text } from '@chakra-ui/react';
 import { useBreakpointValue, HStack, VStack } from '@chakra-ui/react';
 import { JobAd } from 'wasp/entities';
@@ -284,6 +284,18 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
                   />
               </TabPanel>
               <TabPanel>
+                <Heading 
+                    as='h3' 
+                    size='lg' 
+                    color='purple.500' 
+                    paddingLeft={100}
+                    sx={{
+                      '@media screen and (max-width: 768px)': {
+                        paddingLeft: 10
+                      },
+                    }}
+                    >
+                      Ad Preview</Heading>
                 <SearchResult jobAd={jobAdPayload as JobAd} isPreview={true} user={user}/>
                 <Box h={3}></Box>
                 <NavigateFormButtons 
