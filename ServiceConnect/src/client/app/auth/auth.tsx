@@ -56,6 +56,10 @@ import {
         <ForgotPasswordForm
         appearance={authAppearance}
          />
+         <br/>
+         <span className='customSpan'>
+         <Link to="/login">Back to login</Link>
+         </span>
       </Layout>
     );
   }
