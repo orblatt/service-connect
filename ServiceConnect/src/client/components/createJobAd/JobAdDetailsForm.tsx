@@ -89,7 +89,7 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
                 </FormControl>
                 <FormControl as={GridItem} colSpan={[6, 3]}>
                     <FormLabel htmlFor="city" fontWeight={'normal'}>
-                        Address
+                        City
                     </FormLabel>
                     <Select
                     id="city"
