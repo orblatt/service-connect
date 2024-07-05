@@ -187,7 +187,7 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
   const size = useBreakpointValue({ base: 'sm', md: 'lg' });
   const ResponsiveStepper = ({ steps, activeStep, handleTabsChange }) => {  
     return (
-      <Stepper orientation={orientation} size={size} index={activeStep} onChange={handleTabsChange} overflowX="auto">
+      <Stepper orientation={orientation} size={size} index={activeStep} onChange={handleTabsChange} overflowX="auto" colorScheme={'purple'}>
         {steps.map((step, index) => (
           <Step key={index} onClick={() => handleTabsChange(index)}>
             <StepIndicator>
@@ -228,7 +228,7 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
       <Card key='md' size='md' variant='elevated' p={8}>
         <Stack spacing='4'>
           <ResponsiveStepper steps={steps} activeStep={activeStep} handleTabsChange={handleTabsChange}/>
-          <Tabs index={tabIndex} onChange={handleTabsChange}>
+          <Tabs index={tabIndex} onChange={handleTabsChange} colorScheme='purple'>
             <TabList>
               <Tab>Step 1</Tab>
               <Tab>Step 2</Tab>

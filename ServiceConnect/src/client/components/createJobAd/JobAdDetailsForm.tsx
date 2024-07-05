@@ -1,5 +1,5 @@
 import React from 'react';
-import { useBreakpointValue, Box, Divider, FormControl, FormLabel, GridItem, Input, Select, Stack, Textarea } from '@chakra-ui/react'
+import { Heading, useBreakpointValue, Box, Divider, FormControl, FormLabel, GridItem, Input, Select, Stack, Textarea } from '@chakra-ui/react'
 import { PriceSlider } from './PriceSlider';
 import DurationNumberInput from './DurationNumberInput';
 import CategorySpecificFormElements from './CategorySpecificFormElements';
@@ -54,9 +54,13 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
     const titlePlaceholderText = titlePlaceholder(category);    
     const descriptionPlaceholderText = descriptionPlaceholder(category);
     const responsiveRows = useResponsiveRows();
+    const headline = category === 'Category'
+    ? 'Select a Category'
+    : category
     return (
         <FormControl>
             <Stack spacing='4' overflow='visible'>
+                <Heading as='h3' size='lg' color='purple.500'>{headline}</Heading>
                 <FormControl mr="5%">
                     <FormLabel htmlFor="title" fontWeight={'normal'}>
                         Title
