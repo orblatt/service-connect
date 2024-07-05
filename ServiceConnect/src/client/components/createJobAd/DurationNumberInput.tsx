@@ -23,6 +23,8 @@ const DurationNumberInput: React.FC<DurationNumberInputProps> = ({ duration, han
                     max={durationConfig.max}
                     minH={10}
                     maxH={10}
+                    minW={103}
+                    maxW={103}
                     onChange={(valueAsString, valueAsNumber) => handleDurationChange(valueAsNumber)}
                 >
                     <NumberInputField />
