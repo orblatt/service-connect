@@ -53,7 +53,7 @@ export const getFilteredJobAds: GetFilteredJobAds<
   if (category && category !== defaultCategory) {
     whereCondition.AND.push({ category });
   }
-  if (city && city !== defaultCityPlaceholder && city !== 'All cities') {
+  if (city && city !== defaultCityPlaceholder && city !== 'Any city') {
     whereCondition.AND.push({ city });
   }
   if (minDuration && maxDuration && exactDuration) { // UI searchbar

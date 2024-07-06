@@ -172,7 +172,7 @@ export const sendEmail: SendEmail<SendEmailOptions , any>  = async (
 
 export type CreateSearchProfilePayload = Pick<
   SearchProfile, 'minPrice' | 'maxPrice' | 'isDone' | 'category' | 'city' | 'minDuration' | 'maxDuration' | 'exactDuration'
-> & { interval: Interval | 'Interval', emails: string[], isExactDuration: boolean};
+> & { interval: Interval | 'Interval', emails: string[], isDurationExact: boolean};
 
 export const createSearchProfile: CreateSearchProfile<CreateSearchProfilePayload, SearchProfile> = async (
   args,
@@ -181,7 +181,7 @@ export const createSearchProfile: CreateSearchProfile<CreateSearchProfilePayload
   if (!context.user) {
     throw new HttpError(401, "Unauthorized access attempt.")
   }
-  const { emails: inputEmails, minPrice, maxPrice, category, isDone, interval, city, minDuration, maxDuration, exactDuration, isExactDuration } = args;
+  const { emails: inputEmails, minPrice, maxPrice, category, isDone, interval, city, minDuration, maxDuration, exactDuration, isDurationExact } = args;
   if (!interval || interval === 'Interval') {
     throw new HttpError(400, 'Interval is missing');
   }
@@ -199,10 +199,10 @@ export const createSearchProfile: CreateSearchProfile<CreateSearchProfilePayload
   if (category && category !== defaultCategory) {
     data.category = category;
   }
-  if (city && city !== defaultCityPlaceholder && city !== 'All cities') {
+  if (city && city !== defaultCityPlaceholder && city !== 'Any city') {
     data.city = city;
   }
-  if (isExactDuration) {
+  if (isDurationExact) {
     data.exactDuration = exactDuration;
   } else {
     data.minDuration = minDuration;

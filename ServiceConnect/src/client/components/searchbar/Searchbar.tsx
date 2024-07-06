@@ -10,8 +10,9 @@ import JobCategoriesDropdown from './JobCategoriesDropdown';
 import IsDoneSwitch from './IsDoneSwitch';
 import SearchResults from './SearchResults';
 import { PriceRangeSlider, PriceProps } from './PriceRangeSlider';
+import { DurationComponents, DurationProps } from './durationToPrice/DurationComponents';
 import { JobAdFilters } from '../../../queries';
-import { cityOptions, defaultCategory, defaultCityPlaceholder, jobCategories, prices, type Interval } from '../../../config';
+import { cityOptions, defaultCategory, defaultCityPlaceholder, jobCategories, prices, type Interval, duration as durationConfig } from '../../../config';
 import CityDropdown from '../createJobAd/CityDropdown';
 
 
@@ -20,7 +21,11 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
     const { defaultMinPrice, defaultMaxPrice } = prices;
     const [minPrice, setMinPrice] = useState<PriceProps>({valueAsString: defaultMinPrice.toString(), valueAsNumber: defaultMinPrice});
     const [maxPrice, setMaxPrice] = useState<PriceProps>({valueAsString: defaultMaxPrice.toString(), valueAsNumber: defaultMaxPrice});
+    const [minDuration, setMinDuration] = useState<DurationProps>({valueAsString: durationConfig.defaultMin.toString(), valueAsNumber: durationConfig.defaultMin});
+    const [maxDuration, setMaxDuration] = useState<DurationProps>({valueAsString: durationConfig.defaultMax.toString(), valueAsNumber: durationConfig.defaultMax});
+    const [exactDuration, setExactDuration] = useState<DurationProps>({valueAsString: durationConfig.defaultExact.toString(), valueAsNumber: durationConfig.defaultExact});
     const [isDone, setIsDone] = useState(false);
+    const [isDurationExact, setIsDurationExact] = useState(false);
     const [interval, setInterval] = useState<Interval | 'Interval'>('Interval');
     const [menuButtonLabel, setMenuButtonLabel] = useState(defaultCategory);
     const [city, setCity] = useState(defaultCityPlaceholder);
@@ -33,11 +38,12 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
         category: menuButtonLabel,
         interval,
         emails,
-        minDuration,
-        maxDuration,
-        exactDuration,
+        city,
+        minDuration: minDuration.valueAsNumber,
+        maxDuration: maxDuration.valueAsNumber,
+        exactDuration: exactDuration.valueAsNumber,
         isDurationExact
-      }), [minPrice, maxPrice, isDone, menuButtonLabel, interval, emails, minDuration, maxDuration, exactDuration, isDurationExact]);
+      }), [minPrice, maxPrice, isDone, menuButtonLabel, interval, emails, city, minDuration, maxDuration, exactDuration, isDurationExact]);
 
     const menuItems: React.ReactElement<typeof MenuItem>[] = jobCategories.map(
         (category: string, index) => {
@@ -49,7 +55,7 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
         }
     );
 
-    const cityMenuItems: React.ReactElement[] = [...cityOptions, 'All cities'].map(
+    const cityMenuItems: React.ReactElement[] = [...cityOptions, 'Any city'].map(
       (city: string, index) => {
           return <MenuItem 
                   key={index} 
@@ -62,7 +68,16 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
 
     const { data: jobAds, isLoading, error } = useQuery(
         getFilteredJobAds, 
-        { minPrice: minPrice.valueAsNumber, maxPrice: maxPrice.valueAsNumber, isDone, category: menuButtonLabel, city } as JobAdFilters
+        { 
+          minPrice: minPrice.valueAsNumber, 
+          maxPrice: maxPrice.valueAsNumber, 
+          isDone, 
+          category: menuButtonLabel, 
+          city, 
+          minDuration: minDuration.valueAsNumber, 
+          maxDuration: maxDuration.valueAsNumber, 
+          exactDuration: exactDuration.valueAsNumber, 
+          isDurationExact } as JobAdFilters
       );
 
 
@@ -80,9 +95,35 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
         }
      };
 
+     const handleMinDurationChange = (valueAsString: string, valueAsNumber: number) => {
+      const newMin = valueAsNumber;
+      if (newMin <= maxDuration.valueAsNumber) { 
+          setMinDuration({ valueAsString, valueAsNumber});
+      }
+    };
+
+    const handleMaxDurationChange = (valueAsString: string, valueAsNumber: number) => {
+        const newMax = valueAsNumber;
+        if (newMax >= durationConfig.min) { 
+            setMaxDuration({ valueAsString, valueAsNumber});
+        }
+    };
+
+    const handleExactDurationChange = (valueAsString: string, valueAsNumber: number) => {
+      const newExactDuration = valueAsNumber;
+      if (newExactDuration <= durationConfig.max && newExactDuration >= durationConfig.min) { 
+          setExactDuration({ valueAsString, valueAsNumber});
+      }
+    };
+
     const handleIsDoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const newIsDone = !event.target.checked
       setIsDone(newIsDone);
+    };
+
+    const handleIsDurationExactChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const newIsDurationExact = !event.target.checked
+      setIsDurationExact(newIsDurationExact);
     };
 
     const handleIntervalChange = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -90,10 +131,10 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
         setInterval(newInterval);
       }
 
-      const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const newCity = event.target.value;
-        setCity(newCity);
-      };
+      // const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      //   const newCity = event.target.value;
+      //   setCity(newCity);
+      // };
 
     const {
         handleSubmit,
@@ -140,15 +181,24 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
                         </Flex>
                         <br/>
                         <IsDoneSwitch isDone={isDone} handleIsDoneChange={handleIsDoneChange}/>
-                        
-                            <PriceRangeSlider 
-                                minPrice={minPrice} 
-                                maxPrice={maxPrice} 
-                                handleMinChange={handleMinChange} 
-                                handleMaxChange={handleMaxChange} 
-                            />
-                            <Box h={3}></Box>
-                            <SearchProfileButton searchProfile={searchProfile} handleIntervalChange={handleIntervalChange} isSubmitting={isSubmitting}/>                    
+                        <DurationComponents
+                            minDuration={minDuration}
+                            maxDuration={maxDuration}
+                            exactDuration={exactDuration}
+                            handleMinDurationChange={handleMinDurationChange}
+                            handleMaxDurationChange={handleMaxDurationChange}
+                            handleExactDurationChange={handleExactDurationChange}
+                            isDurationExact={isDurationExact}
+                            handleIsDurationExactChange={handleIsDurationExactChange}
+                        />
+                        <PriceRangeSlider 
+                            minPrice={minPrice} 
+                            maxPrice={maxPrice} 
+                            handleMinChange={handleMinChange} 
+                            handleMaxChange={handleMaxChange} 
+                        />
+                        <Box h={3}></Box>
+                        <SearchProfileButton searchProfile={searchProfile} handleIntervalChange={handleIntervalChange} isSubmitting={isSubmitting}/>                    
                     </CardBody>
                     </Card>
                 </Stack>
