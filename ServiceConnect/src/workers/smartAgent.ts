@@ -17,8 +17,8 @@ export const emailDigest: SmartAgentJob<emailDigestInput, any> = async (
         }
 
         searchProfiles.forEach(async (searchProfile: SearchProfile) => {
-            const { minPrice, maxPrice, isDone, category, emails } = searchProfile;
-            const jobAdFilters: JobAdFilters = { minPrice, maxPrice, isDone, category }; 
+            const { minPrice, maxPrice, isDone, category, emails, city } = searchProfile;
+            const jobAdFilters: JobAdFilters = { minPrice, maxPrice, isDone, category, city }; 
             const jobAds: JobAd[] = await getFilteredJobAds(jobAdFilters, context);
             if (jobAds.length === 0) {
                 console.log('No job ads can be found with given search profile');
