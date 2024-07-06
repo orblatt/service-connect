@@ -48,7 +48,7 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ minPrice, ma
                 <NumberInput 
                     minW='90px'
                     maxW="90px" 
-                    value={minPrice.valueAsNumber} 
+                    value={minPrice.valueAsNumber || prices.min} 
                     min={prices.min} 
                     max={maxPrice.valueAsNumber} 
                     step={prices.step} 
@@ -65,7 +65,7 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ minPrice, ma
                 <NumberInput 
                     minW='90px'
                     maxW="90px" 
-                    value={maxPrice.valueAsNumber} 
+                    value={maxPrice.valueAsNumber || prices.max} 
                     min={minPrice.valueAsNumber} 
                     max={prices.max} 
                     step={prices.step} 
@@ -86,7 +86,7 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ minPrice, ma
                     minW = {['330px', '340px']}
                     maxW = {['330px', '340px']}
                     aria-label={['min', 'max']} 
-                    defaultValue={[minPrice.valueAsNumber, maxPrice.valueAsNumber]}
+                    defaultValue={[minPrice.valueAsNumber || prices.min, maxPrice.valueAsNumber || prices.max]}
                     value={[minPrice.valueAsNumber, maxPrice.valueAsNumber]}
                     min={prices.min}
                     max={prices.max}
