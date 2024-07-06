@@ -67,10 +67,10 @@ interface SearchProfileButtonProps {
                 px={4}
                 fontSize={'sm'}
                 rounded={'full'}
-                bg={'purple.500'}
-                color={'purple.50'}
+                bg={'green.500'}
+                color={'green.50'}
                 _hover={{
-                bg: 'purple.600',
+                bg: 'green.600',
                 }}
                 isDisabled={interval === defaultInterval}
                 isLoading={isSubmitting}
