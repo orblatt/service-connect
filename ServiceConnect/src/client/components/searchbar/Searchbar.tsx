@@ -12,18 +12,22 @@ import SearchResults from './SearchResults';
 import { PriceRangeSlider, PriceProps } from './PriceRangeSlider';
 import { DurationComponents, DurationProps } from './durationToPrice/DurationComponents';
 import { JobAdFilters } from '../../../queries';
-import { cityOptions, defaultCategory, defaultCityPlaceholder, jobCategories, prices, type Interval, duration as durationConfig } from '../../../config';
+import { cityOptions, defaultCategory, defaultCityPlaceholder, jobCategories, prices, type Interval, duration as durationConfig, duration } from '../../../config';
 import CityDropdown from '../createJobAd/CityDropdown';
+import { PriceSlider } from '../createJobAd/PriceSlider';
+import { PriceComponents } from './durationToPrice/PriceComponents';
 
 
 
 const Searchbar = ({ user }: { user: AuthUser }) => {
     const { defaultMinPrice, defaultMaxPrice } = prices;
     const [minPrice, setMinPrice] = useState<PriceProps>({valueAsString: defaultMinPrice.toString(), valueAsNumber: defaultMinPrice});
-    const [maxPrice, setMaxPrice] = useState<PriceProps>({valueAsString: defaultMaxPrice.toString(), valueAsNumber: defaultMaxPrice});
+    const [maxPrice, setMaxPrice] = useState<PriceProps>({valueAsString: defaultMaxPrice.toString(), valueAsNumber: defaultMaxPrice}); //TODO: change to 100 (take the right variable name0
     const [minDuration, setMinDuration] = useState<DurationProps>({valueAsString: durationConfig.defaultMin.toString(), valueAsNumber: durationConfig.defaultMin});
     const [maxDuration, setMaxDuration] = useState<DurationProps>({valueAsString: durationConfig.defaultMax.toString(), valueAsNumber: durationConfig.defaultMax});
     const [exactDuration, setExactDuration] = useState<DurationProps>({valueAsString: durationConfig.defaultExact.toString(), valueAsNumber: durationConfig.defaultExact});
+    const numberHourlyRate = Math.floor((minPrice.valueAsNumber) / (minDuration.valueAsNumber))
+    const [hourlyRate, setHourlyRate] = useState({valueAsString: numberHourlyRate.toString(), valueAsNumber: numberHourlyRate});
     const [isDone, setIsDone] = useState(false);
     const [isDurationExact, setIsDurationExact] = useState(false);
     const [interval, setInterval] = useState<Interval | 'Interval'>('Interval');
@@ -96,9 +100,12 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
      };
 
      const handleMinDurationChange = (valueAsString: string, valueAsNumber: number) => {
-      const newMin = valueAsNumber;
-      if (newMin <= maxDuration.valueAsNumber) { 
+      const newMinDuration = valueAsNumber;
+      const newMinTotalPrice = newMinDuration * hourlyRate.valueAsNumber
+      if (newMinDuration <= maxDuration.valueAsNumber) { 
           setMinDuration({ valueAsString, valueAsNumber});
+          setExactDuration({ valueAsString, valueAsNumber});
+          setMinPrice({ valueAsString: newMinTotalPrice.toString(), valueAsNumber: newMinTotalPrice});
       }
     };
 
@@ -111,8 +118,11 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
 
     const handleExactDurationChange = (valueAsString: string, valueAsNumber: number) => {
       const newExactDuration = valueAsNumber;
+      const newMinTotalPrice = newExactDuration * hourlyRate.valueAsNumber
       if (newExactDuration <= durationConfig.max && newExactDuration >= durationConfig.min) { 
           setExactDuration({ valueAsString, valueAsNumber});
+          setMinDuration({ valueAsString, valueAsNumber});
+          setMinPrice({ valueAsString: newMinTotalPrice.toString(), valueAsNumber: newMinTotalPrice});
       }
     };
 
@@ -131,6 +141,15 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
         setInterval(newInterval);
       }
 
+    const handleHourlyRateChange = (valueAsString: string, valueAsNumber: number) => {
+      const newHourlyRate = valueAsNumber;      
+      const newMinTotalPrice = minDuration.valueAsNumber * newHourlyRate
+      if (newMinTotalPrice <= prices.max ) { //  && newMinTotalPrice >= prices.min
+        setHourlyRate({ valueAsString, valueAsNumber});
+        setMinPrice({ valueAsString: newMinTotalPrice.toString(), valueAsNumber: newMinTotalPrice});
+      }
+     };
+     
       // const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
       //   const newCity = event.target.value;
       //   setCity(newCity);
@@ -191,12 +210,54 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
                             isDurationExact={isDurationExact}
                             handleIsDurationExactChange={handleIsDurationExactChange}
                         />
-                        <PriceRangeSlider 
+                        <PriceComponents
+                            minPrice={minPrice}
+                            hourlyRate={hourlyRate} 
+                            handleHourlyRateChange={handleHourlyRateChange}
+                            duration={isDurationExact 
+                              ? exactDuration.valueAsNumber || 1
+                              : minDuration.valueAsNumber || 1
+                            }
+                        />
+                        <Button
+                          onClick={() => {
+                            window.alert(JSON.stringify(
+                              {
+                                duration: isDurationExact 
+                                  ? exactDuration.valueAsNumber || 1
+                                  : minDuration.valueAsNumber || 1,
+                                minDuration: minDuration.valueAsNumber,
+                                hourlyRate: hourlyRate.valueAsNumber,
+                                minPrice: minPrice.valueAsNumber,
+                              },
+
+                          ))
+                          }}
+                        >
+
+                        </Button>
+                        {/* <hourlyPriceSlider
+                          hourlyRate={hourlyRate} 
+                          handlePriceChange={(newPrice: number) => handleMinChange(newPrice.toString(), newPrice)}
+                          duration={isDurationExact 
+                            ? exactDuration.valueAsNumber || 1
+                            : minDuration.valueAsNumber || 1
+                          }
+                          /> */}
+                        {/* <PriceSlider 
+                          price={hourlyRate} 
+                          handlePriceChange={(newPrice: number) => handleMinChange(newPrice.toString(), newPrice)}
+                          duration={isDurationExact 
+                            ? exactDuration.valueAsNumber || 1
+                            : minDuration.valueAsNumber || 1
+                          }
+                        /> */}
+                        {/* <PriceRangeSlider 
                             minPrice={minPrice} 
                             maxPrice={maxPrice} 
                             handleMinChange={handleMinChange} 
                             handleMaxChange={handleMaxChange} 
-                        />
+                        /> */}
                         <Box h={3}></Box>
                         <SearchProfileButton searchProfile={searchProfile} handleIntervalChange={handleIntervalChange} isSubmitting={isSubmitting}/>                    
                     </CardBody>
