@@ -42,7 +42,7 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ minPrice, ma
         <Box>
             <Flex maxW='400px'>
                <FormLabel flexShrink={0} alignItems={'center'} 
-               paddingRight={['7', '9']}>
+               paddingRight={['7', '8']}>
                 Total pay (₪)</FormLabel>
                 <Flex marginBottom={['2', '1']}>
                 <NumberInput 
