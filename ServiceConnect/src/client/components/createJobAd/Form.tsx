@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { Link as ReactRouterLink } from 'react-router-dom';
-import { Link as ChakraLink, Heading } from '@chakra-ui/react';
+import { Link as ChakraLink, Flex, Heading } from '@chakra-ui/react';
 import { Card, Stack, useSteps, Box, Tabs, TabList, Tab, TabPanels, TabPanel, Stepper, Step, StepIndicator, StepStatus, StepIcon, StepNumber, StepTitle, StepDescription, StepSeparator, MenuItem, useToast, Button, Text } from '@chakra-ui/react';
 import { useBreakpointValue, HStack, VStack } from '@chakra-ui/react';
 import { JobAd } from 'wasp/entities';
@@ -14,6 +14,11 @@ import NavigateFormButtons from './NavigateFormButtons';
 import SearchResult from '../searchbar/SearchResult';
 import { CreateJobAdPayload } from '../../../actions';
 import { AuthUser } from 'wasp/auth';
+import {
+  FiHome
+} from 'react-icons/fi';
+import { GoChecklist } from "react-icons/go";
+
 
 
 const steps = [
@@ -311,14 +316,24 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
               </TabPanel>
               <TabPanel>
                 <Text paddingY='5'>Congratulations! Your ad was created successfuly</Text>
-                <ChakraLink as={ReactRouterLink} to={routes.home} style={{ textDecoration: 'none' }}>
-                <Button
-                  colorScheme="purple"
-                  variant='solid'
-                >
-                  Return to homepage
-                </Button>
+                <Flex>
+                <ChakraLink as={ReactRouterLink} to={routes.home} style={{ textDecoration: 'none' }} paddingRight={3}>
+                  <Button
+                    colorScheme="purple"
+                    variant='solid'
+                  >
+                    <FiHome/>&nbsp; Return to homepage
+                  </Button>
                 </ChakraLink>
+                <ChakraLink as={ReactRouterLink} to={routes.myJobAds} style={{ textDecoration: 'none' }}>
+                  <Button
+                    colorScheme="purple"
+                    variant='solid'
+                  >
+                    Return to my ads &nbsp; <GoChecklist/>
+                  </Button>
+                </ChakraLink>
+                </Flex>
               </TabPanel>
             </TabPanels>
           </Tabs>
