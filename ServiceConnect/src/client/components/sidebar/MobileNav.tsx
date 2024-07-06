@@ -136,7 +136,7 @@ const MobileNav = ({ onOpen, user, role, ...rest }: MobileProps & { user: AuthUs
                   onClick={() => {
                     if (role === 'Customer') {
                       toast({
-                        title: 'Coming Soon',
+                        title: 'Coming soon',
                         status: 'info',
                         duration: 3000,
                         isClosable: true,

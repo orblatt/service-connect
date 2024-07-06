@@ -99,7 +99,7 @@ interface LinkItemProps {
               () => { 
                 if (link.name === 'Reviews' || (link.name === 'Settings' && role ==='Customer')) {
                   toast({
-                    title: 'Coming Soon',
+                    title: 'Coming soon',
                     status: 'info',
                     duration: 3000,
                     isClosable: true,
