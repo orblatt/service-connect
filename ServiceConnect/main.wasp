@@ -151,6 +151,9 @@ entity SearchProfile {=psl
     searcherId  Int
     category    String?
     city        String?
+    minDuration Int?
+    maxDuration Int?
+    exactDuration Int?
 psl=}
 
 action createSearchProfile {

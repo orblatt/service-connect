@@ -21,13 +21,16 @@ export type JobAdFilters = {
   interval?: Interval | 'Interval',
   category?: string,
   city?: string,
+  minDuration?: number,
+  maxDuration?: number,
+  exactDuration?: number,
 }
 
 export const getFilteredJobAds: GetFilteredJobAds<
   JobAdFilters,
   JobAd[]
 > = async (args: JobAdFilters, context: any) => {
-  let { minPrice, maxPrice, isDone, interval, category, city } = args
+  let { minPrice, maxPrice, isDone, interval, category, city, minDuration, maxDuration, exactDuration } = args
   minPrice = typeof minPrice === 'number' 
              ? minPrice 
              : parseFloat(minPrice || defaultMinPrice);
@@ -52,6 +55,13 @@ export const getFilteredJobAds: GetFilteredJobAds<
   if (city && city !== defaultCityPlaceholder)  {
     whereCondition.AND.push({ city });
   }
+  if (exactDuration) {
+    whereCondition.AND.push({ duration: exactDuration });
+  } else if (minDuration && maxDuration) {
+    whereCondition.AND.push({ duration: { gte: minDuration } });
+    whereCondition.AND.push({ duration: { lte: maxDuration } });
+  }
+
   const jobAds: Promise<JobAd[]> = context.entities.JobAd.findMany({
       where: whereCondition,
       orderBy: { id: 'asc' },
