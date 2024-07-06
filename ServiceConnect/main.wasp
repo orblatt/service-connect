@@ -150,6 +150,7 @@ entity SearchProfile {=psl
     searcher    User    @relation(name: "searchedBy", fields: [searcherId], references: [id])
     searcherId  Int
     category    String?
+    city        String?
 psl=}
 
 action createSearchProfile {
