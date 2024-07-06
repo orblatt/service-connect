@@ -12,7 +12,7 @@ interface HourlyRateNumberInputProps {
 const HourlyRateNumberInput: React.FC<HourlyRateNumberInputProps>  = ({hourlyRate, handleHourlyRateChange, minDuration}) => {
     return (
         <NumberInput 
-            maxW="102px" 
+            maxW="119px" 
             shadow="md"
             focusBorderColor="purple.500"
             value={hourlyRate.valueAsNumber} 

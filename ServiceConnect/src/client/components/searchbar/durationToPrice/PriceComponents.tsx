@@ -19,13 +19,14 @@ export const PriceComponents: React.FC<PriceComponentsProps> = ({
     return (
         <Box>
             <HStack alignItems={'top'}>
-                <FormLabel>Hourly Rate (₪):</FormLabel>
+                <FormLabel paddingRight={2}>Hourly Rate (₪):</FormLabel>
                 <HourlyRateNumberInput
                 hourlyRate={hourlyRate}
                 handleHourlyRateChange={handleHourlyRateChange}
                 minDuration={duration}
                 />
             </HStack>
+            <Box h={3}></Box>
             <MinimumPay minDuration={duration} hourlyRate={hourlyRate.valueAsNumber}/>
         </Box>
     )

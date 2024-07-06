@@ -1,4 +1,4 @@
-import { FormLabel } from "@chakra-ui/react";
+import { Flex, FormLabel } from "@chakra-ui/react";
 
 interface MinimumPayProps {
     minDuration: number;
@@ -7,7 +7,13 @@ interface MinimumPayProps {
 
 const MinimumPay: React.FC<MinimumPayProps> = ({minDuration, hourlyRate}) => {
   return (
-    <FormLabel>Minimum Pay (₪): {minDuration * hourlyRate}</FormLabel>
+    <Flex>
+    <FormLabel>Minimum Pay (₪): </FormLabel>
+      <FormLabel color='purple.600' fontSize='2xl'>
+                ₪{minDuration * hourlyRate}
+      </FormLabel>
+      </Flex>
+    
   );
 }
 

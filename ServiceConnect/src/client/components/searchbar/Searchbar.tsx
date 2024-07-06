@@ -200,6 +200,7 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
                         </Flex>
                         <br/>
                         <IsDoneSwitch isDone={isDone} handleIsDoneChange={handleIsDoneChange}/>
+                        
                         <DurationComponents
                             minDuration={minDuration}
                             maxDuration={maxDuration}
@@ -210,6 +211,7 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
                             isDurationExact={isDurationExact}
                             handleIsDurationExactChange={handleIsDurationExactChange}
                         />
+                        <Box h={3}></Box>
                         <PriceComponents
                             minPrice={minPrice}
                             hourlyRate={hourlyRate} 
@@ -219,45 +221,7 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
                               : minDuration.valueAsNumber || 1
                             }
                         />
-                        <Button
-                          onClick={() => {
-                            window.alert(JSON.stringify(
-                              {
-                                duration: isDurationExact 
-                                  ? exactDuration.valueAsNumber || 1
-                                  : minDuration.valueAsNumber || 1,
-                                minDuration: minDuration.valueAsNumber,
-                                hourlyRate: hourlyRate.valueAsNumber,
-                                minPrice: minPrice.valueAsNumber,
-                              },
-
-                          ))
-                          }}
-                        >
-
-                        </Button>
-                        {/* <hourlyPriceSlider
-                          hourlyRate={hourlyRate} 
-                          handlePriceChange={(newPrice: number) => handleMinChange(newPrice.toString(), newPrice)}
-                          duration={isDurationExact 
-                            ? exactDuration.valueAsNumber || 1
-                            : minDuration.valueAsNumber || 1
-                          }
-                          /> */}
-                        {/* <PriceSlider 
-                          price={hourlyRate} 
-                          handlePriceChange={(newPrice: number) => handleMinChange(newPrice.toString(), newPrice)}
-                          duration={isDurationExact 
-                            ? exactDuration.valueAsNumber || 1
-                            : minDuration.valueAsNumber || 1
-                          }
-                        /> */}
-                        {/* <PriceRangeSlider 
-                            minPrice={minPrice} 
-                            maxPrice={maxPrice} 
-                            handleMinChange={handleMinChange} 
-                            handleMaxChange={handleMaxChange} 
-                        /> */}
+                       
                         <Box h={3}></Box>
                         <SearchProfileButton searchProfile={searchProfile} handleIntervalChange={handleIntervalChange} isSubmitting={isSubmitting}/>                    
                     </CardBody>
