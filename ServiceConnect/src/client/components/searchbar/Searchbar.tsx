@@ -11,7 +11,8 @@ import IsDoneSwitch from './IsDoneSwitch';
 import SearchResults from './SearchResults';
 import { PriceRangeSlider, PriceProps } from './PriceRangeSlider';
 import { JobAdFilters } from '../../../queries';
-import { defaultCategory, jobCategories, prices, type Interval } from '../../../config';
+import { cityOptions, defaultCategory, defaultCityPlaceholder, jobCategories, prices, type Interval } from '../../../config';
+import CityDropdown from '../createJobAd/CityDropdown';
 
 
 
@@ -22,6 +23,7 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
     const [isDone, setIsDone] = useState(false);
     const [interval, setInterval] = useState<Interval | 'Interval'>('Interval');
     const [menuButtonLabel, setMenuButtonLabel] = useState(defaultCategory);
+    const [city, setCity] = useState(defaultCityPlaceholder);
     const userEmail = user?.auth?.identities[0]?.providerUserId;
     const emails = userEmail ? [userEmail] : [];
     const searchProfile = useMemo(() => ({
@@ -42,9 +44,21 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
                 </MenuItem>
         }
     );
+
+    const cityMenuItems: React.ReactElement[] = cityOptions.map(
+      (city: string, index) => {
+          return <MenuItem 
+                  key={index} 
+                  onClick={() => setCity(city)}>
+                  {city}
+              </MenuItem>
+      }
+  );
+
+
     const { data: jobAds, isLoading, error } = useQuery(
         getFilteredJobAds, 
-        { minPrice: minPrice.valueAsNumber, maxPrice: maxPrice.valueAsNumber, isDone, category: menuButtonLabel } as JobAdFilters
+        { minPrice: minPrice.valueAsNumber, maxPrice: maxPrice.valueAsNumber, isDone, category: menuButtonLabel, city } as JobAdFilters
       );
 
 
@@ -71,6 +85,11 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
         const newInterval = event.currentTarget.textContent! as Interval | 'Interval';
         setInterval(newInterval);
       }
+
+      const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newCity = event.target.value;
+        setCity(newCity);
+      };
 
     const {
         handleSubmit,
@@ -110,8 +129,9 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
                     </CardHeader>
                     <CardBody mt={0}>
                         <Flex>
-                            <JobCategoriesDropdown menuButtonLabel={menuButtonLabel} menuItems={menuItems}/>
-                            <Stack align='center' direction='row'>
+                            <Stack align='center' direction='row' spacing={3}>
+                              <JobCategoriesDropdown menuButtonLabel={menuButtonLabel} menuItems={menuItems}/>
+                              <CityDropdown menuButtonLabel={city} menuItems={cityMenuItems}/>
                             </Stack>
                         </Flex>
                         <br/>
