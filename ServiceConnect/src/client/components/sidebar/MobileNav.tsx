@@ -137,8 +137,7 @@ const MobileNav = ({ onOpen, user, role, ...rest }: MobileProps & { user: AuthUs
                     if (role === 'Customer') {
                       toast({
                         title: 'Coming Soon',
-                        description: "We're working on it",
-                        status: 'error',
+                        status: 'info',
                         duration: 3000,
                         isClosable: true,
                       })
