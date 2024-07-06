@@ -122,20 +122,39 @@ const SearchResult = ({ jobAd, isPreview, user } : { jobAd: JobAd, isPreview: bo
         </CardBody>
         <Divider />
         <CardFooter>
-            <ButtonGroup spacing='2'>
-            <Button variant='solid' colorScheme='purple' onClick={handleProviderChange} isDisabled={isPreview || user.id === ownerId || providerId && providerId !== user.id}>
-            {
-              providerId && providerId !== user.id
-              ? 'Already Assigned'
-              : providerId
-              ? 'Unassign Me'
-              : 'Accept Job'
-            }
-            </Button>
-            <Button variant='outline' colorScheme='purple' onClick={handleIsDoneChange} isDisabled={isPreview || user.id !== ownerId}>
-                {!isDone ? 'Done' : 'Undone'}
-            </Button>
-            </ButtonGroup>
+        <ButtonGroup spacing='2'>
+  {
+    user.id !== ownerId && (
+      <Button 
+        variant='solid' 
+        colorScheme='purple' 
+        onClick={handleProviderChange} 
+        isDisabled={isPreview || (providerId && providerId !== user.id)}
+      >
+        {
+          providerId && providerId !== user.id
+            ? 'Already Assigned'
+            : providerId
+            ? 'Unassign Me'
+            : 'Accept Job'
+        }
+      </Button>
+    )
+  }
+  {
+    user.id === ownerId && (
+      <Button 
+        variant='solid' 
+        colorScheme='purple' 
+        onClick={handleIsDoneChange} 
+        isDisabled={isPreview || !providerId}
+      >
+        {!isDone ? 'Done' : 'Undone'}
+      </Button>
+    )
+  }
+</ButtonGroup>
+
         </CardFooter>
         </Card>
     )
