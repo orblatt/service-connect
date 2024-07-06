@@ -62,6 +62,11 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
     const maxHourlyRateFloored = Math.floor(prices.max / duration);
     const hourlyRateMaximum = hourlyRateCeiled * duration > prices.max  ? 
     maxHourlyRateFloored : hourlyRateCeiled * duration;
+    const currentPrice = price && price >= prices.min
+    ? price 
+    : (hourlyRateFloored && duration
+        ? hourlyRateFloored * duration
+        : 1);
 
     return (
         <Box>
@@ -72,7 +77,7 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
                     maxW="102px" 
                     shadow="md"
                     focusBorderColor="purple.500"
-                    value={price} 
+                    value={currentPrice} 
                     min={hourlyRateFloored * duration} 
                     max={prices.max} 
                     step={prices.step} 
@@ -93,7 +98,7 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
                     maxW="102px" 
                     shadow="md"
                     focusBorderColor="purple.500"
-                    value={hourlyRateFloored} 
+                    value={hourlyRateFloored || 1} 
                     min={Math.ceil(prices.min / duration)} 
                     max={hourlyRateMaximum} 
                     step={prices.step} 
