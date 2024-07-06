@@ -63,7 +63,7 @@ const SearchResult = ({ jobAd, isPreview, user } : { jobAd: JobAd, isPreview: bo
           })
           if (result.count > 0) {
             toast({
-              title: 'Job done',
+              title: `Job ${!isDone ? 'done' : 'undone'}`,
               status: 'success',
               duration: 3000,
               isClosable: true,
