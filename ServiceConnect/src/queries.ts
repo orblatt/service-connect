@@ -53,7 +53,7 @@ export const getFilteredJobAds: GetFilteredJobAds<
   if (category && category !== defaultCategory) {
     whereCondition.AND.push({ category });
   }
-  if (city && city !== defaultCityPlaceholder)  {
+  if (city && city !== defaultCityPlaceholder && city !== 'All cities') {
     whereCondition.AND.push({ city });
   }
   if (minDuration && maxDuration && exactDuration) { // UI searchbar
@@ -71,9 +71,6 @@ export const getFilteredJobAds: GetFilteredJobAds<
       whereCondition.AND.push({ duration: { lte: maxDuration } });
     }
   }
-
-
-  
 
   const jobAds: Promise<JobAd[]> = context.entities.JobAd.findMany({
       where: whereCondition,

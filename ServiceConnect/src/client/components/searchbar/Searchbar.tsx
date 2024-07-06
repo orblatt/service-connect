@@ -49,7 +49,7 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
         }
     );
 
-    const cityMenuItems: React.ReactElement[] = cityOptions.map(
+    const cityMenuItems: React.ReactElement[] = [...cityOptions, 'All cities'].map(
       (city: string, index) => {
           return <MenuItem 
                   key={index} 

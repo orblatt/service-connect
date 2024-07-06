@@ -194,11 +194,13 @@ export const createSearchProfile: CreateSearchProfile<CreateSearchProfilePayload
     maxPrice,
     isDone,
     interval,
-    city,
     searcher: { connect: { id: context.user.id } },
   };
   if (category && category !== defaultCategory) {
     data.category = category;
+  }
+  if (city && city !== defaultCityPlaceholder && city !== 'All cities') {
+    data.city = city;
   }
   if (isExactDuration) {
     data.exactDuration = exactDuration;
