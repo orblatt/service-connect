@@ -28,7 +28,6 @@ const SearchResult = ({ jobAd, isPreview, user } : { jobAd: JobAd, isPreview: bo
           const result = await updateJobAdProvider({ id: jobAd.id })
           toast({
             title: `Provider ${assigned}.`,
-            description: `We've ${assigned} you to this ad.`,
             status: 'success',
             duration: 3000,
             isClosable: true,
