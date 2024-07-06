@@ -63,8 +63,7 @@ const SearchResult = ({ jobAd, isPreview, user } : { jobAd: JobAd, isPreview: bo
           })
           if (result.count > 0) {
             toast({
-              title: 'Status updated',
-              description: "We've updated the status of this ad.",
+              title: 'Job done',
               status: 'success',
               duration: 3000,
               isClosable: true,
