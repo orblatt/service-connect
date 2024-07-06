@@ -10,14 +10,14 @@ const YoungestChildAgeNumberInput: React.FC<YoungestChildAgeNumberInputProps> = 
     return (
         <Box>
             <Flex maxW='400px'>
-                <Box><FormLabel fontWeight={'normal'}>Youngest Child Age</FormLabel></Box>
+                <Box><FormLabel fontWeight={'normal'}>Youngest child age</FormLabel></Box>
                 <NumberInput 
                     id='youngest-child-age-number-input'
                     aria-label='youngest-child-age-number-input'
                     shadow="md"
                     focusBorderColor="purple.500"
                     maxW='80px'
-                    value={youngestChildAge}
+                    value={youngestChildAge || youngestChildAgeConfig.min}
                     defaultValue={youngestChildAge}
                     min={youngestChildAgeConfig.min}
                     max={youngestChildAgeConfig.max}

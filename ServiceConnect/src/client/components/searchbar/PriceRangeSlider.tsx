@@ -41,11 +41,52 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ minPrice, ma
     return (
         <Box>
             <Flex maxW='400px'>
-               <FormLabel>Price Range (₪)</FormLabel>
-                {/* <Text></Text> */}
-                <RangeSlider 
+               <FormLabel flexShrink={0} alignItems={'center'} 
+               paddingRight={['7', '8']}>
+                Total pay (₪)</FormLabel>
+                <Flex marginBottom={['2', '1']}>
+                <NumberInput 
+                    minW='90px'
+                    maxW="90px" 
+                    value={minPrice.valueAsNumber || prices.min} 
+                    min={prices.min} 
+                    max={maxPrice.valueAsNumber} 
+                    step={prices.step} 
+                    onChange={handleMinChange} 
+                    marginTop={0}
+                > 
+                    <NumberInputField />
+                    <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                    </NumberInputStepper>
+                </NumberInput>
+                <Text alignContent={'center'} paddingLeft={3} paddingRight={3}>-</Text>
+                <NumberInput 
+                    minW='90px'
+                    maxW="90px" 
+                    value={maxPrice.valueAsNumber || prices.max} 
+                    min={minPrice.valueAsNumber} 
+                    max={prices.max} 
+                    step={prices.step} 
+                    onChange={handleMaxChange} 
+                    marginTop={0}
+                > 
+                    <NumberInputField />
+                    <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                    </NumberInputStepper>
+                </NumberInput>
+                </Flex>
+                
+            </Flex>
+            <Box h={1}></Box>
+            <RangeSlider 
+                    minW = {['330px', '340px']}
+                    maxW = {['330px', '340px']}
                     aria-label={['min', 'max']} 
-                    defaultValue={[minPrice.valueAsNumber, maxPrice.valueAsNumber]}
+                    defaultValue={[minPrice.valueAsNumber || prices.min, maxPrice.valueAsNumber || prices.max]}
                     value={[minPrice.valueAsNumber, maxPrice.valueAsNumber]}
                     min={prices.min}
                     max={prices.max}
@@ -62,43 +103,6 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ minPrice, ma
                 <Box color='purple.500' as={MdGraphicEq} />
                 </RangeSliderThumb>
                 </RangeSlider>
-            </Flex>
-            <Box h={1}></Box>
-            <Flex>
-                <NumberInput 
-                    maxW="140px" 
-                    mr="2rem" 
-                    value={minPrice.valueAsNumber} 
-                    min={prices.min} 
-                    max={maxPrice.valueAsNumber} 
-                    step={prices.step} 
-                    onChange={handleMinChange} 
-                    marginTop={0}
-                > 
-                    <NumberInputField />
-                    <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                    </NumberInputStepper>
-                </NumberInput>
-                <Text>- &nbsp; &nbsp; &nbsp; &nbsp;</Text>
-                <NumberInput 
-                    maxW="140px" 
-                    mr="2rem" 
-                    value={maxPrice.valueAsNumber} 
-                    min={minPrice.valueAsNumber} 
-                    max={prices.max} 
-                    step={prices.step} 
-                    onChange={handleMaxChange} 
-                    marginTop={0}
-                > 
-                    <NumberInputField />
-                    <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                    </NumberInputStepper>
-                </NumberInput>
-            </Flex>
         </Box>
     );
 };

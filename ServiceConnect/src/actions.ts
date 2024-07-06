@@ -146,7 +146,7 @@ export const sendEmail: SendEmail<SendEmailOptions , any>  = async (
   if (!email) {
     throw new HttpError(500, 'Could not parse user\'s email correctly');
   }
-  const subject: string = `There Are ${jobAds.length} New Job Ads Matching Your Preferences`
+  const subject: string = `There are ${jobAds.length} new job ads matching your preferences`
   const html: string = `
                        <p>Hi <strong>${email}</strong></p>
                        <h2>${subject}</h2>
@@ -163,7 +163,7 @@ export const sendEmail: SendEmail<SendEmailOptions , any>  = async (
   const htmlToTextOptions: object = { wordwrap: 130 }; // https://www.npmjs.com/package/html-to-text#options
   const info = await emailSender.send({
     to: email,
-    subject: `There Are ${jobAds.length} New Job Ads Matching Your Preferences`,
+    subject: `There are ${jobAds.length} new job ads matching your preferences`,
     text: htmlToText(html, htmlToTextOptions),
     html
   });

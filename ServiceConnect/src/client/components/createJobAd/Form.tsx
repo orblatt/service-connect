@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { Link as ReactRouterLink } from 'react-router-dom';
-import { Link as ChakraLink } from '@chakra-ui/react';
+import { Link as ChakraLink, Flex, Heading } from '@chakra-ui/react';
 import { Card, Stack, useSteps, Box, Tabs, TabList, Tab, TabPanels, TabPanel, Stepper, Step, StepIndicator, StepStatus, StepIcon, StepNumber, StepTitle, StepDescription, StepSeparator, MenuItem, useToast, Button, Text } from '@chakra-ui/react';
 import { useBreakpointValue, HStack, VStack } from '@chakra-ui/react';
 import { JobAd } from 'wasp/entities';
@@ -14,6 +14,11 @@ import NavigateFormButtons from './NavigateFormButtons';
 import SearchResult from '../searchbar/SearchResult';
 import { CreateJobAdPayload } from '../../../actions';
 import { AuthUser } from 'wasp/auth';
+import {
+  FiHome
+} from 'react-icons/fi';
+import { GoChecklist } from "react-icons/go";
+
 
 
 const steps = [
@@ -40,7 +45,7 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
   const [toolsProvided, setToolsProvided] = useState(defaultToolsProvided);
   const [numberOfRooms, setNumberOfRooms] = useState(defaultNumberOfRooms);
   const [menuButtonLabel, setMenuButtonLabel] = useState(defaultCategory);
-  const [jobAdPayload, setJobAdPayload] = useState<CreateJobAdPayload & { isDone: boolean }>( { 
+  const jobAdPayload = useMemo(() => ({
     description, 
     price,
     category: menuButtonLabel,
@@ -51,14 +56,31 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
     toolsProvided,
     numberOfRooms,
     isDone,
-  });
-  const handleJobAdPayloadChange = (field: any, value: any) => {
-    setJobAdPayload(prevState => ({ ...prevState, [field]: value }));
-  };
+  }), [
+    description, 
+    price,
+    menuButtonLabel,
+    city,
+    title,
+    duration,
+    youngestChildAge,
+    toolsProvided,
+    numberOfRooms,
+    isDone,
+  ]);
+
   const handleCategoryChange = (event: React.MouseEvent<HTMLButtonElement>) => {
     const category = event.currentTarget.textContent as string;
     setMenuButtonLabel(category);
-    handleJobAdPayloadChange('category', category);
+    // Reset all fields
+    setTitle('');
+    setDescription('');
+    setPrice(defaultJobAd.price);
+    setCity(defaultCityPlaceholder);
+    setDuration(defaultDuration);
+    setYoungestChildAge(defaultYoungestChildAge);
+    setToolsProvided(defaultToolsProvided);
+    setNumberOfRooms(defaultNumberOfRooms);
   }
 
   const menuItems: React.ReactElement<typeof MenuItem>[] = jobCategories.map(
@@ -74,45 +96,37 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newTitle = event.target.value;
     setTitle(newTitle);
-    handleJobAdPayloadChange('title', newTitle);
   };
 
   const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newDescription = event.target.value;
     setDescription(newDescription);
-    handleJobAdPayloadChange('description', newDescription);
   };
 
   const handlePriceChange = (newPrice: number) => {
     setPrice(newPrice);
-    handleJobAdPayloadChange('price', newPrice);
   }
 
   const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newCity = event.target.value;
     setCity(newCity);
-    handleJobAdPayloadChange('city', newCity);
   };
 
   const handleDurationChange = (newDuration: number) => {
     setDuration(newDuration);
-    handleJobAdPayloadChange('duration', newDuration);
   };
 
   const handleYoungestChildAgeChange = (newYoungestChildAge: number) => {
     setYoungestChildAge(newYoungestChildAge);
-    handleJobAdPayloadChange('youngestChildAge', newYoungestChildAge);
   };
 
   const handleToolsProvidedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newToolsProvided = event.target.checked;
     setToolsProvided(newToolsProvided);
-    handleJobAdPayloadChange('toolsProvided', newToolsProvided);
   };
 
   const handleNumberOfRoomsChange = (newNumberOfRooms: number) => {
     setNumberOfRooms(newNumberOfRooms);
-    handleJobAdPayloadChange('numberOfRooms', newNumberOfRooms);
   };
   
   const [tabIndex, setTabIndex] = useState(0);
@@ -178,7 +192,7 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
   const size = useBreakpointValue({ base: 'sm', md: 'lg' });
   const ResponsiveStepper = ({ steps, activeStep, handleTabsChange }) => {  
     return (
-      <Stepper orientation={orientation} size={size} index={activeStep} onChange={handleTabsChange} overflowX="auto">
+      <Stepper orientation={orientation} size={size} index={activeStep} onChange={handleTabsChange} overflowX="auto" colorScheme={'purple'}>
         {steps.map((step, index) => (
           <Step key={index} onClick={() => handleTabsChange(index)}>
             <StepIndicator>
@@ -219,7 +233,7 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
       <Card key='md' size='md' variant='elevated' p={8}>
         <Stack spacing='4'>
           <ResponsiveStepper steps={steps} activeStep={activeStep} handleTabsChange={handleTabsChange}/>
-          <Tabs index={tabIndex} onChange={handleTabsChange}>
+          <Tabs index={tabIndex} onChange={handleTabsChange} colorScheme='purple'>
             <TabList>
               <Tab>Step 1</Tab>
               <Tab>Step 2</Tab>
@@ -275,6 +289,18 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
                   />
               </TabPanel>
               <TabPanel>
+                <Heading 
+                    as='h3' 
+                    size='lg' 
+                    color='purple.500' 
+                    paddingLeft={100}
+                    sx={{
+                      '@media screen and (max-width: 768px)': {
+                        paddingLeft: 10
+                      },
+                    }}
+                    >
+                      Ad Preview</Heading>
                 <SearchResult jobAd={jobAdPayload as JobAd} isPreview={true} user={user}/>
                 <Box h={3}></Box>
                 <NavigateFormButtons 
@@ -290,14 +316,24 @@ const CreateJobAdForm = ({ user }: { user: AuthUser }) => {
               </TabPanel>
               <TabPanel>
                 <Text paddingY='5'>Congratulations! Your ad was created successfuly</Text>
-                <ChakraLink as={ReactRouterLink} to={routes.home} style={{ textDecoration: 'none' }}>
-                <Button
-                  colorScheme="purple"
-                  variant='solid'
-                >
-                  Return to homepage
-                </Button>
+                <Flex>
+                <ChakraLink as={ReactRouterLink} to={routes.home} style={{ textDecoration: 'none' }} paddingRight={3}>
+                  <Button
+                    colorScheme="purple"
+                    variant='solid'
+                  >
+                    <FiHome/>&nbsp; Return to homepage
+                  </Button>
                 </ChakraLink>
+                <ChakraLink as={ReactRouterLink} to={routes.myJobAds} style={{ textDecoration: 'none' }}>
+                  <Button
+                    colorScheme="purple"
+                    variant='solid'
+                  >
+                    Return to my ads &nbsp; <GoChecklist/>
+                  </Button>
+                </ChakraLink>
+                </Flex>
               </TabPanel>
             </TabPanels>
           </Tabs>

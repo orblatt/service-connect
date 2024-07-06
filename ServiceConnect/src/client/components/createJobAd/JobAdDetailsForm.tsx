@@ -1,5 +1,5 @@
 import React from 'react';
-import { useBreakpointValue, Box, Divider, FormControl, FormLabel, GridItem, Input, Select, Stack, Textarea } from '@chakra-ui/react'
+import { Heading, useBreakpointValue, Box, Divider, FormControl, FormLabel, GridItem, Input, Select, Stack, Textarea } from '@chakra-ui/react'
 import { PriceSlider } from './PriceSlider';
 import DurationNumberInput from './DurationNumberInput';
 import CategorySpecificFormElements from './CategorySpecificFormElements';
@@ -54,9 +54,13 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
     const titlePlaceholderText = titlePlaceholder(category);    
     const descriptionPlaceholderText = descriptionPlaceholder(category);
     const responsiveRows = useResponsiveRows();
+    const headline = category === 'Category'
+    ? 'Select a Category'
+    : category
     return (
         <FormControl>
             <Stack spacing='4' overflow='visible'>
+                <Heading as='h3' size='lg' color='purple.500'>{headline}</Heading>
                 <FormControl mr="5%">
                     <FormLabel htmlFor="title" fontWeight={'normal'}>
                         Title
@@ -89,7 +93,7 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
                 </FormControl>
                 <FormControl as={GridItem} colSpan={[6, 3]}>
                     <FormLabel htmlFor="city" fontWeight={'normal'}>
-                        Address
+                        City
                     </FormLabel>
                     <Select
                     id="city"
@@ -109,6 +113,7 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
                     <option>Petah Tikva</option>
                     </Select>
                 </FormControl>
+                <Stack>
                 <DurationNumberInput
                     duration={duration}
                     handleDurationChange={handleDurationChange}
@@ -116,7 +121,9 @@ const JobAdDetailsForm: React.FC<JobAdDetailsFormProps> = ({
                 <PriceSlider
                     price={price}
                     handlePriceChange={handlePriceChange}
+                    duration={duration}
                 />
+                </Stack>
                 <Box display="flex" alignItems="center" position="relative" py={7} px={4} width="full">
                     <Divider orientation="horizontal" flex="1" />
                     <Box

@@ -1,8 +1,8 @@
 export const prices = {
     min: 1,
     max: 1000,
-    defaultMinPrice: 100,
-    defaultMaxPrice: 500,
+    defaultMinPrice: 300,
+    defaultMaxPrice: 600,
     step: 1
 };
 

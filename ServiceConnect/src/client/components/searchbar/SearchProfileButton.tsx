@@ -43,7 +43,7 @@ interface SearchProfileButtonProps {
         <Popover>
         <PopoverTrigger>
           <Button variant='outline' color='purple.500'>
-            <LuBellPlus/>&nbsp; Set Alert
+            <LuBellPlus/>&nbsp; Set alert
           </Button>
         </PopoverTrigger>
         <PopoverContent>
@@ -67,10 +67,10 @@ interface SearchProfileButtonProps {
                 px={4}
                 fontSize={'sm'}
                 rounded={'full'}
-                bg={'purple.500'}
-                color={'purple.50'}
+                bg={'teal.500'}
+                color={'teal.50'}
                 _hover={{
-                bg: 'purple.600',
+                bg: 'teal.600',
                 }}
                 isDisabled={interval === defaultInterval}
                 isLoading={isSubmitting}

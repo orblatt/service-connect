@@ -16,12 +16,7 @@ import {
         />
         <br />
         <span className='customSpan'>
-          Don't have an account yet? <Link to="/signup">go to signup</Link>.
-        </span>
-        <br />
-        <span className='customSpan'>
-          Forgot your password? <Link to="/request-password-reset">reset it</Link>
-          .
+          <Link to="/signup">Signup</Link>&nbsp; | &nbsp;<Link to="/request-password-reset">Reset password</Link>
         </span>
       </Layout>
     );
@@ -61,6 +56,10 @@ import {
         <ForgotPasswordForm
         appearance={authAppearance}
          />
+         <br/>
+         <span className='customSpan'>
+         <Link to="/login">Back to login</Link>
+         </span>
       </Layout>
     );
   }

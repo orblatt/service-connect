@@ -8,7 +8,7 @@ import { AuthUser } from 'wasp/auth'
 const SearchResult = ({ jobAd, isPreview, user } : { jobAd: JobAd, isPreview: boolean, user: AuthUser }) => {
     const { category, description, price, isDone, ownerId, providerId, title, city, duration, youngestChildAge, toolsProvided, numberOfRooms } = jobAd;
     const ownerUsername = ownerId ? useUserDetails(ownerId, 'Owner').username : 'No Owner';
-    const providerUsername = ownerId ? useUserDetails(providerId, 'Provider').username : 'No Provider';
+    const providerUsername = ownerId ? useUserDetails(providerId, 'Provider').username : 'Not yet assigned';
     const toast = useToast()
 
     const handleProviderChange = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -24,10 +24,10 @@ const SearchResult = ({ jobAd, isPreview, user } : { jobAd: JobAd, isPreview: bo
           return;
         }
         try {
+          const assigned = providerId ? 'unassigned' : 'assigned'
           const result = await updateJobAdProvider({ id: jobAd.id })
           toast({
-            title: 'Provider assigned.',
-            description: "We've assigned/unassigned you to this ad.",
+            title: `Provider ${assigned}.`,
             status: 'success',
             duration: 3000,
             isClosable: true,
@@ -63,8 +63,7 @@ const SearchResult = ({ jobAd, isPreview, user } : { jobAd: JobAd, isPreview: bo
           })
           if (result.count > 0) {
             toast({
-              title: 'Status updated',
-              description: "We've updated the status of this ad.",
+              title: `Job ${!isDone ? 'done' : 'undone'}`,
               status: 'success',
               duration: 3000,
               isClosable: true,
@@ -86,11 +85,11 @@ const SearchResult = ({ jobAd, isPreview, user } : { jobAd: JobAd, isPreview: bo
     let content = null;
     if (youngestChildAge && category === 'Babysitting') {
       const age = youngestChildAge === 1 ? 'year' : 'years';
-      content = <><b>Youngest Child:</b> &nbsp;{youngestChildAge} {age} old</>;
+      content = <><b>Youngest child:</b> &nbsp;{youngestChildAge} {age} old</>;
     } else if (numberOfRooms && category === 'House Keeping') {
       content = <><b>Rooms:</b> &nbsp;{numberOfRooms}</>;
     } else if (typeof toolsProvided === 'boolean' && category === 'Gardening') {
-      content = <><b>Tools Provided:</b> &nbsp;{toolsProvided === true ? 'Yes' : 'No'}</>;
+      content = <><b>Tools provided:</b> &nbsp;{toolsProvided === true ? 'Yes' : 'No'}</>;
     }
     const imageUrl = jobImages[category as JobCategory]?.src || '';
     const imageAlt = jobImages[category as JobCategory]?.alt || '';
@@ -122,20 +121,39 @@ const SearchResult = ({ jobAd, isPreview, user } : { jobAd: JobAd, isPreview: bo
         </CardBody>
         <Divider />
         <CardFooter>
-            <ButtonGroup spacing='2'>
-            <Button variant='solid' colorScheme='purple' onClick={handleProviderChange} isDisabled={isPreview || user.id === ownerId || providerId && providerId !== user.id}>
-            {
-              providerId && providerId !== user.id
-              ? 'Already Assigned'
-              : providerId
-              ? 'Unassign Me'
-              : 'Accept Job'
-            }
-            </Button>
-            <Button variant='outline' colorScheme='purple' onClick={handleIsDoneChange} isDisabled={isPreview || user.id !== ownerId}>
-                {!isDone ? 'Done' : 'Undone'}
-            </Button>
-            </ButtonGroup>
+        <ButtonGroup spacing='2'>
+  {
+    user.id !== ownerId && (
+      <Button 
+        variant='solid' 
+        colorScheme='purple' 
+        onClick={handleProviderChange} 
+        isDisabled={isPreview || (providerId && providerId !== user.id)}
+      >
+        {
+          providerId && providerId !== user.id
+            ? 'Already Assigned'
+            : providerId
+            ? 'Unassign Me'
+            : 'Accept Job'
+        }
+      </Button>
+    )
+  }
+  {
+    user.id === ownerId && (
+      <Button 
+        variant='solid' 
+        colorScheme='purple' 
+        onClick={handleIsDoneChange} 
+        isDisabled={isPreview || !providerId}
+      >
+        {!isDone ? 'Done' : 'Undone'}
+      </Button>
+    )
+  }
+</ButtonGroup>
+
         </CardFooter>
         </Card>
     )

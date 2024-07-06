@@ -17,12 +17,13 @@ export const DropdownButton = ( {
     menuItems 
 }: MenuInput
 ) => {
+    // zIndex is set to 2 to make sure the dropdown is on top of the other elements such as the range slider 
     return (
         <Menu>
             <MenuButton as={Button} rightIcon={<FiChevronDown/>}>
                 { menuButtonLabel }
             </MenuButton>
-            <MenuList>
+            <MenuList zIndex="2" > 
                 { ...menuItems }
             </MenuList>
         </Menu>
