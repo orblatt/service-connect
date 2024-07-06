@@ -24,13 +24,14 @@ export type JobAdFilters = {
   minDuration?: number,
   maxDuration?: number,
   exactDuration?: number,
+  isDurationExact?: boolean
 }
 
 export const getFilteredJobAds: GetFilteredJobAds<
   JobAdFilters,
   JobAd[]
 > = async (args: JobAdFilters, context: any) => {
-  let { minPrice, maxPrice, isDone, interval, category, city, minDuration, maxDuration, exactDuration } = args
+  let { minPrice, maxPrice, isDone, interval, category, city, minDuration, maxDuration, exactDuration, isDurationExact } = args
   minPrice = typeof minPrice === 'number' 
              ? minPrice 
              : parseFloat(minPrice || defaultMinPrice);
@@ -55,12 +56,24 @@ export const getFilteredJobAds: GetFilteredJobAds<
   if (city && city !== defaultCityPlaceholder)  {
     whereCondition.AND.push({ city });
   }
-  if (exactDuration) {
-    whereCondition.AND.push({ duration: exactDuration });
-  } else if (minDuration && maxDuration) {
-    whereCondition.AND.push({ duration: { gte: minDuration } });
-    whereCondition.AND.push({ duration: { lte: maxDuration } });
+  if (minDuration && maxDuration && exactDuration) { // UI searchbar
+    if (isDurationExact) {
+      whereCondition.AND.push({ duration: exactDuration });
+    } else {
+      whereCondition.AND.push({ duration: { gte: minDuration } });
+      whereCondition.AND.push({ duration: { lte: maxDuration } });
+    }
+  } else { // smart agent search
+    if (exactDuration) {
+      whereCondition.AND.push({ duration: exactDuration });
+    } else if (minDuration && maxDuration) {
+      whereCondition.AND.push({ duration: { gte: minDuration } });
+      whereCondition.AND.push({ duration: { lte: maxDuration } });
+    }
   }
+
+
+  
 
   const jobAds: Promise<JobAd[]> = context.entities.JobAd.findMany({
       where: whereCondition,

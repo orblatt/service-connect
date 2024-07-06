@@ -170,7 +170,9 @@ export const sendEmail: SendEmail<SendEmailOptions , any>  = async (
   return info;
 };
 
-export type CreateSearchProfilePayload = Pick<SearchProfile, 'minPrice' | 'maxPrice' | 'isDone' | 'category'> & { interval: Interval | 'Interval', emails: string[]}
+export type CreateSearchProfilePayload = Pick<
+  SearchProfile, 'minPrice' | 'maxPrice' | 'isDone' | 'category' | 'city' | 'minDuration' | 'maxDuration' | 'exactDuration'
+> & { interval: Interval | 'Interval', emails: string[], isExactDuration: boolean};
 
 export const createSearchProfile: CreateSearchProfile<CreateSearchProfilePayload, SearchProfile> = async (
   args,
@@ -179,7 +181,7 @@ export const createSearchProfile: CreateSearchProfile<CreateSearchProfilePayload
   if (!context.user) {
     throw new HttpError(401, "Unauthorized access attempt.")
   }
-  const { emails: inputEmails, minPrice, maxPrice, category, isDone, interval } = args;
+  const { emails: inputEmails, minPrice, maxPrice, category, isDone, interval, city, minDuration, maxDuration, exactDuration, isExactDuration } = args;
   if (!interval || interval === 'Interval') {
     throw new HttpError(400, 'Interval is missing');
   }
@@ -192,10 +194,17 @@ export const createSearchProfile: CreateSearchProfile<CreateSearchProfilePayload
     maxPrice,
     isDone,
     interval,
+    city,
     searcher: { connect: { id: context.user.id } },
   };
   if (category && category !== defaultCategory) {
     data.category = category;
+  }
+  if (isExactDuration) {
+    data.exactDuration = exactDuration;
+  } else {
+    data.minDuration = minDuration;
+    data.maxDuration = maxDuration;
   }
 
   return context.entities.SearchProfile.create({ data });

@@ -32,8 +32,12 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
         isDone,
         category: menuButtonLabel,
         interval,
-        emails
-      }), [minPrice, maxPrice, isDone, menuButtonLabel, interval, emails]);
+        emails,
+        minDuration,
+        maxDuration,
+        exactDuration,
+        isDurationExact
+      }), [minPrice, maxPrice, isDone, menuButtonLabel, interval, emails, minDuration, maxDuration, exactDuration, isDurationExact]);
 
     const menuItems: React.ReactElement<typeof MenuItem>[] = jobCategories.map(
         (category: string, index) => {
