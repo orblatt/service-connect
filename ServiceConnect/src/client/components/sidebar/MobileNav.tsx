@@ -124,31 +124,25 @@ const MobileNav = ({ onOpen, user, role, ...rest }: MobileProps & { user: AuthUs
               <MenuList
                 bg={useColorModeValue('white', 'gray.900')}
                 borderColor={useColorModeValue('gray.200', 'gray.700')}>
-                <ChakraLink as={ReactRouterLink} to={routes.myJobAds} style={{ textDecoration: 'none' }}>
+                {/* <ChakraLink as={ReactRouterLink} to={routes.myJobAds} style={{ textDecoration: 'none' }}>
                   <MenuItem>
                     Profile
                   </MenuItem>
                 </ChakraLink>
-                <ChakraLink 
-                  as={ReactRouterLink} 
-                  to={settingsRoute} 
-                  style={{ textDecoration: 'none' }}
-                  onClick={() => {
-                    if (role === 'Customer') {
-                      toast({
-                        title: 'Coming soon',
-                        status: 'info',
-                        duration: 3000,
-                        isClosable: true,
-                      })
-                    }
-                  }}
-                  >
-                  <MenuItem>
-                    Settings
-                  </MenuItem>
-                </ChakraLink>
-                <MenuDivider />
+                {
+                  role !== 'Customer' && (
+                    <ChakraLink 
+                      as={ReactRouterLink} 
+                      to={settingsRoute} 
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <MenuItem>
+                        Settings
+                      </MenuItem>
+                    </ChakraLink>
+                  )
+                }
+                <MenuDivider /> */}
                 <MenuItem onClick={logout}>Sign out</MenuItem>
               </MenuList>
             </Menu>
