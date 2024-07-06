@@ -41,9 +41,46 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ minPrice, ma
     return (
         <Box>
             <Flex maxW='400px'>
-               <FormLabel>Price Range (₪)</FormLabel>
-                {/* <Text></Text> */}
-                <RangeSlider 
+               <FormLabel flexShrink={0} alignItems={'center'} paddingRight={9}>Total Pay (₪)</FormLabel>
+                <Flex>
+                <NumberInput 
+                    maxW="90px" 
+                    value={minPrice.valueAsNumber} 
+                    min={prices.min} 
+                    max={maxPrice.valueAsNumber} 
+                    step={prices.step} 
+                    onChange={handleMinChange} 
+                    marginTop={0}
+                > 
+                    <NumberInputField />
+                    <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                    </NumberInputStepper>
+                </NumberInput>
+                <Text alignContent={'center'} paddingLeft={3} paddingRight={3}>-</Text>
+                <NumberInput 
+                    maxW="90px" 
+                    value={maxPrice.valueAsNumber} 
+                    min={minPrice.valueAsNumber} 
+                    max={prices.max} 
+                    step={prices.step} 
+                    onChange={handleMaxChange} 
+                    marginTop={0}
+                > 
+                    <NumberInputField />
+                    <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                    </NumberInputStepper>
+                </NumberInput>
+                </Flex>
+                
+            </Flex>
+            <Box h={1}></Box>
+            <RangeSlider 
+                    minW = '350px'
+                    maxW = '350px'
                     aria-label={['min', 'max']} 
                     defaultValue={[minPrice.valueAsNumber, maxPrice.valueAsNumber]}
                     value={[minPrice.valueAsNumber, maxPrice.valueAsNumber]}
@@ -62,43 +99,6 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ minPrice, ma
                 <Box color='purple.500' as={MdGraphicEq} />
                 </RangeSliderThumb>
                 </RangeSlider>
-            </Flex>
-            <Box h={1}></Box>
-            <Flex>
-                <NumberInput 
-                    maxW="140px" 
-                    mr="2rem" 
-                    value={minPrice.valueAsNumber} 
-                    min={prices.min} 
-                    max={maxPrice.valueAsNumber} 
-                    step={prices.step} 
-                    onChange={handleMinChange} 
-                    marginTop={0}
-                > 
-                    <NumberInputField />
-                    <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                    </NumberInputStepper>
-                </NumberInput>
-                <Text>- &nbsp; &nbsp; &nbsp; &nbsp;</Text>
-                <NumberInput 
-                    maxW="140px" 
-                    mr="2rem" 
-                    value={maxPrice.valueAsNumber} 
-                    min={minPrice.valueAsNumber} 
-                    max={prices.max} 
-                    step={prices.step} 
-                    onChange={handleMaxChange} 
-                    marginTop={0}
-                > 
-                    <NumberInputField />
-                    <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                    </NumberInputStepper>
-                </NumberInput>
-            </Flex>
         </Box>
     );
 };
