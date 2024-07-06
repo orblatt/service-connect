@@ -47,7 +47,7 @@ const NavigateFormButtons: React.FC<NavigateFormButtonsProps> = ({ tabIndex, han
               <Button
                 w="7rem"
                 mr="5%"
-                colorScheme="green"
+                colorScheme="teal"
                 variant="solid"
                 isDisabled={!allFieldsFilled || isSubmittedOnce}
                 isLoading={isSubmitting}

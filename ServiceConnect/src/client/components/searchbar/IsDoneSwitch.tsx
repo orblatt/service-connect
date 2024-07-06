@@ -12,7 +12,7 @@ const IsDoneSwitch = (
     return (
         <FormControl>
             <Flex>
-                <FormLabel htmlFor='isChecked'>Show Open Jobs?</FormLabel>
+                <FormLabel htmlFor='isChecked'>Show open jobs?</FormLabel>
                 <Switch 
                     colorScheme='purple' 
                     isChecked={!isDone} 
