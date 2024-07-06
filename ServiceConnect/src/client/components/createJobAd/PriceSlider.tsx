@@ -70,27 +70,6 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
 
     return (
         <Box>
-            {/* Total Price Input */}
-            <Flex maxW='400px' mb={2}>
-                <Box alignContent={'center'} paddingRight={5}><FormLabel fontWeight={'normal'}>Total Price (₪)</FormLabel></Box>
-                <NumberInput 
-                    maxW="102px" 
-                    shadow="md"
-                    focusBorderColor="purple.500"
-                    value={currentPrice} 
-                    min={hourlyRateFloored * duration} 
-                    max={prices.max} 
-                    step={prices.step} 
-                    onChange={handleTotalPriceChange}
-                >
-                    <NumberInputField />
-                    <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                    </NumberInputStepper>
-                </NumberInput>
-            </Flex>
-
             {/* Hourly Rate Input */}
             <Flex maxW='400px' mb={2}>
                 <Box alignContent={'center'}><FormLabel fontWeight={'normal'} paddingRight={3}>Hourly Rate (₪)</FormLabel></Box>
@@ -130,6 +109,26 @@ export const PriceSlider: React.FC<PriceSliderProps> = ({ price, handlePriceChan
                     <Box color='purple.500' as={MdGraphicEq} />
                 </SliderThumb>
             </Slider>
+            {/* Total Price Input */}
+            <Flex maxW='400px' mb={2}>
+                <Box alignContent={'center'} paddingRight={5}><FormLabel fontWeight={'bold'}>Total Price (₪)</FormLabel></Box>
+                <NumberInput 
+                    maxW="102px" 
+                    shadow="md"
+                    focusBorderColor="purple.500"
+                    value={currentPrice} 
+                    min={hourlyRateFloored * duration} 
+                    max={prices.max} 
+                    step={prices.step} 
+                    onChange={handleTotalPriceChange}
+                >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                    </NumberInputStepper>
+                </NumberInput>
+            </Flex>
         </Box>
     );
 };

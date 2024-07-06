@@ -7,10 +7,19 @@ export const prices = {
 };
 
 export const defaultCityPlaceholder: string = 'City';
+export const duration = {
+    min: 1,
+    max: 9,
+    defaultMin: 3,
+    defaultMax: 6,
+    defaultExact: 3,
+    step: 1
+}
+
 export const defaultJobAd = {
     price: prices.defaultMinPrice,
     address: 'Tel Aviv',
-    duration: 3,
+    duration: duration.defaultExact,
     youngestChildAge: 2,
     toolsProvided: true,
     numberOfRooms: 3.5
@@ -18,10 +27,7 @@ export const defaultJobAd = {
 
 export const cityOptions = ['Tel Aviv', 'Ramat Gan', 'Petah Tikva'] as const;
 
-export const duration = {
-    min: 1,
-    max: 9,
-}
+
 
 export const youngestChildAge = {
     min: 1,
