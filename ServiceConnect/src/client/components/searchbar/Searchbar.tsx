@@ -22,7 +22,7 @@ import { PriceComponents } from './durationToPrice/PriceComponents';
 const Searchbar = ({ user }: { user: AuthUser }) => {
     const { defaultMinPrice, defaultMaxPrice } = prices;
     const [minPrice, setMinPrice] = useState<PriceProps>({valueAsString: defaultMinPrice.toString(), valueAsNumber: defaultMinPrice});
-    const [maxPrice, setMaxPrice] = useState<PriceProps>({valueAsString: defaultMaxPrice.toString(), valueAsNumber: defaultMaxPrice}); //TODO: change to 100 (take the right variable name0
+    const [maxPrice, setMaxPrice] = useState<PriceProps>({valueAsString: prices.max.toString(), valueAsNumber: prices.max}); //TODO: change to 100 (take the right variable name0
     const [minDuration, setMinDuration] = useState<DurationProps>({valueAsString: durationConfig.defaultMin.toString(), valueAsNumber: durationConfig.defaultMin});
     const [maxDuration, setMaxDuration] = useState<DurationProps>({valueAsString: durationConfig.defaultMax.toString(), valueAsNumber: durationConfig.defaultMax});
     const [exactDuration, setExactDuration] = useState<DurationProps>({valueAsString: durationConfig.defaultExact.toString(), valueAsNumber: durationConfig.defaultExact});
@@ -211,7 +211,7 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
                             isDurationExact={isDurationExact}
                             handleIsDurationExactChange={handleIsDurationExactChange}
                         />
-                        <Box h={3}></Box>
+                        <Box h={5}></Box>
                         <PriceComponents
                             minPrice={minPrice}
                             hourlyRate={hourlyRate} 
