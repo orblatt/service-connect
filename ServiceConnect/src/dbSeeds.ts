@@ -1,5 +1,5 @@
-import { CreateJobAdPayload, CreateSearchProfilePayload, createJobAd, createSearchProfile } from './actions.js'
-import { sanitizeAndSerializeProviderData, type EmailProviderData } from 'wasp/server/auth'
+import { CreateJobAdPayload, createJobAd } from './actions.js'
+import { sanitizeAndSerializeProviderData } from 'wasp/server/auth'
 import { type AuthUser } from 'wasp/auth'
 import { PrismaClient } from '@prisma/client'
 

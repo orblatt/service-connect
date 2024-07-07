@@ -1,4 +1,3 @@
-import { Box } from "@chakra-ui/react";
 import YoungestChildAgeNumberInput from "./YoungestChildAgeNumberInput";
 import RoomsNumberInput from "./RoomsNumberInput";
 import ToolsProvidedSwitch from "./ToolsProvidedSwitch";

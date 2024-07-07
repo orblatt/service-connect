@@ -212,7 +212,6 @@ export const createSearchProfile: CreateSearchProfile<CreateSearchProfilePayload
   return context.entities.SearchProfile.create({ data });
 };
 
-// DeleteSearchProfiles<{}, SearchProfile[]>
 export const deleteSearchProfiles:any = async ( 
   args,
   context

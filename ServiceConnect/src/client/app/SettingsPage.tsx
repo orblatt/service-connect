@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AuthUser } from 'wasp/auth'
 import { ProviderLayout } from './MainLayout'
-import { Box, Button, Card, CardBody, CardHeader, Heading, useToast } from '@chakra-ui/react';
+import { Button, Card, CardBody, CardHeader, Heading, useToast } from '@chakra-ui/react';
 import { deleteSearchProfiles } from 'wasp/client/operations'
 import { useForm } from 'react-hook-form'
 

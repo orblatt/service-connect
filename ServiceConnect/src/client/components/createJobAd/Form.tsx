@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { Link as ChakraLink, Flex, Heading } from '@chakra-ui/react';
 import { Card, Stack, useSteps, Box, Tabs, TabList, Tab, TabPanels, TabPanel, Stepper, Step, StepIndicator, StepStatus, StepIcon, StepNumber, StepTitle, StepDescription, StepSeparator, MenuItem, useToast, Button, Text } from '@chakra-ui/react';
-import { useBreakpointValue, HStack, VStack } from '@chakra-ui/react';
+import { useBreakpointValue, VStack } from '@chakra-ui/react';
 import { JobAd } from 'wasp/entities';
 import { createJobAd } from 'wasp/client/operations';
 
