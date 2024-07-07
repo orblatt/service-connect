@@ -2,7 +2,6 @@ import {
     Menu,
     MenuButton,
     MenuList,
-    MenuItem,
     Button
   } from '@chakra-ui/react'
 import { FiChevronDown } from 'react-icons/fi'

@@ -149,11 +149,6 @@ const Searchbar = ({ user }: { user: AuthUser }) => {
         setMinPrice({ valueAsString: newMinTotalPrice.toString(), valueAsNumber: newMinTotalPrice});
       }
      };
-     
-      // const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-      //   const newCity = event.target.value;
-      //   setCity(newCity);
-      // };
 
     const {
         handleSubmit,

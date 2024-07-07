@@ -1,4 +1,3 @@
-import { MenuItem } from "@chakra-ui/react";
 import { DropdownButton } from "./DropdownButton";
 
 const JobCategoriesDropdown = ( 

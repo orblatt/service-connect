@@ -1,5 +1,0 @@
-services:
-  internal-api:
-    build: backend/services/internal_api
-    ports:
-      - "8000:8000"

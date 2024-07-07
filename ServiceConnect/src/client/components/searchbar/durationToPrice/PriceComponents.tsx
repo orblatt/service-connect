@@ -1,7 +1,4 @@
 import { Box, FormLabel, HStack, Text, VStack } from "@chakra-ui/react"
-import IsDurationExactToggle from "./IsDurationExactToggle";
-import DurationRangeSlider from "./DurationRangeSlider";
-import ExactDurationNumberInput from "./ExactDurationNumberInput";
 import { PriceProps } from "../PriceRangeSlider";
 import HourlyRateNumberInput from "./HourlyRateNumberInput";
 import MinimumPay from "./MininumPay";
