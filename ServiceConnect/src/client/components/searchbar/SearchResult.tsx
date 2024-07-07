@@ -148,7 +148,13 @@ const SearchResult = ({ jobAd, isPreview, user } : { jobAd: JobAd, isPreview: bo
         onClick={handleIsDoneChange} 
         isDisabled={isPreview || !providerId}
       >
-        {!isDone ? 'Done' : 'Undone'}
+        {
+          !providerId
+          ? 'No provider yet'
+          : !isDone 
+          ? 'Done' 
+          : 'Undone'
+        }
       </Button>
     )
   }
